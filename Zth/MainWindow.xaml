@@ -25,7 +25,8 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="auto"/>
                     <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="auto"/>
+                    <!-- Min width is needed to be declared to prevent sudden jumps  -->
+                    <ColumnDefinition Width="auto" MinWidth="400"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
