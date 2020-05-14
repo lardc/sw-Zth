@@ -4,7 +4,20 @@
     <Style TargetType="Button">
         <Setter Property="Foreground" Value="#ffffffff" />
     </Style>
-    
+
+    <Style TargetType="Button" x:Key="ButtonRightPanel" BasedOn="{StaticResource {x:Type Button}}">
+        <Setter Property="Height" Value="60" />
+        <Setter Property="Margin" Value="0,10,0,10"/>
+    </Style>
+
+    <Style TargetType="Button" x:Key="ButtonRightPanelRed" BasedOn="{StaticResource ButtonRightPanel}">
+        <Setter Property="Background" Value="#E05050"/>
+    </Style>
+
+    <Style TargetType="Button" x:Key="ButtonRightPanelGreen" BasedOn="{StaticResource ButtonRightPanel}">
+        <Setter Property="Background" Value="#58C450"/>
+    </Style>
+
     <Style TargetType="Button" x:Key="BackNextButton" BasedOn="{StaticResource {x:Type Button}}">
         <Setter Property="Width" Value="350" />
         <Setter Property="Height" Value="92" />

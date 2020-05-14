@@ -1,8 +1,11 @@
-﻿using System.Globalization;
+﻿using System.Diagnostics;
+using System.Globalization;
+using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 
-namespace Zth
+namespace Zth.Helpers
 {
     public static class Helper
     {
@@ -42,5 +45,8 @@ namespace Zth
             var formattedText = new FormattedText(candidate,CultureInfo.CurrentCulture,FlowDirection.LeftToRight,new Typeface(fontFamily, fontStyle, fontWeight, fontStretch),fontSize,Brushes.Black,new NumberSubstitution(),1);
             return new Size(formattedText.Width, formattedText.Height);
         }
+        
+
+        
     }
 }

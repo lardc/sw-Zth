@@ -117,23 +117,95 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AmpereUnit" xml:space="preserve">
+    <value>А</value>
+  </data>
+  <data name="AmplitudeControlCurrent" xml:space="preserve">
+    <value>Амплитуда тока управления, А</value>
+  </data>
+  <data name="AmplitudeHeatingCurrent" xml:space="preserve">
+    <value>Амплитуда греющего тока, А</value>
+  </data>
+  <data name="AmplitudeMeasuringCurrent" xml:space="preserve">
+    <value>Амплитуда измерительного тока, А</value>
+  </data>
+  <data name="AnodeBodyTemperature" xml:space="preserve">
+    <value>Температура корпуса А, °С</value>
+  </data>
+  <data name="AnodeCoolerTemperature" xml:space="preserve">
+    <value>Температура охл. А, °С</value>
+  </data>
+  <data name="AnodeBodyTemperatureAbbreviated" xml:space="preserve">
+    <value>t корп. А:</value>
+  </data>
+  <data name="AnodeCoolerTemperatureAbbreviated" xml:space="preserve">
+    <value>t охл. А:</value>
+  </data>
+  <data name="Back" xml:space="preserve">
+    <value>Назад</value>
+  </data>
   <data name="Bipolar" xml:space="preserve">
     <value>Биполярный</value>
+  </data>
+  <data name="CathodeBodyTemperature" xml:space="preserve">
+    <value>Температура корпуса К, °С</value>
+  </data>
+  <data name="CathodeCoolerTemperature" xml:space="preserve">
+    <value>Температура охл. К, °С</value>
+  </data>
+  <data name="CathodeBodyTemperatureAbbreviated" xml:space="preserve">
+    <value>t корп. К:</value>
+  </data>
+  <data name="CathodeCoolerTemperatureAbbreviated" xml:space="preserve">
+    <value>t охл. К:</value>
   </data>
   <data name="Cooling" xml:space="preserve">
     <value>Охлаждение</value>
   </data>
+  <data name="DegreeCentigradeUnit" xml:space="preserve">
+    <value>°C</value>
+  </data>
+  <data name="DelayTimeTspMeasurements" xml:space="preserve">
+    <value>Время задержки измерения ТЧП, мкс</value>
+  </data>
+  <data name="DurationPowerPulse" xml:space="preserve">
+    <value>Длительность импульса мощности, с</value>
+  </data>
   <data name="GraduationOnly" xml:space="preserve">
     <value>Только градуировка</value>
   </data>
+  <data name="HeatingCurrent" xml:space="preserve">
+    <value>Греющий ток</value>
+  </data>
+  <data name="HeatingCurrentAbbreviated" xml:space="preserve">
+    <value>Гр. ток:</value>
+  </data>
   <data name="IGBT" xml:space="preserve">
     <value>IGBT</value>
+  </data>
+  <data name="MegaVoltUnit" xml:space="preserve">
+    <value>мВ</value>
+  </data>
+  <data name="Next" xml:space="preserve">
+    <value>Далее</value>
   </data>
   <data name="OneSided" xml:space="preserve">
     <value>Односторонее</value>
   </data>
   <data name="RthSequence" xml:space="preserve">
     <value>Rth Последовательность</value>
+  </data>
+  <data name="StartHeating" xml:space="preserve">
+    <value>Старт нагрев</value>
+  </data>
+  <data name="StopHeating" xml:space="preserve">
+    <value>Стоп нагрев</value>
+  </data>
+  <data name="StopMeasurement" xml:space="preserve">
+    <value>Стоп измерения</value>
+  </data>
+  <data name="TemperatureSensitiveParameter" xml:space="preserve">
+    <value>ТЧП</value>
   </data>
   <data name="TwoWay" xml:space="preserve">
     <value>Двухсторонее</value>
@@ -146,5 +218,8 @@
   </data>
   <data name="ZthLongImpulse" xml:space="preserve">
     <value>Zth Длинный импульс</value>
+  </data>
+  <data name="HeatingPower" xml:space="preserve">
+    <value>Греющая мощность</value>
   </data>
 </root>

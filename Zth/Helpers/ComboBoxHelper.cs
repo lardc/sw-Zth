@@ -4,7 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
-namespace Zth
+namespace Zth.Helpers
 {
     public partial class ComboBoxHelper
     {
