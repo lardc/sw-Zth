@@ -7,6 +7,7 @@
     <Application.Resources>
         <ResourceDictionary>
             <converters:BoolToVisibilityConverter x:Key="B2VH" TrueValue="Visible" FalseValue="Hidden" />
+            <converters:TextLineBreakerConverter x:Key="TLB" TrueValue="Visible" FalseValue="Hidden" />
             <converters:TextBoxMinWidthConverter x:Key="TBMW" TrueValue="Visible" FalseValue="Hidden" />
             
             <ResourceDictionary.MergedDictionaries>

@@ -38,6 +38,9 @@
     <Page Update="Resources\Button.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="Resources\BottomPanelValues.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Resources\RightPanelStyles.xaml">
       <SubType>Designer</SubType>
     </Page>

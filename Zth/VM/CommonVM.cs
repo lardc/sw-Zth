@@ -35,7 +35,23 @@ namespace Zth.VM
         public double DelayTimeTspMeasurements { get; set; }
 
 
-        public bool TemperatureSensitiveParameterIsVisible {get;set;}
+        public bool TemperatureSensitiveParameterIsVisible {get;set; }
+
+        public bool HeatingCurrentIsEnabled { get; set; }
+        public bool HeatingPowerIsEnabled { get; set; }
+        public bool TemperatureSensitiveParameterIsEnabled { get; set; }
+        public bool AnodeBodyTemperatureIsEnabled { get; set; }
+        public bool CathodeBodyTemperatureIsEnabled { get; set; }
+        public bool AnodeCoolerTemperatureIsEnabled { get; set; }
+        public bool CathodeCoolerTemperatureIsEnabled { get; set; }
+
+        public bool HeatingCurrentIsVisibly { get; set; } = true;
+        public bool HeatingPowerIsVisibly{ get; set; } = true;
+        public bool TemperatureSensitiveParameterIsVisibly{ get; set; } = true;
+        public bool AnodeBodyTemperatureIsVisibly{ get; set; } = true;
+        public bool CathodeBodyTemperatureIsVisibly{ get; set; } = true;
+        public bool AnodeCoolerTemperatureIsVisibly{ get; set; } = true;
+        public bool CathodeCoolerTemperatureIsVisibly{ get; set; } = true;
 
     }
 }

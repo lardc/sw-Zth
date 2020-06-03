@@ -222,4 +222,10 @@
   <data name="HeatingPower" xml:space="preserve">
     <value>Греющая мощность</value>
   </data>
+  <data name="HeatingCurrentWithUnitMeasurement" xml:space="preserve">
+    <value>Греющий ток, А</value>
+  </data>
+  <data name="TimeWithUnitMeasurementSecond" xml:space="preserve">
+    <value>Время, с</value>
+  </data>
 </root>

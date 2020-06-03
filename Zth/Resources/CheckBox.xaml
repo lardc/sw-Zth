@@ -92,7 +92,8 @@
                             <ContentPresenter.Resources>
                                 <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource {x:Type TextBlock}}">
                                     <Setter Property="TextWrapping" Value="Wrap"/>
-                                    <Setter Property="FontSize" Value="{TemplateBinding FontSize}"></Setter>
+                                    <Setter Property="FontFamily" Value="Segoe UI" />
+                                    <Setter Property="FontSize" Value="{Binding FontSize, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type CheckBox}}}"/>
                                 </Style>
                             </ContentPresenter.Resources>
                         </ContentPresenter>
