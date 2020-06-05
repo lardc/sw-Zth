@@ -130,10 +130,10 @@
     <value>Амплитуда измерительного тока, А</value>
   </data>
   <data name="AnodeBodyTemperature" xml:space="preserve">
-    <value>Температура корпуса А, °С</value>
+    <value>Температура корпуса А</value>
   </data>
   <data name="AnodeCoolerTemperature" xml:space="preserve">
-    <value>Температура охл. А, °С</value>
+    <value>Температура охл. А</value>
   </data>
   <data name="AnodeBodyTemperatureAbbreviated" xml:space="preserve">
     <value>t корп. А:</value>
@@ -148,10 +148,10 @@
     <value>Биполярный</value>
   </data>
   <data name="CathodeBodyTemperature" xml:space="preserve">
-    <value>Температура корпуса К, °С</value>
+    <value>Температура корпуса К</value>
   </data>
   <data name="CathodeCoolerTemperature" xml:space="preserve">
-    <value>Температура охл. К, °С</value>
+    <value>Температура охл. К</value>
   </data>
   <data name="CathodeBodyTemperatureAbbreviated" xml:space="preserve">
     <value>t корп. К:</value>
@@ -161,9 +161,6 @@
   </data>
   <data name="Cooling" xml:space="preserve">
     <value>Охлаждение</value>
-  </data>
-  <data name="DegreeCentigradeUnit" xml:space="preserve">
-    <value>°C</value>
   </data>
   <data name="DelayTimeTspMeasurements" xml:space="preserve">
     <value>Время задержки измерения ТЧП, мкс</value>
@@ -216,8 +213,8 @@
   <data name="WorkingMode" xml:space="preserve">
     <value>Режим работы</value>
   </data>
-  <data name="ZthLongImpulse" xml:space="preserve">
-    <value>Zth Длинный импульс</value>
+  <data name="UnitMeasurementSecond" xml:space="preserve">
+    <value>с</value>
   </data>
   <data name="HeatingPower" xml:space="preserve">
     <value>Греющая мощность</value>
@@ -225,7 +222,37 @@
   <data name="HeatingCurrentWithUnitMeasurement" xml:space="preserve">
     <value>Греющий ток, А</value>
   </data>
-  <data name="TimeWithUnitMeasurementSecond" xml:space="preserve">
-    <value>Время, с</value>
+  <data name="Time" xml:space="preserve">
+    <value>Время</value>
+  </data>
+  <data name="UnitMeasurementA" xml:space="preserve">
+    <value>А</value>
+  </data>
+  <data name="UnitMeasurementkW" xml:space="preserve">
+    <value>кВт</value>
+  </data>
+  <data name="ZthLongImpulse" xml:space="preserve">
+    <value>Zth Длинный импульс</value>
+  </data>
+  <data name="UnitMeasurementDegreeCentigrade" xml:space="preserve">
+    <value>°C</value>
+  </data>
+  <data name="TemperatureStructure" xml:space="preserve">
+    <value>Температура структуры</value>
+  </data>
+  <data name="TemperatureStructureAbbreviated" xml:space="preserve">
+    <value>Темп. структуры</value>
+  </data>
+  <data name="UnitMeasurementDegreesCelsiusInWatts" xml:space="preserve">
+    <value>°С/Вт</value>
+  </data>
+  <data name="Zth" xml:space="preserve">
+    <value>Zth(t)</value>
+  </data>
+  <data name="Ztha" xml:space="preserve">
+    <value>Ztha(t)</value>
+  </data>
+  <data name="Zthk" xml:space="preserve">
+    <value>Zthk(t)</value>
   </data>
 </root>

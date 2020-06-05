@@ -97,7 +97,7 @@ namespace Zth.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Температура корпуса А, °С.
+        ///   Ищет локализованную строку, похожую на Температура корпуса А.
         /// </summary>
         public static string AnodeBodyTemperature {
             get {
@@ -115,7 +115,7 @@ namespace Zth.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Температура охл. А, °С.
+        ///   Ищет локализованную строку, похожую на Температура охл. А.
         /// </summary>
         public static string AnodeCoolerTemperature {
             get {
@@ -151,7 +151,7 @@ namespace Zth.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Температура корпуса К, °С.
+        ///   Ищет локализованную строку, похожую на Температура корпуса К.
         /// </summary>
         public static string CathodeBodyTemperature {
             get {
@@ -169,7 +169,7 @@ namespace Zth.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Температура охл. К, °С.
+        ///   Ищет локализованную строку, похожую на Температура охл. К.
         /// </summary>
         public static string CathodeCoolerTemperature {
             get {
@@ -192,15 +192,6 @@ namespace Zth.Properties {
         public static string Cooling {
             get {
                 return ResourceManager.GetString("Cooling", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на °C.
-        /// </summary>
-        public static string DegreeCentigradeUnit {
-            get {
-                return ResourceManager.GetString("DegreeCentigradeUnit", resourceCulture);
             }
         }
         
@@ -349,11 +340,29 @@ namespace Zth.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Время, с.
+        ///   Ищет локализованную строку, похожую на Температура структуры.
         /// </summary>
-        public static string TimeWithUnitMeasurementSecond {
+        public static string TemperatureStructure {
             get {
-                return ResourceManager.GetString("TimeWithUnitMeasurementSecond", resourceCulture);
+                return ResourceManager.GetString("TemperatureStructure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Темп. структуры.
+        /// </summary>
+        public static string TemperatureStructureAbbreviated {
+            get {
+                return ResourceManager.GetString("TemperatureStructureAbbreviated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Время.
+        /// </summary>
+        public static string Time {
+            get {
+                return ResourceManager.GetString("Time", resourceCulture);
             }
         }
         
@@ -376,11 +385,83 @@ namespace Zth.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на А.
+        /// </summary>
+        public static string UnitMeasurementA {
+            get {
+                return ResourceManager.GetString("UnitMeasurementA", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на °C.
+        /// </summary>
+        public static string UnitMeasurementDegreeCentigrade {
+            get {
+                return ResourceManager.GetString("UnitMeasurementDegreeCentigrade", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на °С/Вт.
+        /// </summary>
+        public static string UnitMeasurementDegreesCelsiusInWatts {
+            get {
+                return ResourceManager.GetString("UnitMeasurementDegreesCelsiusInWatts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на кВт.
+        /// </summary>
+        public static string UnitMeasurementkW {
+            get {
+                return ResourceManager.GetString("UnitMeasurementkW", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на с.
+        /// </summary>
+        public static string UnitMeasurementSecond {
+            get {
+                return ResourceManager.GetString("UnitMeasurementSecond", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Режим работы.
         /// </summary>
         public static string WorkingMode {
             get {
                 return ResourceManager.GetString("WorkingMode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Zth(t).
+        /// </summary>
+        public static string Zth {
+            get {
+                return ResourceManager.GetString("Zth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Ztha(t).
+        /// </summary>
+        public static string Ztha {
+            get {
+                return ResourceManager.GetString("Ztha", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Zthk(t).
+        /// </summary>
+        public static string Zthk {
+            get {
+                return ResourceManager.GetString("Zthk", resourceCulture);
             }
         }
         

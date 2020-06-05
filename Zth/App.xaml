@@ -7,8 +7,12 @@
     <Application.Resources>
         <ResourceDictionary>
             <converters:BoolToVisibilityConverter x:Key="B2VH" TrueValue="Visible" FalseValue="Hidden" />
-            <converters:TextLineBreakerConverter x:Key="TLB" TrueValue="Visible" FalseValue="Hidden" />
-            <converters:TextBoxMinWidthConverter x:Key="TBMW" TrueValue="Visible" FalseValue="Hidden" />
+            <converters:BoolToVisibilityConverter x:Key="B2VC" TrueValue="Visible" FalseValue="Collapsed" />
+            <converters:TextLineBreakerConverter x:Key="TLB" />
+            <converters:TextBoxMinWidthConverter x:Key="TBMW"  />
+            <converters:ValueInTableConverter x:Key="VIN"  />
+            
+            
             
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Resources/Consts.xaml"/>
