@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:Zth"
              xmlns:converters="clr-namespace:Zth.Converters"
-             StartupUri="MainWindow.xaml">
+             StartupUri="TestWindow.xaml">
     <Application.Resources>
         <ResourceDictionary>
             <converters:BoolToVisibilityConverter x:Key="B2VH" TrueValue="Visible" FalseValue="Hidden" />

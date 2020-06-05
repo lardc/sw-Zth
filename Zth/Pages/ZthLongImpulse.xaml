@@ -5,82 +5,17 @@
                   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                   xmlns:local="clr-namespace:Zth.Pages"
                   xmlns:res="clr-namespace:Zth.Properties"
-                  mc:Ignorable="d" DataContext="{Binding RelativeSource={RelativeSource Self}, Path=Vm}"
+                  xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+                  xmlns:components="clr-namespace:Zth.Components"
+                  mc:Ignorable="d" 
                   d:DesignHeight="1024" d:DesignWidth="1280"
                   Title="ZthLongImpulse"
                   xmlns:theme="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2">
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="auto" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-        <Grid Grid.Row="0" Height="{StaticResource TopPanelHeightOffset}">
-            <Grid Margin="{StaticResource TopPanelMargin}" Height="{StaticResource TopPanelHeight}" VerticalAlignment="Top">
-                <Grid.Resources>
-                    <Style TargetType="TextBlock" x:Key="ValueTextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
-                        <Setter Property="Margin" Value="10,0,0,0" />
-                        <Setter Property="FontWeight" Value="Bold" />
-                    </Style>
-                </Grid.Resources>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition />
-                    <ColumnDefinition Width="{Binding ElementName=ColumnCoolingDevice, Path=ActualWidth}" />
-                    <ColumnDefinition />
-                    <ColumnDefinition Width="auto" x:Name="ColumnCoolingDevice" />
-                    <ColumnDefinition />
-                    <ColumnDefinition Width="auto" />
-                    <ColumnDefinition Width="auto" />
-                    <ColumnDefinition />
-                    <ColumnDefinition Width="auto" />
-                    <ColumnDefinition Width="auto" />
-                    <ColumnDefinition />
-                    <ColumnDefinition Width="auto" />
-                    <ColumnDefinition Width="auto" />
-                    <ColumnDefinition />
-                </Grid.ColumnDefinitions>
-                <TextBlock TextWrapping="Wrap" Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" Text="{Binding WorkingModeString}" />
-
-                <TextBlock Grid.Row="0" Grid.Column="3" Text="{Binding TypeCoolingString}" />
-                <TextBlock Grid.Row="1" Grid.Column="3" Text="{Binding TypeDeviceString}" />
-
-                <TextBlock Grid.Row="0" Grid.Column="5" Text="{x:Static res:Resource.AnodeBodyTemperatureAbbreviated}" />
-                <TextBlock Grid.Row="1" Grid.Column="5" Text="{x:Static res:Resource.CathodeBodyTemperatureAbbreviated}" />
-                <TextBlock Grid.Row="0" Grid.Column="6">
-                    <Run Text=" " /> <Run Text="{Binding AnodeBodyTemperature}" FontWeight="Bold" /> <Run Text="{x:Static res:Resource.UnitMeasurementDegreeCentigrade}" />
-                </TextBlock>
-                <TextBlock Grid.Row="1" Grid.Column="6">
-                    <Run Text=" " /> <Run Text="{Binding CathodeBodyTemperature}" FontWeight="Bold" /> <Run Text="{x:Static res:Resource.UnitMeasurementDegreeCentigrade}" />
-                </TextBlock>
-
-                <TextBlock Grid.Row="0" Grid.Column="8" Text="{x:Static res:Resource.AnodeCoolerTemperatureAbbreviated}" />
-                <TextBlock Grid.Row="1" Grid.Column="8" Text="{x:Static res:Resource.CathodeCoolerTemperatureAbbreviated}" />
-                <TextBlock Grid.Row="0" Grid.Column="9">
-                    <Run Text=" " /> <Run Text="{Binding AnodeCoolerTemperature}" FontWeight="Bold" /> <Run Text="{x:Static res:Resource.UnitMeasurementDegreeCentigrade}" />
-                </TextBlock>
-                <TextBlock Grid.Row="1" Grid.Column="9">
-                    <Run Text=" " /> <Run Text="{Binding CathodeCoolerTemperature}" FontWeight="Bold" /> <Run Text="{x:Static res:Resource.UnitMeasurementDegreeCentigrade}" />
-                </TextBlock>
-
-                <TextBlock Grid.Row="0" Grid.Column="11" Visibility="{Binding TemperatureSensitiveParameterIsVisible, Converter={StaticResource B2VH}}">
-                    <Run Text="{x:Static res:Resource.TemperatureSensitiveParameter}" /> <Run Text=":" />
-                </TextBlock>
-                <TextBlock Grid.Row="1" Grid.Column="11" Text="{x:Static res:Resource.HeatingCurrentAbbreviated}" />
-                <TextBlock Grid.Row="0" Grid.Column="12" Visibility="{Binding TemperatureSensitiveParameterIsVisible, Converter={StaticResource B2VH}}">
-                    <Run Text=" " /> <Run Text="{Binding TemperatureSensitiveParameter}" FontWeight="Bold" /> <Run Text="{x:Static res:Resource.MegaVoltUnit}" />
-                </TextBlock>
-                <TextBlock Grid.Row="1" Grid.Column="12">
-                    <Run Text=" " /> <Run Text="{Binding HeatingCurrent}" FontWeight="Bold" /> <Run Text="{x:Static res:Resource.AmpereUnit}" />
-                </TextBlock>
-            </Grid>
-        </Grid>
-        <Grid Grid.Row="1" Margin="{StaticResource ContentLeftRightMargin}">
+        <Grid Grid.Row="1" >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
-                <ColumnDefinition Width="330" />
+                <ColumnDefinition Width="{StaticResource RightPanelWidth}" />
             </Grid.ColumnDefinitions>
             <Grid Grid.Column="1">
                 <Grid.Resources>
@@ -128,176 +63,14 @@
                 <Button Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource ButtonRightPanelRed}" Content="{x:Static res:Resource.StopMeasurement}" />
             </Grid>
             <Grid Grid.Column="0">
-                <Grid.Resources>
-                    <ResourceDictionary>
-                        <ResourceDictionary.MergedDictionaries>
-                            <ResourceDictionary Source="../Resources/BottomPanelValues.xaml" />
-                        </ResourceDictionary.MergedDictionaries>
-                    </ResourceDictionary>
-                </Grid.Resources>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" />
                     <RowDefinition Height="auto" />
                 </Grid.RowDefinitions>
-                <Grid Grid.Row="1" HorizontalAlignment="Center">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="auto" />
-                        <RowDefinition Height="auto" />
-                    </Grid.RowDefinitions>
-                    <Grid Grid.Row="0" Margin="0,5,0,5">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
-                        <CheckBox Grid.Column="0" IsChecked="{Binding HeatingCurrentIsEnabled}" Visibility="{Binding HeatingCurrentIsVisibly, Converter={StaticResource B2VC}}" 
-                                Content="{Binding Converter={StaticResource TLB}, ConverterParameter={x:Static res:Resource.HeatingCurrent}}" />
-                        <CheckBox Grid.Column="1" IsChecked="{Binding HeatingPowerIsEnabled}" Visibility="{Binding HeatingPowerIsVisibly, Converter={StaticResource B2VC}}"
-                                  Content="{Binding Converter={StaticResource TLB}, ConverterParameter={x:Static res:Resource.HeatingPower}}" />
-                        <CheckBox Grid.Column="2" IsChecked="{Binding TemperatureSensitiveParameterIsEnabled}" Visibility="{Binding TemperatureSensitiveParameterIsVisibly, Converter={StaticResource B2VC}}"
-                                  Content="{x:Static res:Resource.TemperatureSensitiveParameter}" />
-                        <CheckBox Grid.Column="3" IsChecked="{Binding AnodeBodyTemperatureIsEnabled}" Visibility="{Binding AnodeBodyTemperatureIsVisibly, Converter={StaticResource B2VC}}"
-                                  Content="{Binding Converter={StaticResource TLB}, ConverterParameter={x:Static res:Resource.AnodeBodyTemperature}}" />
-                        <CheckBox Grid.Column="4" IsChecked="{Binding CathodeBodyTemperatureIsEnabled}" Visibility="{Binding CathodeBodyTemperatureIsVisibly, Converter={StaticResource B2VC}}"
-                                  Content="{Binding Converter={StaticResource TLB}, ConverterParameter={x:Static res:Resource.CathodeBodyTemperature}}" />
-                        <CheckBox Grid.Column="5" IsChecked="{Binding AnodeCoolerTemperatureIsEnabled}" Visibility="{Binding AnodeCoolerTemperatureIsVisibly, Converter={StaticResource B2VC}}"
-                                  Content="{Binding Converter={StaticResource TLB}, ConverterParameter={x:Static res:Resource.AnodeCoolerTemperature}}" />
-                        <CheckBox Grid.Column="6" IsChecked="{Binding CathodeCoolerTemperatureIsEnabled}" Visibility="{Binding CathodeCoolerTemperatureIsVisibly, Converter={StaticResource B2VC}}"
-                                  Content="{Binding Converter={StaticResource TLB}, ConverterParameter={x:Static res:Resource.CathodeCoolerTemperature}}" />
-                        <CheckBox Grid.Column="7" IsChecked="{Binding TemperatureStructureIsEnabled}" Visibility="{Binding TemperatureStructureIsVisibly, Converter={StaticResource B2VC}}"
-                                  Content="{Binding Converter={StaticResource TLB}, ConverterParameter={x:Static res:Resource.TemperatureStructureAbbreviated}}" />
-                        <CheckBox Grid.Column="8" IsChecked="{Binding ZthaIsEnabled}" Visibility="{Binding ZthaIsVisibly, Converter={StaticResource B2VC}}"
-                                  Content="{x:Static res:Resource.Ztha}" />
-                        <CheckBox Grid.Column="9" IsChecked="{Binding ZthkIsEnabled}" Visibility="{Binding ZthkIsVisibly, Converter={StaticResource B2VC}}"
-                                  Content="{x:Static res:Resource.Zthk}" />
-                        <CheckBox Grid.Column="10" IsChecked="{Binding ZthIsEnabled}" Visibility="{Binding ZthIsVisibly, Converter={StaticResource B2VC}}"
-                                  Content="{x:Static res:Resource.Zth}" />
-                    </Grid>
-                    <Grid Grid.Row="1" Height="135" HorizontalAlignment="Center" >
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="*" />
-                            <RowDefinition Height="*" />
-                        </Grid.RowDefinitions>
-                        <Border Grid.Column="0" Grid.Row="0" >
-                            <TextBlock>
-                                <Run Text="{x:Static res:Resource.Time}" /><Run Text=", " /><Run Text="{x:Static res:Resource.UnitMeasurementSecond}" />
-                            </TextBlock>
-                        </Border>
-                        <Border Grid.Column="1" Grid.Row="0" Visibility="{Binding HeatingCurrentIsVisibly, Converter={StaticResource B2VC}}">
-                            <TextBlock>
-                                <Run Text="{Binding Mode=OneWay, Converter={StaticResource TLB}, ConverterParameter={x:Static res:Resource.HeatingCurrent}}" /><Run Text=", " /><Run Text="{x:Static res:Resource.UnitMeasurementA}" />
-                            </TextBlock>
-                        </Border>
-                        <Border Grid.Column="2" Grid.Row="0" Visibility="{Binding HeatingPowerIsVisibly, Converter={StaticResource B2VC}}">
-                            <TextBlock>
-                                <Run Text="{Binding Mode=OneWay, Converter={StaticResource TLB}, ConverterParameter={x:Static res:Resource.HeatingPower}}" /><Run Text=", " /><Run Text="{x:Static res:Resource.UnitMeasurementkW}" />
-                            </TextBlock>
-                        </Border>
-                        <Border Grid.Column="3" Grid.Row="0" Visibility="{Binding TemperatureSensitiveParameterIsVisibly, Converter={StaticResource B2VC}}">
-                            <TextBlock>
-                                <Run Text="{x:Static res:Resource.TemperatureSensitiveParameter}" />
-                            </TextBlock>
-                        </Border>
-                        <Border Grid.Column="4" Grid.Row="0" Visibility="{Binding AnodeBodyTemperatureIsVisibly, Converter={StaticResource B2VC}}">
-                            <TextBlock>
-                                <Run Text="{Binding Mode=OneWay, Converter={StaticResource TLB}, ConverterParameter={x:Static res:Resource.AnodeBodyTemperature}}" /><Run Text=", " /><Run Text="{x:Static res:Resource.UnitMeasurementDegreeCentigrade}" />
-                            </TextBlock>
-                        </Border>
-                        <Border Grid.Column="5" Grid.Row="0" Visibility="{Binding CathodeBodyTemperatureIsVisibly, Converter={StaticResource B2VC}}">
-                            <TextBlock>
-                                <Run Text="{Binding Mode=OneWay, Converter={StaticResource TLB}, ConverterParameter={x:Static res:Resource.CathodeBodyTemperature}}" /><Run Text=", " /><Run Text="{x:Static res:Resource.UnitMeasurementDegreeCentigrade}" />
-                            </TextBlock>
-                        </Border>
-                        <Border Grid.Column="6" Grid.Row="0" Visibility="{Binding AnodeCoolerTemperatureIsVisibly, Converter={StaticResource B2VC}}">
-                            <TextBlock>
-                                <Run Text="{Binding Mode=OneWay, Converter={StaticResource TLB}, ConverterParameter={x:Static res:Resource.AnodeCoolerTemperature}}" /><Run Text=", " /><Run Text="{x:Static res:Resource.UnitMeasurementDegreeCentigrade}" />
-                            </TextBlock>
-                        </Border>
-                        <Border Grid.Column="7" Grid.Row="0" Visibility="{Binding CathodeCoolerTemperatureIsVisibly, Converter={StaticResource B2VC}}">
-                            <TextBlock>
-                                <Run Text="{Binding Mode=OneWay, Converter={StaticResource TLB}, ConverterParameter={x:Static res:Resource.CathodeCoolerTemperature}}" /><Run Text=", " /><Run Text="{x:Static res:Resource.UnitMeasurementDegreeCentigrade}" />
-                            </TextBlock>
-                        </Border>
-                        <Border Grid.Column="8" Grid.Row="0" Visibility="{Binding TemperatureStructureIsVisibly, Converter={StaticResource B2VC}}">
-                            <TextBlock>
-                                <Run Text="{Binding Mode=OneWay, Converter={StaticResource TLB}, ConverterParameter={x:Static res:Resource.TemperatureStructure}}" /><Run Text=", " /><Run Text="{x:Static res:Resource.UnitMeasurementDegreeCentigrade}" />
-                            </TextBlock>
-                        </Border>
-                        <Border Grid.Column="9" Grid.Row="0" Visibility="{Binding ZthaIsVisibly, Converter={StaticResource B2VC}}">
-                            <TextBlock>
-                                <Run Text="{x:Static res:Resource.Ztha}" /><Run Text=", " /><Run Text="{x:Static res:Resource.UnitMeasurementDegreesCelsiusInWatts}" />
-                            </TextBlock>
-                        </Border>
-                        <Border Grid.Column="10" Grid.Row="0" Visibility="{Binding ZthkIsVisibly, Converter={StaticResource B2VC}}">
-                            <TextBlock>
-                                <Run Text="{x:Static res:Resource.Zthk}" /><Run Text=", " /><Run Text="{x:Static res:Resource.UnitMeasurementDegreesCelsiusInWatts}" />
-                            </TextBlock>
-                        </Border>
-                        <Border Grid.Column="11" Grid.Row="0" Visibility="{Binding ZthIsVisibly, Converter={StaticResource B2VC}}">
-                            <TextBlock>
-                                <Run Text="{x:Static res:Resource.Zth}" /><Run Text=", " /><Run Text="{x:Static res:Resource.UnitMeasurementDegreesCelsiusInWatts}" />
-                            </TextBlock>
-                        </Border>
-                        <Border Grid.Column="0" Grid.Row="1" >
-                            <TextBlock Text="{Binding Time}"/>
-                        </Border>
-                        <Border Grid.Column="1" Grid.Row="1" Visibility="{Binding HeatingCurrentIsVisibly, Converter={StaticResource B2VC}}">
-                            <TextBlock Text="{Binding HeatingCurrent}" Visibility="{Binding HeatingCurrentIsEnabled, Converter={StaticResource B2VC}}"/>
-                        </Border>
-                        <Border Grid.Column="2" Grid.Row="1" Visibility="{Binding HeatingPowerIsVisibly, Converter={StaticResource B2VC}}">
-                            <TextBlock Text="{Binding HeatingPower}" Visibility="{Binding HeatingPowerIsEnabled, Converter={StaticResource B2VC}}"/>
-                        </Border>
-                        <Border Grid.Column="3" Grid.Row="1" Visibility="{Binding TemperatureSensitiveParameterIsVisibly, Converter={StaticResource B2VC}}">
-                            <TextBlock Text="{Binding TemperatureSensitiveParameter}" Visibility="{Binding TemperatureSensitiveParameterIsEnabled, Converter={StaticResource B2VC}}"/>
-                        </Border>
-                        <Border Grid.Column="4" Grid.Row="1" Visibility="{Binding AnodeBodyTemperatureIsVisibly, Converter={StaticResource B2VC}}">
-                            <TextBlock Text="{Binding AnodeBodyTemperature}" Visibility="{Binding AnodeBodyTemperatureIsEnabled, Converter={StaticResource B2VC}}"/>
-                        </Border>
-                        <Border Grid.Column="5" Grid.Row="1" Visibility="{Binding CathodeBodyTemperatureIsVisibly, Converter={StaticResource B2VC}}">
-                            <TextBlock Text="{Binding CathodeBodyTemperature}" Visibility="{Binding CathodeBodyTemperatureIsEnabled, Converter={StaticResource B2VC}}"/>
-                        </Border>
-                        <Border Grid.Column="6" Grid.Row="1" Visibility="{Binding AnodeCoolerTemperatureIsVisibly, Converter={StaticResource B2VC}}">
-                            <TextBlock Text="{Binding AnodeCoolerTemperature}" Visibility="{Binding AnodeCoolerTemperatureIsEnabled, Converter={StaticResource B2VC}}"/>
-                        </Border>
-                        <Border Grid.Column="7" Grid.Row="1" Visibility="{Binding CathodeCoolerTemperatureIsVisibly, Converter={StaticResource B2VC}}">
-                            <TextBlock Text="{Binding CathodeCoolerTemperature}" Visibility="{Binding CathodeCoolerTemperatureIsEnabled, Converter={StaticResource B2VC}}"/>
-                        </Border>
-                        <Border Grid.Column="8" Grid.Row="1" Visibility="{Binding TemperatureStructureIsVisibly, Converter={StaticResource B2VC}}">
-                            <TextBlock Text="{Binding TemperatureStructureTemperature}" Visibility="{Binding TemperatureStructureIsEnabled, Converter={StaticResource B2VC}}"/>
-                        </Border>
-                        <Border Grid.Column="9" Grid.Row="1" Visibility="{Binding ZthaIsVisibly, Converter={StaticResource B2VC}}">
-                            <TextBlock Text="{Binding ZthaTemperature}" Visibility="{Binding ZthaIsEnabled, Converter={StaticResource B2VC}}"/>
-                        </Border>
-                        <Border Grid.Column="10" Grid.Row="1" Visibility="{Binding ZthkIsVisibly, Converter={StaticResource B2VC}}">
-                            <TextBlock Text="{Binding ZthkTemperature}" Visibility="{Binding ZthkIsEnabled, Converter={StaticResource B2VC}}"/>
-                        </Border>
-                        <Border Grid.Column="11" Grid.Row="1" Visibility="{Binding ZthIsVisibly, Converter={StaticResource B2VC}}">
-                            <TextBlock Text="{Binding ZthTemperature}" Visibility="{Binding ZthIsEnabled, Converter={StaticResource B2VC}}"/>
-                        </Border>
-                    </Grid>
-                </Grid>
+                
+                <components:BottomCheckBoxsAndTable HorizontalAlignment="Center" Grid.Row="1">
+                    
+                </components:BottomCheckBoxsAndTable>
             </Grid>
         </Grid>
     </Grid>

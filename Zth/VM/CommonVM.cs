@@ -21,7 +21,20 @@ namespace Zth.VM
 
 
 
-        #region Top and bottom parameters
+   
+
+        #region Right panel
+        public double DurationPowerPulse { get; set; } 
+        public double AmplitudeHeatingCurrent { get; set; }
+        public double AmplitudeControlCurrent { get; set; }
+        public double AmplitudeMeasuringCurrent { get; set; }
+        public double DelayTimeTspMeasurements { get; set; }
+        #endregion
+
+
+
+        #region Bottom parameters
+
         public double Time { get; set; }
         public double HeatingPower { get; set; }
         public double AnodeBodyTemperature { get; set; }
@@ -34,23 +47,7 @@ namespace Zth.VM
         public double Ztha { get; set; }
         public double Zthk { get; set; }
         public double Zth { get; set; }
-        #endregion
 
-
-        #region Right panel
-        public double DurationPowerPulse { get; set; } 
-        public double AmplitudeHeatingCurrent { get; set; }
-        public double AmplitudeControlCurrent { get; set; }
-        public double AmplitudeMeasuringCurrent { get; set; }
-        public double DelayTimeTspMeasurements { get; set; }
-        #endregion
-
-
-        #region Top parameter
-        public bool TemperatureSensitiveParameterIsVisible {get;set; }
-        #endregion
-
-        #region Bottom parameters
         public bool HeatingCurrentIsEnabled { get; set; }
         public bool HeatingPowerIsEnabled { get; set; }
         public bool TemperatureSensitiveParameterIsEnabled { get; set; }

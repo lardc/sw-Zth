@@ -5,7 +5,9 @@
     <Thickness x:Key="TopPanelMargin">96,0,96,0</Thickness>
     <system:Double x:Key="TopPanelHeight">96</system:Double>
     <Thickness x:Key="TopPanelMarginHeight">0,96,0,0</Thickness>
-    <system:Double x:Key="TopPanelHeightOffset">137</system:Double>
+    <Thickness x:Key="TopPanelHeightMargin">0,0,0,5</Thickness>
     <Thickness x:Key="ContentLeftRightMargin">19,0,19,0</Thickness>
+
+    <GridLength x:Key="RightPanelWidth">330</GridLength>
 
 </ResourceDictionary>

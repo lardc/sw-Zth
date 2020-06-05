@@ -10,17 +10,15 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Zth.VM;
 
-namespace Zth.Pages
+namespace Zth.Components
 {
     /// <summary>
-    /// Логика взаимодействия для ZthLongImpulse.xaml
+    /// Логика взаимодействия для TopPanel.xaml
     /// </summary>
-    public partial class ZthLongImpulse : Page
+    public partial class TopPanel : UserControl
     {
-
-        public ZthLongImpulse()
+        public TopPanel()
         {
             InitializeComponent();
         }

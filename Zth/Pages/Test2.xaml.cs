@@ -10,17 +10,15 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Zth.VM;
 
 namespace Zth.Pages
 {
     /// <summary>
-    /// Логика взаимодействия для ZthLongImpulse.xaml
+    /// Логика взаимодействия для Test2.xaml
     /// </summary>
-    public partial class ZthLongImpulse : Page
+    public partial class Test2 : Page
     {
-
-        public ZthLongImpulse()
+        public Test2()
         {
             InitializeComponent();
         }

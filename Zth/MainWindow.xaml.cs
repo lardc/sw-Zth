@@ -9,6 +9,11 @@ namespace Zth
     public partial class MainWindow
     {
         private readonly NavigationService _navigationService;
+        public TopPanelVm TopPanelVm { get; set; } = new TopPanelVm()
+        {
+            DataIsVisibly = true
+        };
+        public CommonVM FrameVm { get; set; }
         public MainWindow()
         {
             InitializeComponent();
@@ -17,9 +22,14 @@ namespace Zth
             //_navigationService.Source = new System.Uri("Pages/SelectPage.xaml", System.UriKind.Relative);
             _navigationService.Navigate(new Pages.ZthLongImpulse()
             {
-                Vm = new CommonVM()
+                DataContext = FrameVm = new CommonVM()
                 {
-                    WorkingMode = WorkingMode.ZthLongImpulse
+                    HeatingCurrentIsVisibly = true,
+                    HeatingPowerIsVisibly = true,
+                    AnodeBodyTemperatureIsVisibly = true,
+                    CathodeBodyTemperatureIsVisibly = true,
+                    AnodeCoolerTemperatureIsVisibly = true,
+                    CathodeCoolerTemperatureIsVisibly = true
                 }
             });
         }

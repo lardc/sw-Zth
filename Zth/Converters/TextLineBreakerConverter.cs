@@ -14,7 +14,11 @@ namespace Zth.Converters
         public object Convert(object value, Type targetType,
             object parameter, CultureInfo culture)
         {
-            var str = (string)parameter ;
+            string str;
+            if(parameter == null)
+                str = (string)value;
+            else
+                str = (string)parameter ;
 
             var i1 = str.IndexOf(' ', str.Length / 2);
             var i2 = str.Reverse().ToList().IndexOf(' ', str.Length / 2);
