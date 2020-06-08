@@ -15,12 +15,20 @@
             <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
         <components:TopPanel Grid.Row="0" DataContext="{Binding TopPanelVm}"/>
-        <Frame Grid.Row="1" x:Name="MainFrame" Margin="{StaticResource ContentLeftRightMargin}" >
-            
+        <Frame Grid.Row="1" x:Name="MainFrame" Margin="{StaticResource MainFrameMargin}" NavigationUIVisibility="Hidden" >
+                
         </Frame>
-        <Grid Grid.Row="2">
-            <Button Style="{StaticResource BackButton}" Content="{x:Static res:Resource.Back}" />
-            <Button Style="{StaticResource NextButton}" Content="{x:Static res:Resource.Next}" Click="Button_Click" />
+        <Grid Grid.Row="2" DataContext="{Binding BottomPanelVM}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition />
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="0" Style="{StaticResource BackButton}" Content="{Binding LeftButtonContent}" Visibility="{Binding LeftButtonIsVisibly, Converter={StaticResource B2VH}}" Click="Button_Click_1"/>
+            <Button Grid.Column="2" Style="{StaticResource BackButton}" Content="{Binding MiddleButtonContent}" Visibility="{Binding MiddleButtonIsVisibly, Converter={StaticResource B2VH}}" />
+            <Button Grid.Column="4" Style="{StaticResource NextButton}" Content="{Binding RightButtonContent}" Visibility="{Binding RightButtonIsVisibly, Converter={StaticResource B2VH}}" Click="Button_Click" />
         </Grid>
 
      

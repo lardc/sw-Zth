@@ -13,6 +13,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Pages\GraduationOnly.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Pages\ZthPulseSequence.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Properties\Resource.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -28,6 +34,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Page Update="Pages\GraduationOnly.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Pages\ZthPulseSequence.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Resources\CheckBox.xaml">
       <SubType>Designer</SubType>
     </Page>

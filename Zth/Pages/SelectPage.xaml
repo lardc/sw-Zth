@@ -6,6 +6,8 @@
         xmlns:local="clr-namespace:Zth"
         xmlns:res="clr-namespace:Zth.Properties"
       mc:Ignorable="d" 
+      xmlns:vm="clr-namespace:Zth.VM"
+      d:DataContext="{d:DesignInstance vm:TopPanelVm }" 
       d:DesignHeight="837" d:DesignWidth="1280"
       Title="SelectPage">
 
@@ -34,9 +36,9 @@
             <TextBlock Grid.Column="0" Grid.Row="0" Text="{x:Static res:Resource.Cooling}"/>
             <TextBlock Grid.Column="0" Grid.Row="1" Text="{x:Static res:Resource.TypeDevice}" />
             <TextBlock Grid.Column="0" Grid.Row="2" Text="{x:Static res:Resource.WorkingMode}" />
-            <ComboBox Grid.Column="2" Grid.Row="0" SelectedIndex="0" ItemsSource="{Binding Source={x:Static local:StringResources.TypeCoolingDictionary}}" SelectedValuePath="Key" DisplayMemberPath="Value" />
-            <ComboBox Grid.Column="2" Grid.Row="1" SelectedIndex="0" ItemsSource="{Binding Source={x:Static local:StringResources.TypesDeviceDictionary}}" SelectedValuePath="Key" DisplayMemberPath="Value" />
-            <ComboBox Grid.Column="2" Grid.Row="2" SelectedIndex="0" ItemsSource="{Binding Source={x:Static local:StringResources.WorkModeDictionary}}" SelectedValuePath="Key" DisplayMemberPath="Value" />
+            <ComboBox Grid.Column="2" Grid.Row="0" SelectedIndex="0" ItemsSource="{Binding Source={x:Static local:StringResources.TypeCoolingDictionary}}" SelectedValue="{Binding TypeCooling}" SelectedValuePath="Key" DisplayMemberPath="Value" />
+            <ComboBox Grid.Column="2" Grid.Row="1" SelectedIndex="0" ItemsSource="{Binding Source={x:Static local:StringResources.TypesDeviceDictionary}}" SelectedValue="{Binding TypeDevice}" SelectedValuePath="Key" DisplayMemberPath="Value" />
+            <ComboBox Grid.Column="2" Grid.Row="2" SelectedIndex="0" ItemsSource="{Binding Source={x:Static local:StringResources.WorkModeDictionary}}" SelectedValue="{Binding WorkingMode}" SelectedValuePath="Key" DisplayMemberPath="Value" />
         </Grid>
     </Grid>
 </Page>
