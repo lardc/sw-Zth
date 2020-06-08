@@ -6,7 +6,7 @@
     <system:Double x:Key="TopPanelHeight">96</system:Double>
     <Thickness x:Key="TopPanelMarginHeight">0,96,0,0</Thickness>
     <Thickness x:Key="TopPanelHeightMargin">0,0,0,5</Thickness>
-    <Thickness x:Key="ContentLeftRightMargin">19,0,19,0</Thickness>
+    <Thickness x:Key="MainFrameMargin">19</Thickness>
 
     <GridLength x:Key="RightPanelWidth">330</GridLength>
 
