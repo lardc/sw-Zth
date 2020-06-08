@@ -29,8 +29,7 @@ namespace Zth
                 DataContext = TopPanelVm
             });
 
-            BottomPanelVM.LeftButtonContent = Properties.Resource.Back;
-            BottomPanelVM.RightButtonContent = Properties.Resource.Next;
+            SelectFirstPage();
             /*_navigationService.Navigate(new Pages.ZthLongImpulse()
             {
                 DataContext = FrameVm = new CommonVM()
@@ -111,9 +110,19 @@ namespace Zth
             }
         }
 
+        private void SelectFirstPage()
+        {
+            BottomPanelVM.LeftButtonContent = Properties.Resource.Back;
+            BottomPanelVM.MiddleButtonContent = string.Empty;
+            BottomPanelVM.RightButtonContent = Properties.Resource.Next;
+
+        }
+
         private void Button_Click_1(object sender, System.Windows.RoutedEventArgs e)
         {
-            if(_navigationService.CanGoBack)
+            SelectFirstPage();
+
+            if (_navigationService.CanGoBack)
                 _navigationService.GoBack();
         }
     }
