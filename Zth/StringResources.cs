@@ -23,6 +23,7 @@ namespace Zth
         public static readonly Dictionary<WorkingMode, string> WorkModeDictionary = new Dictionary<WorkingMode, string>
         {
             {WorkingMode.ZthLongImpulse, Properties.Resource.ZthLongImpulse},
+            {WorkingMode.ZthSequence, "Zth последовательность"},
             {WorkingMode.RthSequence, Properties.Resource.RthSequence},
             {WorkingMode.GraduationOnly, Properties.Resource.GraduationOnly}
         };

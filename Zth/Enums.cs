@@ -12,6 +12,6 @@
 
     public enum WorkingMode
     {
-        ZthLongImpulse, RthSequence, GraduationOnly
+        ZthLongImpulse, ZthSequence, RthSequence, GraduationOnly
     }
 }
