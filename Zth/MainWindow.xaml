@@ -26,9 +26,9 @@
                 <ColumnDefinition/>
                 <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
-            <Button Grid.Column="0" Style="{StaticResource BackButton}" Content="{Binding LeftButtonContent}" Visibility="{Binding LeftButtonIsVisibly, Converter={StaticResource B2VH}}" Click="Button_Click_1"/>
-            <Button Grid.Column="2" Style="{StaticResource BackButton}" Content="{Binding MiddleButtonContent}" Visibility="{Binding MiddleButtonIsVisibly, Converter={StaticResource B2VH}}" />
-            <Button Grid.Column="4" Style="{StaticResource NextButton}" Content="{Binding RightButtonContent}" Visibility="{Binding RightButtonIsVisibly, Converter={StaticResource B2VH}}" Click="Button_Click" />
+            <Button Grid.Column="0" Style="{StaticResource BackButton}" Content="{Binding LeftButtonContent}" IsEnabled="{Binding LeftButtonIsEnabled}" Visibility="{Binding LeftButtonIsVisibly, Converter={StaticResource B2VH}}" Click="Button_Click_1"/>
+            <Button Grid.Column="2" Style="{StaticResource BackButton}" Content="{Binding MiddleButtonContent}" IsEnabled="{Binding MiddleButtonIsEnabled}" Visibility="{Binding MiddleButtonIsVisibly, Converter={StaticResource B2VH}}" />
+            <Button Grid.Column="4" Style="{StaticResource NextButton}" Content="{Binding RightButtonContent}" IsEnabled="{Binding RightButtonIsEnabled}" Visibility="{Binding RightButtonIsVisibly, Converter={StaticResource B2VH}}" Click="RightButtonClick" />
         </Grid>
 
      

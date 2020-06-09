@@ -13,7 +13,7 @@ namespace Zth
         public TopPanelVm TopPanelVm { get; set; } = new TopPanelVm()
         {
             DataIsVisibly = true,
-            WorkingMode = WorkingMode.RthSequence
+            WorkingMode = WorkingMode.ZthLongImpulse
         };
         public CommonVM FrameVm { get; set; } = new CommonVM();
         public BottomPanelVM BottomPanelVM { get; set; } = new BottomPanelVM();
@@ -30,6 +30,8 @@ namespace Zth
             });
 
             SelectFirstPage();
+            BottomPanelVM.RightBottomButtonAction = SelectMeasument;
+            BottomPanelVM.RightBottomButtonAction();
             /*_navigationService.Navigate(new Pages.ZthLongImpulse()
             {
                 DataContext = FrameVm = new CommonVM()
@@ -44,22 +46,19 @@ namespace Zth
             });*/
         }
 
-        private void Button_Click(object sender, System.Windows.RoutedEventArgs e)
+        private void SelectMeasument()
         {
             FrameVm = new CommonVM();
 
             switch (TopPanelVm.WorkingMode)
             {
+
                 case WorkingMode.ZthLongImpulse:
 
-                    FrameVm.HeatingCurrentIsVisibly = true;
-                    FrameVm.HeatingPowerIsVisibly = true;
-                    FrameVm.AnodeBodyTemperatureIsVisibly = true;
-                    FrameVm.CathodeBodyTemperatureIsVisibly = true;
-                    FrameVm.AnodeCoolerTemperatureIsVisibly = true;
-                    FrameVm.CathodeCoolerTemperatureIsVisibly = true;
+                   
                     _navigationService.Navigate(new Pages.ZthLongImpulse()
                     {
+                        BottomPanelVM = BottomPanelVM,
                         DataContext = FrameVm
                     });
                     BottomPanelVM.RightButtonContent = "Градуировка";
@@ -105,10 +104,9 @@ namespace Zth
                     BottomPanelVM.MiddleButtonContent = "Загрузка из файла";
                     BottomPanelVM.RightButtonContent = "Расчёт градуировки";
                     break;
-
-
             }
         }
+
 
         private void SelectFirstPage()
         {
@@ -124,6 +122,11 @@ namespace Zth
 
             if (_navigationService.CanGoBack)
                 _navigationService.GoBack();
+        }
+
+        private void RightButtonClick(object sender, System.Windows.RoutedEventArgs e)
+        {
+            BottomPanelVM.RightBottomButtonAction();
         }
     }
 }
