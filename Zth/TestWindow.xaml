@@ -4,29 +4,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Zth" 
+        xmlns:components ="clr-namespace:Zth.Components"
         xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         mc:Ignorable="d" 
         Title="TestWindow" Height="450" Width="800">
-    <Grid>
-        <lvc:CartesianChart Series="{Binding SeriesCollection}" Margin="10">
-            <lvc:CartesianChart.Resources>
-                <Style TargetType="lvc:Separator">
-                    <Setter Property="Stroke" Value="LightGray"></Setter>
-                </Style>
-            </lvc:CartesianChart.Resources>
-            <lvc:LineSeries>
-                
-            </lvc:LineSeries>
-            <lvc:CartesianChart.AxisX>
-                <lvc:LogarithmicAxis LabelFormatter="{Binding Formatter}"  MinValue="-5" MaxValue="1" Base="{Binding Base}" />
-            </lvc:CartesianChart.AxisX>
-            <lvc:CartesianChart.AxisY>
-                <lvc:Axis MinValue="55" MaxValue="95" LabelFormatter="{Binding FormatterDegreesCelsius}">
-                    <lvc:Axis.Separator>
-                        <lvc:Separator Step="2.5"></lvc:Separator>
-                    </lvc:Axis.Separator>
-                </lvc:Axis>
-            </lvc:CartesianChart.AxisY>
-        </lvc:CartesianChart>
-    </Grid>
+    <components:Chart/>
 </Window>

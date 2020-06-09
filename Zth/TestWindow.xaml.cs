@@ -28,14 +28,67 @@ namespace Zth
 
         public string[] Labels { get; set; } = new string[] { "55", "60", "70" , "80" ,"90" ,"c"  };
 
-        public Func<double, string> FormatterDegreesCelsius { get; set; }
+        public Func<double, string> FormatterDegreesCelsius { get; set; } = value =>
+        {
+            if (value == 95)
+                return Properties.Resource.UnitMeasurementDegreeCentigrade;
+            else if (new double[] { 60, 70, 80, 90 }.Contains(value))
+                return value.ToString();
+            return string.Empty;
+        };
+
+        public Func<double, string> FormatterMegawatts { get; set; } = value =>
+        {
+            if (value == 450)
+                return "мВ";
+            else if (new double[] { 370, 390, 410, 430 }.Contains(value))
+                return value.ToString();
+            return string.Empty;
+        };
+
+        public Func<double, string> FormatterKilowatts { get; set; } = value =>
+        {
+            if (value == 510)
+                return "кВ";
+            else if (new double[] { 490, 495, 500, 505 }.Contains(value))
+                return value.ToString();
+            return string.Empty;
+        };
+
+        public Func<double, string> FormatterAmperes { get; set; } = value =>
+        {
+            if (value == 1550)
+                return "А";
+            else if (new double[] { 1200, 1300, 1400, 1500 }.Contains(value))
+                return value.ToString();
+            return string.Empty;
+        };
+
+        public Func<double, string> FormatterTimes { get; set; } = value =>
+        {
+            if (value > 0)
+                return "сек";
+            else
+                return new Dictionary<double, string>()
+                {
+                    {-5, "0,00001" },
+                    {-4, "0,0001" },
+                    {-3, "0,001" },
+                    {-2, "0,01" },
+                    {-1, "0,1" },
+                    {0, "1" },
+                }[value];
+        };
 
         public TestWindow()
         {
+            Base = 10;
+            //FormatterTimes = value => value > 0 ? "сек" : Math.Pow(Base, value).ToString("N5");
+
             //Labels.Reverse();
             InitializeComponent();
 
-            Base = 10;
+            
 
             var mapper = Mappers.Xy<ObservablePoint>()
                 .X(point => Math.Log(point.X, Base)) //a 10 base log scale in the X axis
@@ -45,9 +98,9 @@ namespace Zth
             {
                 Values = new ChartValues<ObservablePoint>
                 {
-                    new ObservablePoint(0.00001, 2),
-                    new ObservablePoint(0.00003, 4),
-                    new ObservablePoint(0.00008, 1),
+                    new ObservablePoint(0.00001, 60),
+                    new ObservablePoint(0.00003, 71),
+                    new ObservablePoint(0.00008, 57),
                     /*               new ObservablePoint(0.0005, 5),
                                    new ObservablePoint(0.001, 1),
                                    new ObservablePoint(0.01, 3),
@@ -55,24 +108,20 @@ namespace Zth
                     /*new ObservablePoint(1, 5),*/
 
                 },
+                PointGeometrySize = 0,
+                Fill = System.Windows.Media.Brushes.Transparent,
             };
 
             SeriesCollection = new SeriesCollection(mapper)
             {
+                MariaSeries,
                 MariaSeries
 
-
             };
 
-            Formatter = value => value > 0 ? "сек" : Math.Pow(Base, value).ToString();
-            FormatterDegreesCelsius = value =>
-            {
-                if (value == 95)
-                    return Properties.Resource.UnitMeasurementDegreeCentigrade;
-                else if (new double[] { 60, 70, 80, 90 }.Contains(value))
-                    return value.ToString();
-                return string.Empty;
-            };
+   
+
+
 
 
             DataContext = this;
