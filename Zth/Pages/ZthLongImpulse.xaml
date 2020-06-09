@@ -7,17 +7,19 @@
                   xmlns:res="clr-namespace:Zth.Properties"
                   xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
                   xmlns:components="clr-namespace:Zth.Components"
-                  mc:Ignorable="d" 
+                  mc:Ignorable="d"  Loaded="Page_Loaded"
                   d:DesignHeight="1024" d:DesignWidth="1280"
-                  Title="ZthLongImpulse"
+                    xmlns:vm="clr-namespace:Zth.VM"
+                  Title="ZthLongImpulse" d:DataContext="{d:DesignInstance vm:ZthLongImpulseVM }" 
                   xmlns:theme="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2">
     <Grid>
         <Grid Grid.Row="1" >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
+                <ColumnDefinition Width="5"/>
                 <ColumnDefinition Width="{StaticResource RightPanelWidth}" />
             </Grid.ColumnDefinitions>
-            <Grid Grid.Column="1">
+            <Grid Grid.Column="2">
                 <Grid.Resources>
                     <ResourceDictionary>
                         <ResourceDictionary.MergedDictionaries>
@@ -56,18 +58,18 @@
                 <TextBlock Grid.Row="4" Grid.Column="0" Text="{x:Static res:Resource.DelayTimeTspMeasurements }" />
                 <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding DelayTimeTspMeasurements}" />
 
-                <Button Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource ButtonRightPanelGreen}" Content="{x:Static res:Resource.StartHeating}" />
+                <Button Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Click="StartHeating_Click" Style="{StaticResource ButtonRightPanelGreen}" IsEnabled="{Binding StartHeatingButtonIsEnabled}" Content="{Binding StartHeatingContent}" />
 
-                <Button Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource ButtonRightPanelRed}" Content="{x:Static res:Resource.StopHeating}" />
+                <Button Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Click="StopHeating_Click" Style="{StaticResource ButtonRightPanelRed}" IsEnabled="{Binding StopHeatingButtonIsEnabled, Mode=TwoWay}" Content="{x:Static res:Resource.StopHeating}" />
 
-                <Button Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource ButtonRightPanelRed}" Content="{x:Static res:Resource.StopMeasurement}" />
+                <Button Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" Click="StopMeasurement_Click" Style="{StaticResource ButtonRightPanelRed}" IsEnabled="{Binding StopMeasurementButtonIsEnabled}" Content="{x:Static res:Resource.StopMeasurement}" />
             </Grid>
             <Grid Grid.Column="0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" />
                     <RowDefinition Height="auto" />
                 </Grid.RowDefinitions>
-                
+                <components:Chart/>
                 <components:BottomCheckBoxsAndTable HorizontalAlignment="Center" Grid.Row="1">
                     
                 </components:BottomCheckBoxsAndTable>
