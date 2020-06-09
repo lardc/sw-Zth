@@ -255,4 +255,10 @@
   <data name="Zthk" xml:space="preserve">
     <value>Zthk(t)</value>
   </data>
+  <data name="UpdateTask" xml:space="preserve">
+    <value>Обновить задание</value>
+  </data>
+  <data name="Graduation" xml:space="preserve">
+    <value>Градуировка</value>
+  </data>
 </root>
