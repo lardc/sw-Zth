@@ -214,6 +214,15 @@ namespace Zth.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Градуировка.
+        /// </summary>
+        public static string Graduation {
+            get {
+                return ResourceManager.GetString("Graduation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Только градуировка.
         /// </summary>
         public static string GraduationOnly {
@@ -426,6 +435,15 @@ namespace Zth.Properties {
         public static string UnitMeasurementSecond {
             get {
                 return ResourceManager.GetString("UnitMeasurementSecond", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Обновить задание.
+        /// </summary>
+        public static string UpdateTask {
+            get {
+                return ResourceManager.GetString("UpdateTask", resourceCulture);
             }
         }
         
