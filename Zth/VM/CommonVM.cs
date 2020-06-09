@@ -1,7 +1,10 @@
-﻿using PropertyChanged;
+﻿using LiveCharts.Configurations;
+using LiveCharts.Defaults;
+using PropertyChanged;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Text;
 using System.Windows;
 
@@ -21,22 +24,19 @@ namespace Zth.VM
         public string WorkingModeString => StringResources.WorkModeDictionary[WorkingMode];
 
 
-
+        public bool AxisYDegreesCelsius { get; set; }
+        public bool AxisYDegreesMegawatts { get; set; }
+        public bool AxisYDegreesAmperes { get; set; }
+        public bool AxisYDegreesKilowatts { get; set; }
 
 
         #region Right panel
         ///////Zth long impulse
-        public double DurationPowerPulse { get; set; }
-        public double AmplitudeHeatingCurrent { get; set; }
-        public double AmplitudeControlCurrent { get; set; }
-        public double AmplitudeMeasuringCurrent { get; set; }
-        public double DelayTimeTspMeasurements { get; set; }
-        public double DurationHeatingCurrentPulse {get;set;}
-        public double PauseDuration { get; set; }
+
 
         #endregion
 
- 
+
 
 
         #region Bottom parameters
@@ -78,6 +78,79 @@ namespace Zth.VM
         public bool ZthaIsVisibly { get; set; }
         public bool ZthkIsVisibly { get; set; }
         public bool ZthIsVisibly { get; set; }
+        #endregion
+
+        #region Chart
+
+        public bool AxisYDegreesCelsiusIsEnabled { get; set; }
+        public bool AxisYMegawattsIsEnabled { get; set; }
+        public bool AxisYKilowattsIsEnabled { get; set; }
+        public bool AxisYAmperesIsEnabled { get; set; }
+
+        public double Base { get; set; } = 10;
+
+        public Func<double, string> FormatterDegreesCelsius { get; set; } = value =>
+        {
+            if (value == 95)
+                return Properties.Resource.UnitMeasurementDegreeCentigrade;
+            else if (new double[] { 60, 70, 80, 90 }.Contains(value))
+                return value.ToString();
+            return string.Empty;
+        };
+
+        public Func<double, string> FormatterMegawatts { get; set; } = value =>
+        {
+            if (value == 450)
+                return "мВ";
+            else if (new double[] { 370, 390, 410, 430 }.Contains(value))
+                return value.ToString();
+            return string.Empty;
+        };
+
+        public Func<double, string> FormatterKilowatts { get; set; } = value =>
+        {
+            if (value == 510)
+                return "кВ";
+            else if (new double[] { 490, 495, 500, 505 }.Contains(value))
+                return value.ToString();
+            return string.Empty;
+        };
+
+        public Func<double, string> FormatterAmperes { get; set; } = value =>
+        {
+            if (value == 1550)
+                return "А";
+            else if (new double[] { 1200, 1300, 1400, 1500 }.Contains(value))
+                return value.ToString();
+            return string.Empty;
+        };
+
+        public Func<double, string> FormatterTimes { get; set; } = value =>
+        {
+            if (value > 0)
+                return "сек";
+            else
+                return new Dictionary<double, string>()
+                {
+                    {-5, "0,00001" },
+                    {-4, "0,0001" },
+                    {-3, "0,001" },
+                    {-2, "0,01" },
+                    {-1, "0,1" },
+                    {0, "1" },
+                }[value];
+        };
+
+        private CartesianMapper<ObservablePoint> _mapper;
+
+
+        public CommonVM()
+        {
+            _mapper = Mappers.Xy<ObservablePoint>()
+             .X(point => Math.Log(point.X, Base)) //a 10 base log scale in the X axis
+             .Y(point => point.Y);
+        }
+
         #endregion
     }
 }

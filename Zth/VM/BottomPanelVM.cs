@@ -13,6 +13,12 @@ namespace Zth.VM
         public string RightButtonContent { get; set; }
 
 
+        public bool LeftButtonIsEnabled { get; set; }
+        public bool MiddleButtonIsEnabled { get; set; }
+        public bool RightButtonIsEnabled { get; set; }
+
+
+        public Action RightBottomButtonAction { get; set; }
 
         [DependsOn(nameof(LeftButtonContent))]
         public bool LeftButtonIsVisibly => !string.IsNullOrWhiteSpace(LeftButtonContent);
