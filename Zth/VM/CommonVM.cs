@@ -24,17 +24,21 @@ namespace Zth.VM
         public string WorkingModeString => StringResources.WorkModeDictionary[WorkingMode];
 
 
-        public bool AxisYDegreesCelsius { get; set; }
-        public bool AxisYDegreesMegawatts { get; set; }
-        public bool AxisYDegreesAmperes { get; set; }
-        public bool AxisYDegreesKilowatts { get; set; }
+        #region Callback
+
+        public Action<CommonVM> SetParentFrameVM { get; set; }
+
+        #endregion
 
 
         #region Right panel
-        ///////Zth long impulse
 
+        public bool StartHeatingPressed { get; set; }
+        [AlsoNotifyFor(nameof(StartHeatingPressed))]
+        public string StartHeatingContent => StartHeatingPressed ? Properties.Resource.UpdateTask : Properties.Resource.StartHeating;
 
         #endregion
+
 
 
 
@@ -82,10 +86,20 @@ namespace Zth.VM
 
         #region Chart
 
-        public bool AxisYDegreesCelsiusIsEnabled { get; set; }
-        public bool AxisYMegawattsIsEnabled { get; set; }
-        public bool AxisYKilowattsIsEnabled { get; set; }
-        public bool AxisYAmperesIsEnabled { get; set; }
+        //public bool AxisYDegreesCelsius { get; set; }
+        //public bool AxisYDegreesMegawatts { get; set; }
+        //public bool AxisYDegreesAmperes { get; set; }
+        //public bool AxisYDegreesKilowatts { get; set; }
+
+        public bool AxisYDegreesCelsiusIsEnabled { get; set; } = true;
+        public bool AxisYMegawattsIsEnabled { get; set; } = true;
+        public bool AxisYKilowattsIsEnabled { get; set; } = true;
+        public bool AxisYAmperesIsEnabled { get; set; } = true;
+
+        public bool AxisYDegreesCelsiusIsVisibly { get; set; }
+        public bool AxisYMegawattsIsVisibly { get; set; }
+        public bool AxisYKilowattsIsVisibly { get; set; }
+        public bool AxisYAmperesIsVisibly { get; set; }
 
         public double Base { get; set; } = 10;
 

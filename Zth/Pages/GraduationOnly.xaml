@@ -1,17 +1,17 @@
-﻿<Page x:Class="Zth.Pages.GraduationOnly"
-      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:Zth.Pages"
-      xmlns:vm="clr-namespace:Zth.VM"
-      mc:Ignorable="d" d:DataContext="{d:DesignInstance vm:CommonVM }" 
+﻿<pages:CommonPage x:Class="Zth.Pages.GraduationOnly"
+            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+            xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+            xmlns:pages="clr-namespace:Zth.Pages"
+            xmlns:vm="clr-namespace:Zth.VM" Loaded="CommonPage_Loaded"
+            mc:Ignorable="d" d:DataContext="{d:DesignInstance vm:GraduationOnlyVM }" 
       
-      xmlns:res="clr-namespace:Zth.Properties"
-                  xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
-                  xmlns:components="clr-namespace:Zth.Components"
-      d:DesignHeight="1024" d:DesignWidth="1280"
-      Title="RthPulseSequence">
+            xmlns:res="clr-namespace:Zth.Properties"
+            xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+            xmlns:components="clr-namespace:Zth.Components"
+            d:DesignHeight="1024" d:DesignWidth="1280"
+            Title="RthPulseSequence">
 
     <Grid>
         <Grid Grid.Row="1" >
@@ -65,12 +65,13 @@
                 <TextBlock Grid.Row="6" Grid.Column="0" Text="Время задержки измерения ТЧП, мкс" />
                 <TextBox Grid.Row="6" Grid.Column="1" Text="{Binding DelayTimeTspMeasurements}" />
 
-                <Button Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource ButtonRightPanelGreen}" Content="{x:Static res:Resource.StartHeating}" />
+                <Button Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource ButtonRightPanelGreen}" Click="StartHeating_Click" IsEnabled="{Binding StartHeatingButtonIsEnabled}" Content="{Binding StartHeatingContent}" />
 
-                <Button Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource ButtonRightPanelRed}"  Content="{x:Static res:Resource.StopHeating}" />
+                <Button Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource ButtonRightPanelRed}" Click="StopHeating_Click" IsEnabled="{Binding StopHeatingButtonIsEnabled}"  Content="{x:Static res:Resource.StopHeating}" />
 
-                <Button Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource ButtonRightPanelRed}" Content="Стоп градуировка" />
-                <Button Grid.Row="10" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource ButtonRightPanelBlue}" Content="Обрезка" />
+                <Button Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource ButtonRightPanelRed}" Click="StopGraduation_Click" IsEnabled="{Binding StopGraduationButtonIsEnabled}" Content="Стоп градуировка" />
+
+                <Button Grid.Row="10" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource ButtonRightPanelBlue}" Click="Cut_Click" IsEnabled="{Binding CutButtonIsEnabled}" Content="Обрезка" />
             </Grid>
             <Grid Grid.Column="0">
                 <Grid.RowDefinitions>
@@ -78,10 +79,11 @@
                     <RowDefinition Height="auto" />
                 </Grid.RowDefinitions>
 
+                <components:Chart Grid.Row="0"/>
                 <components:BottomCheckBoxsAndTable HorizontalAlignment="Center" Grid.Row="1">
 
                 </components:BottomCheckBoxsAndTable>
             </Grid>
         </Grid>
     </Grid>
-</Page>
+</pages:CommonPage>

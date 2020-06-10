@@ -10,17 +10,75 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Zth.VM;
 
 namespace Zth.Pages
 {
     /// <summary>
     /// Логика взаимодействия для RthPulseSequence.xaml
     /// </summary>
-    public partial class GraduationOnly : Page
+    public partial class GraduationOnly : CommonPage
     {
-        public GraduationOnly()
+        public bool CanLoadInFile { get; set; }
+        public bool HeatingIsEnabled { get; set; }
+        public Zth.VM.GraduationOnlyVM VM => DataContext as GraduationOnlyVM;
+
+        public GraduationOnly() : base()
         {
             InitializeComponent();
+        }
+
+        private void CommonPage_Loaded(object sender, RoutedEventArgs e)
+        {
+            DataContext = new GraduationOnlyVM();
+            FrameVM.SetParentFrameVM(VM);
+
+            VM.TemperatureSensitiveParameterIsVisibly = true;
+            VM.AnodeBodyTemperatureIsVisibly = true;
+            VM.CathodeBodyTemperatureIsVisibly = true;
+            VM.AnodeCoolerTemperatureIsVisibly = true;
+            VM.CathodeCoolerTemperatureIsVisibly = true;
+
+            VM.AxisYDegreesCelsiusIsVisibly = true;
+            VM.AxisYMegawattsIsVisibly = true;
+
+            VM.StartHeatingButtonIsEnabled = true;
+            VM.CutButtonIsEnabled = false;
+            VM.StopGraduationButtonIsEnabled = false;
+            VM.StopHeatingButtonIsEnabled = VM.StartHeatingPressed = HeatingIsEnabled;
+
+
+            BottomPanelVM.RightButtonIsEnabled = false;
+
+            if(CanLoadInFile)
+                BottomPanelVM.MiddleButtonContent = "Загрузка из файла";
+            BottomPanelVM.MiddleButtonIsEnabled = true;
+            BottomPanelVM.RightButtonContent = "Расчёт градуировки";
+        }
+
+        private void StartHeating_Click(object sender, RoutedEventArgs e)
+        {
+            VM.StartHeatingPressed = true;
+            VM.StopHeatingButtonIsEnabled = true;
+        }
+
+        private void StopHeating_Click(object sender, RoutedEventArgs e)
+        {
+            VM.StartHeatingButtonIsEnabled = false;
+            VM.StopHeatingButtonIsEnabled = false;
+            VM.StopGraduationButtonIsEnabled = true;
+        }
+
+        private void StopGraduation_Click(object sender, RoutedEventArgs e)
+        {
+            VM.StopGraduationButtonIsEnabled = false;
+            VM.CutButtonIsEnabled = true;
+        }
+
+        private void Cut_Click(object sender, RoutedEventArgs e)
+        {
+            VM.CutButtonIsEnabled = false;
+            BottomPanelVM.RightButtonIsEnabled = true;
         }
     }
 }

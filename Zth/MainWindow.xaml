@@ -5,16 +5,16 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Zth" WindowStyle="None" ResizeMode="NoResize"
         xmlns:res="clr-namespace:Zth.Properties" WindowStartupLocation="CenterScreen"
-        xmlns:pages="clr-namespace:Zth.Pages" Width="1280" Height="1024"
+        xmlns:pages="clr-namespace:Zth.Pages" Width="1280" Height="1024" Loaded="Window_Loaded" 
         xmlns:components="clr-namespace:Zth.Components" DataContext="{Binding RelativeSource={RelativeSource Self}}"
-        mc:Ignorable="d" SizeToContent="WidthAndHeight">
+        mc:Ignorable="d" SizeToContent="WidthAndHeight"> 
     <Grid Uid="Стартовая страница - Zth Последовательность" Background="#ffffffff" Width="1280" Height="1024" ClipToBounds="True">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
-        <components:TopPanel Grid.Row="0" DataContext="{Binding TopPanelVm}"/>
+        <components:TopPanel Grid.Row="0" DataContext="{Binding TopPanelVM}"/>
         <Frame Grid.Row="1" x:Name="MainFrame" Margin="{StaticResource MainFrameMargin}" NavigationUIVisibility="Hidden" >
                 
         </Frame>
@@ -26,7 +26,7 @@
                 <ColumnDefinition/>
                 <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
-            <Button Grid.Column="0" Style="{StaticResource BackButton}" Content="{Binding LeftButtonContent}" IsEnabled="{Binding LeftButtonIsEnabled}" Visibility="{Binding LeftButtonIsVisibly, Converter={StaticResource B2VH}}" Click="Button_Click_1"/>
+            <Button Grid.Column="0" Style="{StaticResource BackButton}" Content="{x:Static res:Resource.Back}"  Click="LeftButtonClick"/>
             <Button Grid.Column="2" Style="{StaticResource BackButton}" Content="{Binding MiddleButtonContent}" IsEnabled="{Binding MiddleButtonIsEnabled}" Visibility="{Binding MiddleButtonIsVisibly, Converter={StaticResource B2VH}}" />
             <Button Grid.Column="4" Style="{StaticResource NextButton}" Content="{Binding RightButtonContent}" IsEnabled="{Binding RightButtonIsEnabled}" Visibility="{Binding RightButtonIsVisibly, Converter={StaticResource B2VH}}" Click="RightButtonClick" />
         </Grid>

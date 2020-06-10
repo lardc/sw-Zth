@@ -1,15 +1,15 @@
-﻿<Page x:Class="Zth.Pages.ZthLongImpulse"
+﻿<pages:CommonPage x:Class="Zth.Pages.ZthLongImpulse"
                   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-                  xmlns:local="clr-namespace:Zth.Pages"
+                  xmlns:pages="clr-namespace:Zth.Pages"
                   xmlns:res="clr-namespace:Zth.Properties"
                   xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
                   xmlns:components="clr-namespace:Zth.Components"
                   mc:Ignorable="d"  Loaded="Page_Loaded"
                   d:DesignHeight="1024" d:DesignWidth="1280"
-                    xmlns:vm="clr-namespace:Zth.VM"
+                  xmlns:vm="clr-namespace:Zth.VM"
                   Title="ZthLongImpulse" d:DataContext="{d:DesignInstance vm:ZthLongImpulseVM }" 
                   xmlns:theme="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2">
     <Grid>
@@ -75,4 +75,4 @@
             </Grid>
         </Grid>
     </Grid>
-</Page>
+</pages:CommonPage>

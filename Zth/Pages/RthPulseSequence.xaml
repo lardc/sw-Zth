@@ -1,11 +1,11 @@
-﻿<Page x:Class="Zth.Pages.RthPulseSequence"
+﻿<pages:CommonPage x:Class="Zth.Pages.RthPulseSequence"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:Zth.Pages"
-      xmlns:vm="clr-namespace:Zth.VM"
-      mc:Ignorable="d" d:DataContext="{d:DesignInstance vm:CommonVM }" 
+      xmlns:pages="clr-namespace:Zth.Pages"
+      xmlns:vm="clr-namespace:Zth.VM" Loaded="Page_Loaded"
+      mc:Ignorable="d" d:DataContext="{d:DesignInstance vm:RthPulseSequenceVM }" 
       
       xmlns:res="clr-namespace:Zth.Properties"
                   xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
@@ -62,11 +62,11 @@
                 <TextBlock Grid.Row="5" Grid.Column="0" Text="Время задержки измерения ТЧП, мкс" />
                 <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding DelayTimeTspMeasurements}" />
 
-                <Button Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource ButtonRightPanelGreen}" Content="{x:Static res:Resource.StartHeating}" />
+                <Button Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource ButtonRightPanelGreen}" Click="StartHeating_Click" IsEnabled="{Binding StartHeatingButtonIsEnabled}" Content="{x:Static res:Resource.StartHeating}" />
 
-                <Button Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource ButtonRightPanelBlue}"  Content="Фиксация результатов" />
+                <Button Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource ButtonRightPanelBlue}" Click="RecordingResults_Click"  IsEnabled="{Binding RecordingResultsButtonIsEnabled}" Content="Фиксация результатов" />
 
-                <Button Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource ButtonRightPanelRed}" Content="{x:Static res:Resource.StopHeating}" />
+                <Button Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource ButtonRightPanelRed}" Click="StopHeating_Click" IsEnabled="{Binding StopHeatingButtonIsEnabled}" Content="{x:Static res:Resource.StopHeating}" />
             </Grid>
             <Grid Grid.Column="0">
                 <Grid.RowDefinitions>
@@ -80,4 +80,4 @@
             </Grid>
         </Grid>
     </Grid>
-</Page>
+</pages:CommonPage>

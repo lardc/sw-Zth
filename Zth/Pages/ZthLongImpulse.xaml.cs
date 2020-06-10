@@ -17,14 +17,12 @@ namespace Zth.Pages
     /// <summary>
     /// Логика взаимодействия для ZthLongImpulse.xaml
     /// </summary>
-    public partial class ZthLongImpulse : Page
+    public partial class ZthLongImpulse : CommonPage
     {
-        VM.ZthLongImpulseVM VM => DataContext as ZthLongImpulseVM;
-        public BottomPanelVM BottomPanelVM { get; set; }
+        public ZthLongImpulseVM VM => DataContext as ZthLongImpulseVM;
 
         public ZthLongImpulse()
         {
-           
             InitializeComponent();
         }
 
@@ -54,10 +52,10 @@ namespace Zth.Pages
             BottomPanelVM.RightButtonIsEnabled = false;
             BottomPanelVM.RightButtonContent = Properties.Resource.Graduation;
 
-            DataContext = new ZthLongImpulseVM()
-            {
-                StartHeatingButtonIsEnabled = true,
-            };
+            DataContext = new ZthLongImpulseVM();
+            FrameVM.SetParentFrameVM(VM);
+
+            VM.StartHeatingButtonIsEnabled = true;
             VM.HeatingCurrentIsVisibly = true;
             VM.HeatingPowerIsVisibly = true;
             VM.AnodeBodyTemperatureIsVisibly = true;
@@ -66,10 +64,28 @@ namespace Zth.Pages
             VM.CathodeCoolerTemperatureIsVisibly = true;
             VM.HeatingCurrentIsEnabled = true;
 
-            VM.AxisYAmperesIsEnabled = true;
-            VM.AxisYDegreesCelsiusIsEnabled = true;
-            VM.AxisYKilowattsIsEnabled = true;
-            VM.AxisYMegawattsIsEnabled = true;
+            VM.AxisYAmperesIsVisibly = true;
+            VM.AxisYDegreesCelsiusIsVisibly = true;
+            VM.AxisYKilowattsIsVisibly = true;
+            VM.AxisYMegawattsIsVisibly = true;
+
+            BottomPanelVM.RightButtonContent = Properties.Resource.Graduation;
+            BottomPanelVM.RightBottomButtonAction = () => _navigationService.Navigate(new GraduationOnly()
+            {
+                CanLoadInFile = false
+            });
+
+            if (MainWindow.SettingsModel.Debug1)
+            {
+                var dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
+                dispatcherTimer.Tick += new EventHandler((sender1, e1) =>
+                {
+                    dispatcherTimer.Stop();
+                    BottomPanelVM.RightBottomButtonAction();
+                });
+                dispatcherTimer.Interval = new TimeSpan(0, 0, 0, 0, 1);
+                dispatcherTimer.Start();
+            }
         }
     }
 }

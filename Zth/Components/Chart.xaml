@@ -16,25 +16,25 @@
                 </Style>
             </lvc:CartesianChart.Resources>-->
         <lvc:CartesianChart.AxisX>
-            <lvc:LogarithmicAxis LabelFormatter="{Binding FormatterTimes}"  MinValue="-5" MaxValue="1" Base="{Binding Base}" />
+            <lvc:LogarithmicAxis LabelFormatter="{Binding FormatterTimes}" MinValue="-5" MaxValue="1" Base="{Binding Base}" />
         </lvc:CartesianChart.AxisX>
         <lvc:CartesianChart.AxisY>
-            <lvc:Axis MinValue="55" MaxValue="95" LabelFormatter="{Binding FormatterDegreesCelsius}">
+            <lvc:Axis MinValue="55" MaxValue="95" LabelFormatter="{Binding FormatterDegreesCelsius}" ShowLabels="{Binding AxisYDegreesCelsiusIsVisibly}"  >
                 <lvc:Axis.Separator>
                     <lvc:Separator Step="2.5" IsEnabled="{Binding AxisYDegreesCelsiusIsEnabled}"></lvc:Separator>
                 </lvc:Axis.Separator>
             </lvc:Axis>
-            <lvc:Axis MinValue="370" MaxValue="450" LabelFormatter="{Binding FormatterMegawatts}">
+            <lvc:Axis MinValue="370" MaxValue="450" LabelFormatter="{Binding FormatterMegawatts}" ShowLabels="{Binding AxisYMegawattsIsVisibly}" >
                 <lvc:Axis.Separator>
                     <lvc:Separator Step="5" IsEnabled="{Binding AxisYMegawattsIsEnabled}"></lvc:Separator>
                 </lvc:Axis.Separator>
             </lvc:Axis>
-            <lvc:Axis MinValue="1150" MaxValue="1550" LabelFormatter="{Binding FormatterAmperes}" Position="RightTop">
+            <lvc:Axis MinValue="1150" MaxValue="1550" LabelFormatter="{Binding FormatterAmperes}" Position="RightTop" ShowLabels="{Binding AxisYKilowattsIsVisibly}">
                 <lvc:Axis.Separator>
                     <lvc:Separator Step="25" IsEnabled="{Binding AxisYKilowattsIsEnabled}"></lvc:Separator>
                 </lvc:Axis.Separator>
             </lvc:Axis>
-            <lvc:Axis MinValue="490" MaxValue="510" LabelFormatter="{Binding FormatterKilowatts}" Position="RightTop">
+            <lvc:Axis MinValue="490" MaxValue="510" LabelFormatter="{Binding FormatterKilowatts}" Position="RightTop" ShowLabels="{Binding AxisYAmperesIsVisibly}">
                 <lvc:Axis.Separator>
                     <lvc:Separator Step="1.25" IsEnabled="{Binding AxisYAmperesIsEnabled}"></lvc:Separator>
                 </lvc:Axis.Separator>

@@ -8,7 +8,6 @@ namespace Zth.VM
 {
     public class BottomPanelVM : INotifyPropertyChanged
     {
-        public string LeftButtonContent { get; set; }
         public string MiddleButtonContent { get; set; }
         public string RightButtonContent { get; set; }
 
@@ -18,15 +17,21 @@ namespace Zth.VM
         public bool RightButtonIsEnabled { get; set; }
 
 
+        public Action MiddleBottomButtonAction { get; set; }
         public Action RightBottomButtonAction { get; set; }
 
-        [DependsOn(nameof(LeftButtonContent))]
-        public bool LeftButtonIsVisibly => !string.IsNullOrWhiteSpace(LeftButtonContent);
         [DependsOn(nameof(MiddleButtonContent))]
         public bool MiddleButtonIsVisibly => !string.IsNullOrWhiteSpace(MiddleButtonContent);
         [DependsOn(nameof(RightButtonContent))]
         public bool RightButtonIsVisibly => !string.IsNullOrWhiteSpace(RightButtonContent);
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+
+        #region Callback
+
+        public Action<CommonVM> SetParentFrameVM { get; set; }
+
+        #endregion
     }
 }

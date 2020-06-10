@@ -23,9 +23,7 @@ namespace Zth.VM
         public bool StopMeasurementButtonIsEnabled { get; set; }
 
         
-        public bool StartHeatingPressed { get; set; }
-        [AlsoNotifyFor(nameof(StartHeatingPressed))]
-        public string StartHeatingContent  => StartHeatingPressed ? Properties.Resource.UpdateTask : Properties.Resource.StartHeating;
+
 
 
 

@@ -1,15 +1,16 @@
-﻿<Page x:Class="Zth.Pages.SelectPage"
-      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-        xmlns:local="clr-namespace:Zth"
-        xmlns:res="clr-namespace:Zth.Properties"
-      mc:Ignorable="d" 
-      xmlns:vm="clr-namespace:Zth.VM"
-      d:DataContext="{d:DesignInstance vm:TopPanelVm }" 
-      d:DesignHeight="837" d:DesignWidth="1280"
-      Title="SelectPage">
+﻿<pages:CommonPage x:Class="Zth.Pages.SelectPage"
+            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+            xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+            xmlns:local="clr-namespace:Zth" Loaded="Page_Loaded"
+            xmlns:res="clr-namespace:Zth.Properties"
+            mc:Ignorable="d" 
+            xmlns:vm="clr-namespace:Zth.VM"
+            xmlns:pages="clr-namespace:Zth.Pages"
+            d:DataContext="{d:DesignInstance vm:TopPanelVm }" 
+            d:DesignHeight="837" d:DesignWidth="1280"
+            Title="SelectPage">
 
     <Grid Margin="{StaticResource TopPanelMarginHeight}">
         <Grid.ColumnDefinitions>
@@ -41,4 +42,4 @@
             <ComboBox Grid.Column="2" Grid.Row="2" SelectedIndex="0" ItemsSource="{Binding Source={x:Static local:StringResources.WorkModeDictionary}}" SelectedValue="{Binding WorkingMode}" SelectedValuePath="Key" DisplayMemberPath="Value" />
         </Grid>
     </Grid>
-</Page>
+</pages:CommonPage>
