@@ -41,7 +41,7 @@ namespace Zth.Components
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            var reader = new StreamReader(File.OpenRead(@"C:\Users\Ivan\Desktop\Dataset.csv"));
+            var reader = new StreamReader(File.OpenRead(@"Dataset.csv"));
             var mapper = Mappers.Xy<ObservablePoint>()
             .X(point => Math.Log(point.X, 10)) //a 10 base log scale in the X axis
             .Y(point => point.Y);
