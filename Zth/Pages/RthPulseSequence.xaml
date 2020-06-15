@@ -4,7 +4,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:pages="clr-namespace:Zth.Pages"
-      xmlns:vm="clr-namespace:Zth.VM" Loaded="Page_Loaded"
+      xmlns:vm="clr-namespace:Zth.VM" Loaded="Page_Loaded" Unloaded="CommonPage_Unloaded"
       mc:Ignorable="d" d:DataContext="{d:DesignInstance vm:RthPulseSequenceVM }" 
       
       xmlns:res="clr-namespace:Zth.Properties"
@@ -62,17 +62,19 @@
                 <TextBlock Grid.Row="5" Grid.Column="0" Text="Время задержки измерения ТЧП, мкс" />
                 <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding DelayTimeTspMeasurements}" />
 
-                <Button Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource ButtonRightPanelGreen}" Click="StartHeating_Click" IsEnabled="{Binding StartHeatingButtonIsEnabled}" Content="{x:Static res:Resource.StartHeating}" />
+                <Button Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource ButtonRightPanelGreen}" Click="StartHeating_Click" IsEnabled="{Binding StartHeatingButtonIsEnabled}" Content="{Binding StartHeatingContent}" />
 
                 <Button Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource ButtonRightPanelBlue}" Click="RecordingResults_Click"  IsEnabled="{Binding RecordingResultsButtonIsEnabled}" Content="Фиксация результатов" />
 
-                <Button Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource ButtonRightPanelRed}" Click="StopHeating_Click" IsEnabled="{Binding StopHeatingButtonIsEnabled}" Content="{x:Static res:Resource.StopHeating}" />
+                <Button Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource ButtonRightPanelRed}" Click="StopHeating_Click" IsEnabled="{Binding StopHeatingButtonIsEnabled, Mode=OneWay}" Content="{x:Static res:Resource.StopHeating}" />
             </Grid>
             <Grid Grid.Column="0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" />
                     <RowDefinition Height="auto" />
                 </Grid.RowDefinitions>
+
+                <components:Chart Grid.Row="0"/>
 
                 <components:BottomCheckBoxsAndTable HorizontalAlignment="Center" Grid.Row="1">
 

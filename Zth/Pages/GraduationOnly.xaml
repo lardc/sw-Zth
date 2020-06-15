@@ -9,7 +9,7 @@
       
             xmlns:res="clr-namespace:Zth.Properties"
             xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
-            xmlns:components="clr-namespace:Zth.Components"
+            xmlns:components="clr-namespace:Zth.Components" Unloaded="CommonPage_Unloaded"
             d:DesignHeight="1024" d:DesignWidth="1280"
             Title="RthPulseSequence">
 

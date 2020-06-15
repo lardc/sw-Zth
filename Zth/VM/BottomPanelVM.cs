@@ -30,7 +30,7 @@ namespace Zth.VM
 
         #region Callback
 
-        public Action<CommonVM> SetParentFrameVM { get; set; }
+        public Action<BottomPanelVM> SetParentFrameVM { get; set; }
 
         #endregion
     }

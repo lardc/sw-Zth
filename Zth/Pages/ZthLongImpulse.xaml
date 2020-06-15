@@ -9,7 +9,7 @@
                   xmlns:components="clr-namespace:Zth.Components"
                   mc:Ignorable="d"  Loaded="Page_Loaded"
                   d:DesignHeight="1024" d:DesignWidth="1280"
-                  xmlns:vm="clr-namespace:Zth.VM"
+                  xmlns:vm="clr-namespace:Zth.VM" Unloaded="CommonPage_Unloaded"
                   Title="ZthLongImpulse" d:DataContext="{d:DesignInstance vm:ZthLongImpulseVM }" 
                   xmlns:theme="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2">
     <Grid>
@@ -57,9 +57,9 @@
                 <TextBlock Grid.Row="4" Grid.Column="0" Text="{x:Static res:Resource.DelayTimeTspMeasurements }" />
                 <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding DelayTimeTspMeasurements}" />
 
-                <Button Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Click="StartHeating_Click" Style="{StaticResource ButtonRightPanelGreen}" IsEnabled="{Binding StartHeatingButtonIsEnabled}" Content="{Binding StartHeatingContent}" />
+                <Button Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Click="StartHeating_Click" Style="{StaticResource ButtonRightPanelGreen}" IsEnabled="{Binding StartHeatingButtonIsEnabled}"  Content="{Binding StartHeatingContent}" />
 
-                <Button Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Click="StopHeating_Click" Style="{StaticResource ButtonRightPanelRed}" IsEnabled="{Binding StopHeatingButtonIsEnabled, Mode=TwoWay}" Content="{x:Static res:Resource.StopHeating}" />
+                <Button Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Click="StopHeating_Click" Style="{StaticResource ButtonRightPanelRed}" IsEnabled="{Binding StopHeatingButtonIsEnabled, Mode=OneWay}" Content="{x:Static res:Resource.StopHeating}" />
 
                 <Button Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" Click="StopMeasurement_Click" Style="{StaticResource ButtonRightPanelRed}" IsEnabled="{Binding StopMeasurementButtonIsEnabled}" Content="{x:Static res:Resource.StopMeasurement}" />
             </Grid>

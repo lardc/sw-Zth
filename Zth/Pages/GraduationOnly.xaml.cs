@@ -30,6 +30,12 @@ namespace Zth.Pages
 
         private void CommonPage_Loaded(object sender, RoutedEventArgs e)
         {
+            if (CanLoadInFile)
+                BottomPanelVM.MiddleButtonContent = "Загрузка из файла";
+            BottomPanelVM.MiddleButtonIsEnabled = true;
+            BottomPanelVM.RightButtonContent = "Расчёт градуировки";
+
+
             DataContext = new GraduationOnlyVM();
             FrameVM.SetParentFrameVM(VM);
 
@@ -45,27 +51,21 @@ namespace Zth.Pages
             VM.StartHeatingButtonIsEnabled = true;
             VM.CutButtonIsEnabled = false;
             VM.StopGraduationButtonIsEnabled = false;
-            VM.StopHeatingButtonIsEnabled = VM.StartHeatingPressed = HeatingIsEnabled;
 
+            VM.StopHeatingButtonIsEnabled = VM.StartHeatingPressed;
 
-            BottomPanelVM.RightButtonIsEnabled = false;
-
-            if(CanLoadInFile)
-                BottomPanelVM.MiddleButtonContent = "Загрузка из файла";
-            BottomPanelVM.MiddleButtonIsEnabled = true;
-            BottomPanelVM.RightButtonContent = "Расчёт градуировки";
         }
 
         private void StartHeating_Click(object sender, RoutedEventArgs e)
         {
-            VM.StartHeatingPressed = true;
             VM.StopHeatingButtonIsEnabled = true;
+            VM.StartHeatingPressed = true;
         }
 
         private void StopHeating_Click(object sender, RoutedEventArgs e)
         {
-            VM.StartHeatingButtonIsEnabled = false;
             VM.StopHeatingButtonIsEnabled = false;
+            VM.StartHeatingButtonIsEnabled = false;
             VM.StopGraduationButtonIsEnabled = true;
         }
 
@@ -79,6 +79,14 @@ namespace Zth.Pages
         {
             VM.CutButtonIsEnabled = false;
             BottomPanelVM.RightButtonIsEnabled = true;
+        }
+
+        private void CommonPage_Unloaded(object sender, RoutedEventArgs e)
+        {
+            if (CanLoadInFile)
+                BottomPanelVM.MiddleButtonContent = string.Empty;
+            BottomPanelVM.MiddleButtonIsEnabled = false;
+            BottomPanelVM.RightButtonContent = string.Empty;
         }
     }
 }

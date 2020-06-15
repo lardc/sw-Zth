@@ -19,7 +19,6 @@ namespace Zth.VM
         public double PauseDuration { get; set; }
 
         public bool StartHeatingButtonIsEnabled { get; set; }
-        public bool StopHeatingButtonIsEnabled { get; set; }
         public bool StopMeasurementButtonIsEnabled { get; set; }
 
         

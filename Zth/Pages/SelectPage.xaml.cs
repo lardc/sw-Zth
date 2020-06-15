@@ -34,42 +34,16 @@ namespace Zth.Pages
             {
 
                 case WorkingMode.ZthLongImpulse:
-
-
                     _navigationService.Navigate(new Pages.ZthLongImpulse());
-
                     break;
                 case WorkingMode.ZthSequence:
-                    FrameVM.HeatingCurrentIsVisibly = true;
-                    FrameVM.HeatingPowerIsVisibly = true;
-                    FrameVM.TemperatureSensitiveParameterIsVisibly = true;
-                    FrameVM.AnodeBodyTemperatureIsVisibly = true;
-                    FrameVM.CathodeBodyTemperatureIsVisibly = true;
-                    FrameVM.AnodeCoolerTemperatureIsVisibly = true;
-                    FrameVM.CathodeCoolerTemperatureIsVisibly = true;
-                    _navigationService.Navigate(new Pages.ZthPulseSequence()
-                    {
-                        DataContext = FrameVM
-                    });
-                    BottomPanelVM.RightButtonContent = "Градуировка";
+                    _navigationService.Navigate(new Pages.ZthPulseSequence());
                     break;
                 case WorkingMode.RthSequence:
-                  
                     _navigationService.Navigate(new Pages.RthPulseSequence());
-                    
                     break;
                 case WorkingMode.GraduationOnly:
-                    FrameVM.TemperatureSensitiveParameterIsVisibly = true;
-                    FrameVM.AnodeBodyTemperatureIsVisibly = true;
-                    FrameVM.CathodeBodyTemperatureIsVisibly = true;
-                    FrameVM.AnodeCoolerTemperatureIsVisibly = true;
-                    FrameVM.CathodeCoolerTemperatureIsVisibly = true;
-                    _navigationService.Navigate(new Pages.GraduationOnly()
-                    {
-                        DataContext = FrameVM
-                    });
-                    BottomPanelVM.MiddleButtonContent = "Загрузка из файла";
-                    BottomPanelVM.RightButtonContent = "Расчёт градуировки";
+                    _navigationService.Navigate(new Pages.GraduationOnly());
                     break;
             }
         }
@@ -98,6 +72,12 @@ namespace Zth.Pages
                 dispatcherTimer.Start();
             }
             
+        }
+
+        private void CommonPage_Unloaded(object sender, RoutedEventArgs e)
+        {
+            BottomPanelVM.RightButtonIsEnabled = false;
+            BottomPanelVM.RightButtonContent = string.Empty;
         }
     }
 }

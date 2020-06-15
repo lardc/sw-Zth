@@ -28,10 +28,11 @@ namespace Zth.Pages
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            BottomPanelVM.LeftButtonIsEnabled = true;
-            BottomPanelVM.RightButtonContent = Properties.Resource.Back;
-            BottomPanelVM.RightButtonIsEnabled = false;
             BottomPanelVM.RightButtonContent = Properties.Resource.Graduation;
+            BottomPanelVM.RightBottomButtonAction = () => _navigationService.Navigate(new GraduationOnly()
+            {
+                HeatingIsEnabled = true
+            });
 
             DataContext = new RthPulseSequenceVM();
             FrameVM.SetParentFrameVM(VM);
@@ -49,23 +50,17 @@ namespace Zth.Pages
             VM.AxisYKilowattsIsVisibly = true;
             VM.AxisYMegawattsIsVisibly = true;
 
+            VM.RecordingResultsButtonIsEnabled = VM.StopHeatingButtonIsEnabled = VM.StartHeatingPressed;
             VM.StartHeatingButtonIsEnabled = true;
-
-
-            BottomPanelVM.RightButtonContent = Properties.Resource.Graduation;
-            BottomPanelVM.RightBottomButtonAction = () => _navigationService.Navigate(new GraduationOnly()
-            {
-                HeatingIsEnabled = true
-            });
 
         }
 
         private void StartHeating_Click(object sender, RoutedEventArgs e)
         {
+            VM.StopHeatingButtonIsEnabled = true;
             VM.StartHeatingButtonIsEnabled = true;
             VM.StartHeatingPressed = true;
             VM.RecordingResultsButtonIsEnabled = true;
-            VM.StopHeatingButtonIsEnabled = true;
         }
 
         private void RecordingResults_Click(object sender, RoutedEventArgs e)
@@ -78,11 +73,19 @@ namespace Zth.Pages
 
         private void StopHeating_Click(object sender, RoutedEventArgs e)
         {
+            VM.StopHeatingButtonIsEnabled = false;
+            VM.StartHeatingPressed = false;
             _navigationService.Navigate(new GraduationOnly()
             {
                 CanLoadInFile = true,
             });
             
+        }
+
+        private void CommonPage_Unloaded(object sender, RoutedEventArgs e)
+        {
+            BottomPanelVM.RightButtonIsEnabled = false;
+            BottomPanelVM.RightButtonContent = string.Empty;
         }
     }
 }

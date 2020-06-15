@@ -7,6 +7,9 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Windows;
+using System.Windows.Media;
+using LiveCharts;
+using LiveCharts.Wpf;
 
 namespace Zth.VM
 {
@@ -23,6 +26,9 @@ namespace Zth.VM
         public string TypeDeviceString => StringResources.TypesDeviceDictionary[TypeDevice];
         public string WorkingModeString => StringResources.WorkModeDictionary[WorkingMode];
 
+
+
+        public bool StopHeatingButtonIsEnabled { get; set; }
 
         #region Callback
 
@@ -86,6 +92,34 @@ namespace Zth.VM
 
         #region Chart
 
+
+        public Brush HeatingPowerBrush { get; set; } = Brushes.Green;
+        public Brush AnodeBodyTemperatureBrush { get; set; } = Brushes.Gray;
+        public Brush AnodeCoolerTemperatureBrush { get; set; } = Brushes.Yellow;
+        public Brush CathodeBodyTemperatureBrush { get; set; } = Brushes.Red;
+        public Brush CathodeCoolerTemperatureBrush { get; set; } = Brushes.Pink;
+        public Brush HeatingCurrentBrush { get; set; } = Brushes.HotPink;
+        public Brush TemperatureSensitiveParameterBrush { get; set; } = Brushes.Chocolate;
+        public Brush TemperatureStructureBrush { get; set; } = Brushes.Blue;
+        public Brush ZthaBrush { get; set; } = Brushes.Brown;
+        public Brush ZthkBrush { get; set; } = Brushes.Cyan;
+        public Brush ZthBrush { get; set; } = Brushes.Khaki;
+        
+        
+        public ChartValues<ObservablePoint> HeatingPowerChartValues { get; set; } = new ChartValues<ObservablePoint>();
+        public ChartValues<ObservablePoint> AnodeBodyTemperatureChartValues { get; set; } = new ChartValues<ObservablePoint>();
+        public ChartValues<ObservablePoint> AnodeCoolerTemperatureChartValues { get; set; } = new ChartValues<ObservablePoint>();
+        public ChartValues<ObservablePoint> CathodeBodyTemperatureChartValues { get; set; } = new ChartValues<ObservablePoint>();
+        public ChartValues<ObservablePoint> CathodeCoolerTemperatureChartValues { get; set; }= new ChartValues<ObservablePoint>();
+        public ChartValues<ObservablePoint> HeatingCurrentChartValues { get; set; } = new ChartValues<ObservablePoint>();
+        public ChartValues<ObservablePoint> TemperatureSensitiveParameterChartValues { get; set; } = new ChartValues<ObservablePoint>();
+        public ChartValues<ObservablePoint> TemperatureStructureChartValues { get; set; } = new ChartValues<ObservablePoint>();
+        public ChartValues<ObservablePoint> ZthaChartValues { get; set; } = new ChartValues<ObservablePoint>();
+        public ChartValues<ObservablePoint> ZthkChartValues { get; set; } = new ChartValues<ObservablePoint>();
+        public ChartValues<ObservablePoint> ZthChartValues { get; set; } = new ChartValues<ObservablePoint>();
+
+
+        public SeriesCollection SeriesCollection { get; set; }
         //public bool AxisYDegreesCelsius { get; set; }
         //public bool AxisYDegreesMegawatts { get; set; }
         //public bool AxisYDegreesAmperes { get; set; }
@@ -141,10 +175,7 @@ namespace Zth.VM
 
         public Func<double, string> FormatterTimes { get; set; } = value =>
         {
-            if (value > 0)
-                return "сек";
-            else
-                return new Dictionary<double, string>()
+            var axis = new Dictionary<double, string>()
                 {
                     {-5, "0,00001" },
                     {-4, "0,0001" },
@@ -152,17 +183,66 @@ namespace Zth.VM
                     {-2, "0,01" },
                     {-1, "0,1" },
                     {0, "1" },
-                }[value];
+                };
+            if (value > 1)
+                return "сек";
+            else if (axis.ContainsKey(value))
+                return axis[value];
+            else
+                return Math.Pow(10, value).ToString("F6");
         };
+        
+       
 
-        private CartesianMapper<ObservablePoint> _mapper;
+        public CartesianMapper<ObservablePoint> Mapper { get; set; }
 
 
         public CommonVM()
         {
-            _mapper = Mappers.Xy<ObservablePoint>()
+            Mapper = Mappers.Xy<ObservablePoint>()
              .X(point => Math.Log(point.X, Base)) //a 10 base log scale in the X axis
              .Y(point => point.Y);
+            SeriesCollection = new SeriesCollection(Mapper)
+            {
+                //new LineSeries()
+                //{
+                //    Values = TemperatureStructureChartValues,
+                //    ScalesYAt = 0,
+                //    Fill = TemperatureStructureBrush
+
+                //},
+                //new LineSeries()
+                //{
+                //    Values = AnodeBodyTemperatureChartValues,
+                //    ScalesYAt = 0
+                //},
+                //new LineSeries()
+                //{
+                //    Values = AnodeCoolerTemperatureChartValues,
+                //    ScalesYAt = 0
+                //},
+                //  new LineSeries()
+                //{
+                //    Values = CathodeBodyTemperatureChartValues,
+                //    ScalesYAt = 0
+                //},
+                //new LineSeries()
+                //{
+                //    Values = CathodeCoolerTemperatureChartValues,
+                //    ScalesYAt = 0
+                //},
+
+                //new LineSeries()
+                //{
+                //    Values = CathodeCoolerTemperatureChartValues,
+                //    ScalesYAt = 0
+                //},
+                //new LineSeries()
+                //{
+                //    Values = CathodeCoolerTemperatureChartValues,
+                //    ScalesYAt = 0
+                //},
+            };
         }
 
         #endregion

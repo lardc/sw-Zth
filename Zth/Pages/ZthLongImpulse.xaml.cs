@@ -28,14 +28,14 @@ namespace Zth.Pages
 
         private void StartHeating_Click(object sender, RoutedEventArgs e)
         {
-            VM.StartHeatingPressed = true;
             VM.StopHeatingButtonIsEnabled = true;
+            VM.StartHeatingPressed = true;
         }
 
         private void StopHeating_Click(object sender, RoutedEventArgs e)
         {
-            VM.StartHeatingButtonIsEnabled = false;
             VM.StopHeatingButtonIsEnabled = false;
+            VM.StartHeatingButtonIsEnabled = false;
             VM.StopMeasurementButtonIsEnabled = true;
         }
 
@@ -47,10 +47,11 @@ namespace Zth.Pages
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            BottomPanelVM.LeftButtonIsEnabled = true;
-            BottomPanelVM.RightButtonContent = Properties.Resource.Back;
-            BottomPanelVM.RightButtonIsEnabled = false;
             BottomPanelVM.RightButtonContent = Properties.Resource.Graduation;
+            BottomPanelVM.RightBottomButtonAction = () => _navigationService.Navigate(new GraduationOnly()
+            {
+                CanLoadInFile = true
+            });
 
             DataContext = new ZthLongImpulseVM();
             FrameVM.SetParentFrameVM(VM);
@@ -69,11 +70,7 @@ namespace Zth.Pages
             VM.AxisYKilowattsIsVisibly = true;
             VM.AxisYMegawattsIsVisibly = true;
 
-            BottomPanelVM.RightButtonContent = Properties.Resource.Graduation;
-            BottomPanelVM.RightBottomButtonAction = () => _navigationService.Navigate(new GraduationOnly()
-            {
-                CanLoadInFile = false
-            });
+            VM.StopHeatingButtonIsEnabled = VM.StartHeatingPressed;
 
             if (MainWindow.SettingsModel.Debug1)
             {
@@ -86,6 +83,12 @@ namespace Zth.Pages
                 dispatcherTimer.Interval = new TimeSpan(0, 0, 0, 0, 1);
                 dispatcherTimer.Start();
             }
+        }
+
+        private void CommonPage_Unloaded(object sender, RoutedEventArgs e)
+        {
+            BottomPanelVM.RightButtonIsEnabled = false;
+            BottomPanelVM.RightButtonContent = string.Empty;
         }
     }
 }

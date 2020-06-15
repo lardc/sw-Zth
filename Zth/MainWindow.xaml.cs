@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Windows.Navigation;
 using Zth.VM;
@@ -15,7 +16,7 @@ namespace Zth
         public TopPanelVm TopPanelVM { get; set; } = new TopPanelVm()
         {
             DataIsVisibly = true,
-            WorkingMode = WorkingMode.RthSequence
+            WorkingMode = WorkingMode.ZthSequence
         };
         public CommonVM FrameVM { get; set; } = new CommonVM();
         public BottomPanelVM BottomPanelVM { get; set; } = new BottomPanelVM();
@@ -24,14 +25,24 @@ namespace Zth
 
         public MainWindow()
         {
+
+
+
             SettingsModel = JsonConvert.DeserializeObject<SettingsModel>(File.ReadAllText("appsetting.json"));
             InitializeComponent();
             _navigationService = MainFrame.NavigationService;
 
-            FrameVM.SetParentFrameVM =  (CommonVM commonVm) =>
+            FrameVM.SetParentFrameVM = (CommonVM commonVm) =>
+           {
+               commonVm.SetParentFrameVM = FrameVM.SetParentFrameVM;
+               commonVm.StartHeatingPressed = FrameVM.StartHeatingPressed;
+               FrameVM = commonVm;
+           };
+
+            BottomPanelVM.SetParentFrameVM = (BottomPanelVM bottomPanelVM) =>
             {
-                commonVm.SetParentFrameVM = FrameVM.SetParentFrameVM;
-                FrameVM = commonVm;
+                bottomPanelVM.SetParentFrameVM = BottomPanelVM.SetParentFrameVM;
+                BottomPanelVM = bottomPanelVM;
             };
         }
 
