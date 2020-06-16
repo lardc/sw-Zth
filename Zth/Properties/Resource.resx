@@ -261,4 +261,25 @@
   <data name="Graduation" xml:space="preserve">
     <value>Градуировка</value>
   </data>
+  <data name="BottomLineExtrapolation" xml:space="preserve">
+    <value>Нижняя граница экстраполяции, °С</value>
+  </data>
+  <data name="UpperLineExtrapolation" xml:space="preserve">
+    <value>Верхняя граница экстраполяции, °C</value>
+  </data>
+  <data name="Extrapolation" xml:space="preserve">
+    <value>Экстраполяция</value>
+  </data>
+  <data name="SaveInFile" xml:space="preserve">
+    <value>Сохранить в файл</value>
+  </data>
+  <data name="GraduationCalculation" xml:space="preserve">
+    <value>Расчёт градуировки</value>
+  </data>
+  <data name="CalculationRth" xml:space="preserve">
+    <value>Расчёт Rth</value>
+  </data>
+  <data name="CalculationZth" xml:space="preserve">
+    <value>Расчёт Zth</value>
+  </data>
 </root>

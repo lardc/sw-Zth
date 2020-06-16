@@ -19,7 +19,6 @@ namespace Zth.Pages
     /// </summary>
     public partial class SelectPage : CommonPage
     {
-      
 
         public SelectPage() : base()
         {
@@ -57,6 +56,16 @@ namespace Zth.Pages
             BottomPanelVM.RightButtonIsEnabled = true;
             BottomPanelVM.RightButtonContent = Properties.Resource.Next;
 
+            TopPanelVm.WorkingModeIsVisible = false;
+            TopPanelVm.TypeDeviceIsVisible = false;
+            TopPanelVm.TypeCoolingIsVisible = false;
+
+            TopPanelVm.AnodeBodyTemperatureIsVisible = false;
+            TopPanelVm.AnodeCoolerTemperatureIsVisible = false;
+            TopPanelVm.CathodeBodyTemperatureIsVisible = false;
+            TopPanelVm.CathodeCoolerTemperatureIsVisible = false;
+            TopPanelVm.HeatingCurrentIsVisible = false;
+            TopPanelVm.TemperatureSensitiveParameterIsVisible = false;
 
 
             //////////////////////
@@ -76,6 +85,17 @@ namespace Zth.Pages
 
         private void CommonPage_Unloaded(object sender, RoutedEventArgs e)
         {
+            TopPanelVm.WorkingModeIsVisible = true;
+            TopPanelVm.TypeDeviceIsVisible = true;
+            TopPanelVm.TypeCoolingIsVisible = true;
+
+            TopPanelVm.AnodeBodyTemperatureIsVisible = true;
+            TopPanelVm.AnodeCoolerTemperatureIsVisible = true;
+            TopPanelVm.CathodeBodyTemperatureIsVisible = true;
+            TopPanelVm.CathodeCoolerTemperatureIsVisible = true;
+            TopPanelVm.HeatingCurrentIsVisible = true;
+            TopPanelVm.TemperatureSensitiveParameterIsVisible = true;
+
             BottomPanelVM.RightButtonIsEnabled = false;
             BottomPanelVM.RightButtonContent = string.Empty;
         }

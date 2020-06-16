@@ -17,14 +17,14 @@ namespace Zth.VM
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public TypeCooling TypeCooling { get; set; }
-        public TypeDevice TypeDevice { get; set; }
-        public WorkingMode WorkingMode { get; set; }
+        //public TypeCooling TypeCooling { get; set; }
+        //public TypeDevice TypeDevice { get; set; }
+        //public WorkingMode WorkingMode { get; set; }
 
 
-        public string TypeCoolingString => StringResources.TypeCoolingDictionary[TypeCooling];
-        public string TypeDeviceString => StringResources.TypesDeviceDictionary[TypeDevice];
-        public string WorkingModeString => StringResources.WorkModeDictionary[WorkingMode];
+        //public string TypeCoolingString => StringResources.TypeCoolingDictionary[TypeCooling];
+        //public string TypeDeviceString => StringResources.TypesDeviceDictionary[TypeDevice];
+        //public string WorkingModeString => StringResources.WorkModeDictionary[WorkingMode];
 
 
 

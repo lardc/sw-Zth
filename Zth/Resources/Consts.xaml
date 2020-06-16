@@ -9,5 +9,7 @@
     <Thickness x:Key="MainFrameMargin">19</Thickness>
 
     <GridLength x:Key="RightPanelWidth">330</GridLength>
+    <GridLength x:Key="RightPanelWidthEx">400</GridLength>
 
+    
 </ResourceDictionary>

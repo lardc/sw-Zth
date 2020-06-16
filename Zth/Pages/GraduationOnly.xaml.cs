@@ -34,10 +34,16 @@ namespace Zth.Pages
                 BottomPanelVM.MiddleButtonContent = "Загрузка из файла";
             BottomPanelVM.MiddleButtonIsEnabled = true;
             BottomPanelVM.RightButtonContent = "Расчёт градуировки";
+            BottomPanelVM.RightBottomButtonAction = () => _navigationService.Navigate(new GraduationCalculation()
+            {
+                
+            });
 
+            TopPanelVm.WorkingModeString_ = "Градуировка";
 
             DataContext = new GraduationOnlyVM();
             FrameVM.SetParentFrameVM(VM);
+
 
             VM.TemperatureSensitiveParameterIsVisibly = true;
             VM.AnodeBodyTemperatureIsVisibly = true;
@@ -53,6 +59,19 @@ namespace Zth.Pages
             VM.StopGraduationButtonIsEnabled = false;
 
             VM.StopHeatingButtonIsEnabled = VM.StartHeatingPressed;
+
+            //////////////////////
+             if (MainWindow.SettingsModel.Debug1)
+            {
+                var dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
+                dispatcherTimer.Tick += new EventHandler((sender1, e1) =>
+                {
+                    dispatcherTimer.Stop();
+                    BottomPanelVM.RightBottomButtonAction();
+                });
+                dispatcherTimer.Interval = new TimeSpan(0, 0, 0, 0, 1);
+                dispatcherTimer.Start();
+            }
 
         }
 

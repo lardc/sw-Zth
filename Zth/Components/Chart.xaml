@@ -43,7 +43,7 @@
         </lvc:CartesianChart.AxisY>
         <lvc:CartesianChart.Series>
             <lvc:LineSeries Values="{Binding HeatingPowerChartValues}" Stroke="{Binding HeatingPowerBrush}" Visibility="{Binding HeatingPowerIsEnabled, Converter= {StaticResource B2VH}}" ScalesYAt="1"/>
-            <lvc:LineSeries Values="{Binding AnodeBodyTemperatureChartValues}" Stroke="{Binding AnodeBodyTemperatureBrush}" Visibility="{Binding AnodeBodyTemperatureIsEnabled, Converter= {StaticResource B2VH}}" ScalesYAt="0" />
+            <lvc:LineSeries Values="{Binding AnodeBodyTemperatureChartValues}" Stroke="{Binding AnodeBodyTemperatureBrush}" Visibility="{Binding AnodeBodyTemperatureIsEnabled, Converter= {StaticResource B2VC}}" ScalesYAt="0" />
             <lvc:LineSeries Values="{Binding AnodeCoolerTemperatureChartValues}" Stroke="{Binding AnodeCoolerTemperatureBrush}" Visibility="{Binding AnodeCoolerTemperatureIsEnabled, Converter= {StaticResource B2VH}}" ScalesYAt="0"/>
             <lvc:LineSeries Values="{Binding CathodeBodyTemperatureChartValues}" Stroke="{Binding CathodeBodyTemperatureBrush}" Visibility="{Binding CathodeBodyTemperatureIsEnabled, Converter= {StaticResource B2VH}}" ScalesYAt="0"/>
             <lvc:LineSeries Values="{Binding CathodeCoolerTemperatureChartValues}" Stroke="{Binding CathodeCoolerTemperatureBrush}" Visibility="{Binding CathodeCoolerTemperatureIsEnabled, Converter= {StaticResource B2VH}}" ScalesYAt="0"/>

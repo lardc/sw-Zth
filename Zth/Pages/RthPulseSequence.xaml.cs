@@ -53,6 +53,18 @@ namespace Zth.Pages
             VM.RecordingResultsButtonIsEnabled = VM.StopHeatingButtonIsEnabled = VM.StartHeatingPressed;
             VM.StartHeatingButtonIsEnabled = true;
 
+            if (MainWindow.SettingsModel.Debug1)
+            {
+                var dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
+                dispatcherTimer.Tick += new EventHandler((sender1, e1) =>
+                {
+                    dispatcherTimer.Stop();
+                    BottomPanelVM.RightBottomButtonAction();
+                });
+                dispatcherTimer.Interval = new TimeSpan(0, 0, 0, 0, 1);
+                dispatcherTimer.Start();
+            }
+
         }
 
         private void StartHeating_Click(object sender, RoutedEventArgs e)

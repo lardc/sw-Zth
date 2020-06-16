@@ -47,6 +47,8 @@ namespace Zth.Pages
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
+            TopPanelVm.TemperatureSensitiveParameterIsVisible = false;
+
             BottomPanelVM.RightButtonContent = Properties.Resource.Graduation;
             BottomPanelVM.RightBottomButtonAction = () => _navigationService.Navigate(new GraduationOnly()
             {
@@ -87,6 +89,8 @@ namespace Zth.Pages
 
         private void CommonPage_Unloaded(object sender, RoutedEventArgs e)
         {
+            TopPanelVm.TemperatureSensitiveParameterIsVisible = true;
+
             BottomPanelVM.RightButtonIsEnabled = false;
             BottomPanelVM.RightButtonContent = string.Empty;
         }

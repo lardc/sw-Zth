@@ -151,6 +151,33 @@ namespace Zth.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Нижняя граница экстраполяции, °С.
+        /// </summary>
+        public static string BottomLineExtrapolation {
+            get {
+                return ResourceManager.GetString("BottomLineExtrapolation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Расчёт Rth.
+        /// </summary>
+        public static string CalculationRth {
+            get {
+                return ResourceManager.GetString("CalculationRth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Расчёт Zth.
+        /// </summary>
+        public static string CalculationZth {
+            get {
+                return ResourceManager.GetString("CalculationZth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Температура корпуса К.
         /// </summary>
         public static string CathodeBodyTemperature {
@@ -214,11 +241,29 @@ namespace Zth.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Экстраполяция.
+        /// </summary>
+        public static string Extrapolation {
+            get {
+                return ResourceManager.GetString("Extrapolation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Градуировка.
         /// </summary>
         public static string Graduation {
             get {
                 return ResourceManager.GetString("Graduation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Расчёт градуировки.
+        /// </summary>
+        public static string GraduationCalculation {
+            get {
+                return ResourceManager.GetString("GraduationCalculation", resourceCulture);
             }
         }
         
@@ -309,6 +354,15 @@ namespace Zth.Properties {
         public static string RthSequence {
             get {
                 return ResourceManager.GetString("RthSequence", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Сохранить в файл.
+        /// </summary>
+        public static string SaveInFile {
+            get {
+                return ResourceManager.GetString("SaveInFile", resourceCulture);
             }
         }
         
@@ -444,6 +498,15 @@ namespace Zth.Properties {
         public static string UpdateTask {
             get {
                 return ResourceManager.GetString("UpdateTask", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Верхняя граница экстраполяции, °C.
+        /// </summary>
+        public static string UpperLineExtrapolation {
+            get {
+                return ResourceManager.GetString("UpperLineExtrapolation", resourceCulture);
             }
         }
         

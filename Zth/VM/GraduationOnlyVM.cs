@@ -9,5 +9,7 @@ namespace Zth.VM
         public bool StartHeatingButtonIsEnabled { get; set; }
         public bool StopGraduationButtonIsEnabled { get; set; }
         public bool CutButtonIsEnabled { get; set; }
+
+        public bool IsZth { get; set; }
     }
 }

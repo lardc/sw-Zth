@@ -23,6 +23,9 @@ namespace Zth.Converters
             var i1 = str.IndexOf(' ', str.Length / 2);
             var i2 = str.Reverse().ToList().IndexOf(' ', str.Length / 2);
 
+            if (i1 == -1 && i2 == -1)
+                return str;
+
             if (i1 == i2)
                 return str.Remove(i1, 1).Insert(i1, Environment.NewLine);
 

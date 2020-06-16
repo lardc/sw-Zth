@@ -3,8 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Zth.Components"
-             mc:Ignorable="d" 
+             xmlns:local="clr-namespace:Zth.Components"  xmlns:vm="clr-namespace:Zth.VM"
+             mc:Ignorable="d"  d:DataContext="{d:DesignInstance vm:TopPanelVm }" 
               xmlns:res="clr-namespace:Zth.Properties"
              >
     <Grid Grid.Row="0" >
@@ -50,38 +50,30 @@
                 <ColumnDefinition Width="auto" />
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
-            <TextBlock TextWrapping="Wrap" Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" Text="{Binding WorkingModeString, Converter={StaticResource TLB}}" />
+            <TextBlock TextWrapping="Wrap" Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" Text="{Binding WorkingModeString, Converter={StaticResource TLB}}" Visibility="{Binding WorkingModeIsVisible, Converter={StaticResource B2VH}}" />
 
-            <TextBlock Grid.Row="0" Grid.Column="3" Text="{Binding TypeCoolingString}" />
-            <TextBlock Grid.Row="1" Grid.Column="3" Text="{Binding TypeDeviceString}" />
+            <TextBlock Grid.Row="0" Grid.Column="3" Text="{Binding TypeCoolingString}" Visibility="{Binding TypeCoolingIsVisible, Converter={StaticResource B2VH}}"/>
+            <TextBlock Grid.Row="1" Grid.Column="3" Text="{Binding TypeDeviceString}" Visibility="{Binding TypeDeviceIsVisible, Converter={StaticResource B2VH}}" />
 
-            <TextBlock Grid.Row="0" Grid.Column="5" Text="{x:Static res:Resource.AnodeBodyTemperatureAbbreviated}" />
-            <TextBlock Grid.Row="1" Grid.Column="5" Text="{x:Static res:Resource.CathodeBodyTemperatureAbbreviated}" />
-            <TextBlock Grid.Row="0" Grid.Column="6">
-                    <Run Text=" " /> <Run Text="{Binding AnodeBodyTemperature}" FontWeight="Bold" /> <Run Text="{x:Static res:Resource.UnitMeasurementDegreeCentigrade}" />
+            <TextBlock Grid.Row="0" Grid.Column="5" Visibility="{Binding AnodeBodyTemperatureIsVisible, Converter={StaticResource B2VH}}" >
+                <Run Text="{x:Static res:Resource.AnodeBodyTemperatureAbbreviated}"/> <Run Text=" " /> <Run Text="{Binding AnodeBodyTemperature}" FontWeight="Bold" /> <Run Text="{x:Static res:Resource.UnitMeasurementDegreeCentigrade}" />
             </TextBlock>
-            <TextBlock Grid.Row="1" Grid.Column="6">
-                    <Run Text=" " /> <Run Text="{Binding CathodeBodyTemperature}" FontWeight="Bold" /> <Run Text="{x:Static res:Resource.UnitMeasurementDegreeCentigrade}" />
+            <TextBlock Grid.Row="1" Grid.Column="5" Visibility="{Binding CathodeBodyTemperatureIsVisible, Converter={StaticResource B2VH}}">
+                <Run Text="{x:Static res:Resource.CathodeBodyTemperatureAbbreviated}"/> <Run Text=" " /> <Run Text="{Binding CathodeBodyTemperature}" FontWeight="Bold" /> <Run Text="{x:Static res:Resource.UnitMeasurementDegreeCentigrade}" />
             </TextBlock>
 
-            <TextBlock Grid.Row="0" Grid.Column="8" Text="{x:Static res:Resource.AnodeCoolerTemperatureAbbreviated}" />
-            <TextBlock Grid.Row="1" Grid.Column="8" Text="{x:Static res:Resource.CathodeCoolerTemperatureAbbreviated}" />
-            <TextBlock Grid.Row="0" Grid.Column="9">
-                    <Run Text=" " /> <Run Text="{Binding AnodeCoolerTemperature}" FontWeight="Bold" /> <Run Text="{x:Static res:Resource.UnitMeasurementDegreeCentigrade}" />
+            <TextBlock Grid.Row="0" Grid.Column="8" Visibility="{Binding AnodeCoolerTemperatureIsVisible, Converter={StaticResource B2VH}}">
+                <Run Text="{x:Static res:Resource.AnodeCoolerTemperatureAbbreviated}" /> <Run Text=" " /> <Run Text="{Binding AnodeCoolerTemperature}" FontWeight="Bold" /> <Run Text="{x:Static res:Resource.UnitMeasurementDegreeCentigrade}" />
             </TextBlock>
-            <TextBlock Grid.Row="1" Grid.Column="9">
-                    <Run Text=" " /> <Run Text="{Binding CathodeCoolerTemperature}" FontWeight="Bold" /> <Run Text="{x:Static res:Resource.UnitMeasurementDegreeCentigrade}" />
+            <TextBlock Grid.Row="1" Grid.Column="8" Visibility="{Binding CathodeCoolerTemperatureIsVisible, Converter={StaticResource B2VH}}">
+                 <Run Text="{x:Static res:Resource.CathodeCoolerTemperatureAbbreviated}" />  <Run Text=" " /> <Run Text="{Binding CathodeCoolerTemperature}" FontWeight="Bold" /> <Run Text="{x:Static res:Resource.UnitMeasurementDegreeCentigrade}" />
             </TextBlock>
 
             <TextBlock Grid.Row="0" Grid.Column="11" Visibility="{Binding TemperatureSensitiveParameterIsVisible, Converter={StaticResource B2VH}}">
-                    <Run Text="{x:Static res:Resource.TemperatureSensitiveParameter}" /> <Run Text=":" />
+                    <Run Text="{x:Static res:Resource.TemperatureSensitiveParameter}" /> <Run Text=":" />  <Run Text="    " /> <Run Text="{Binding TemperatureSensitiveParameter}" FontWeight="Bold" /> <Run Text="{x:Static res:Resource.MegaVoltUnit}" />
             </TextBlock>
-            <TextBlock Grid.Row="1" Grid.Column="11" Text="{x:Static res:Resource.HeatingCurrentAbbreviated}" />
-            <TextBlock Grid.Row="0" Grid.Column="12" Visibility="{Binding TemperatureSensitiveParameterIsVisible, Converter={StaticResource B2VH}}">
-                    <Run Text=" " /> <Run Text="{Binding TemperatureSensitiveParameter}" FontWeight="Bold" /> <Run Text="{x:Static res:Resource.MegaVoltUnit}" />
-            </TextBlock>
-            <TextBlock Grid.Row="1" Grid.Column="12">
-                    <Run Text=" " /> <Run Text="{Binding HeatingCurrent}" FontWeight="Bold" /> <Run Text="{x:Static res:Resource.AmpereUnit}" />
+            <TextBlock Grid.Row="1" Grid.Column="11" Visibility="{Binding HeatingCurrentIsVisible, Converter={StaticResource B2VH}}">
+                <Run Text="{x:Static res:Resource.HeatingCurrentAbbreviated}" /> <Run Text=" " /> <Run Text="{Binding HeatingCurrent}" FontWeight="Bold" /> <Run Text="{x:Static res:Resource.AmpereUnit}" />
             </TextBlock>
         </Grid>
     </Grid>
