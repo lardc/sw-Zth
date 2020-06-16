@@ -4,6 +4,7 @@ using LiveCharts.Defaults;
 using LiveCharts.Wpf;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -60,14 +61,15 @@ namespace Zth.Components
 
 
                 //VM.TemperatureSensitiveParameterChartValues.Add(new ObservablePoint(double.Parse(values[2].Replace('.', ',')) / 1.5, double.Parse(values[3].Replace('.', ',')) / 1.5));
-                VM.HeatingCurrentChartValues.Add(new ObservablePoint(double.Parse(values[2].Replace('.', ',')) /5 , double.Parse(values[3].Replace('.', ',')) * 10));
-                VM.HeatingPowerChartValues.Add(new ObservablePoint(double.Parse(values[2].Replace('.', ',')) / 1.5, double.Parse(values[3].Replace('.', ',')) * 5));
+                
+                VM.HeatingCurrentChartValues.Add(new ObservablePoint(double.Parse(values[2].Replace(',', '.'), CultureInfo.InvariantCulture) /5 , double.Parse(values[3].Replace(',', '.'), CultureInfo.InvariantCulture) * 10));
+                VM.HeatingPowerChartValues.Add(new ObservablePoint(double.Parse(values[2].Replace(',', '.'), CultureInfo.InvariantCulture) / 1.5, double.Parse(values[3].Replace(',', '.'), CultureInfo.InvariantCulture) * 5));
 
-                VM.TemperatureStructureChartValues.Add(new ObservablePoint(double.Parse(values[2].Replace('.', ',')) / 1.5, double.Parse(values[3].Replace('.', ',')) / 1.5));
-                VM.CathodeCoolerTemperatureChartValues.Add(new ObservablePoint(double.Parse(values[2].Replace('.', ',')) / 1.4, double.Parse(values[3].Replace('.', ',')) / 1.4));
-                VM.AnodeCoolerTemperatureChartValues.Add(new ObservablePoint(double.Parse(values[2].Replace('.', ',')) / 1.3, double.Parse(values[3].Replace('.', ',')) / 1.3));
-                VM.CathodeBodyTemperatureChartValues.Add(new ObservablePoint(double.Parse(values[2].Replace('.', ',')) / 1.2, double.Parse(values[3].Replace('.', ',')) / 1.2));
-                VM.AnodeBodyTemperatureChartValues.Add(new ObservablePoint(double.Parse(values[2].Replace('.', ',')) / 1.1, double.Parse(values[3].Replace('.', ',')) / 1.1));
+                VM.TemperatureStructureChartValues.Add(new ObservablePoint(double.Parse(values[2].Replace(',', '.'), CultureInfo.InvariantCulture) / 1.5, double.Parse(values[3].Replace(',', '.'), CultureInfo.InvariantCulture) / 1.5));
+                VM.CathodeCoolerTemperatureChartValues.Add(new ObservablePoint(double.Parse(values[2].Replace(',', '.'), CultureInfo.InvariantCulture) / 1.4, double.Parse(values[3].Replace(',', '.'), CultureInfo.InvariantCulture) / 1.4));
+                VM.AnodeCoolerTemperatureChartValues.Add(new ObservablePoint(double.Parse(values[2].Replace(',', '.'), CultureInfo.InvariantCulture) / 1.3, double.Parse(values[3].Replace(',', '.'), CultureInfo.InvariantCulture) / 1.3));
+                VM.CathodeBodyTemperatureChartValues.Add(new ObservablePoint(double.Parse(values[2].Replace(',', '.'), CultureInfo.InvariantCulture) / 1.2, double.Parse(values[3].Replace(',', '.'), CultureInfo.InvariantCulture) / 1.2));
+                VM.AnodeBodyTemperatureChartValues.Add(new ObservablePoint(double.Parse(values[2].Replace(',', '.'), CultureInfo.InvariantCulture) / 1.1, double.Parse(values[3].Replace(',', '.'), CultureInfo.InvariantCulture) / 1.1));
 
                 //to.Add(new ObservablePoint(double.Parse(values[6].Replace('.', ',')), double.Parse(values[7].Replace('.', ','))));
 
