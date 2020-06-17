@@ -16,7 +16,7 @@ namespace Zth
         public TopPanelVm TopPanelVM { get; set; } = new TopPanelVm()
         {
             DataIsVisibly = true,
-            WorkingMode = WorkingMode.RthSequence
+            WorkingMode = WorkingMode.ZthLongImpulse
         };
         public CommonVM FrameVM { get; set; } = new CommonVM();
         public BottomPanelVM BottomPanelVM { get; set; } = new BottomPanelVM();

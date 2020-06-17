@@ -134,8 +134,19 @@ namespace Zth.VM
         public bool AxisYMegawattsIsVisibly { get; set; }
         public bool AxisYKilowattsIsVisibly { get; set; }
         public bool AxisYAmperesIsVisibly { get; set; }
+        public bool AxisYDegreeCelsiusPerWattIsVisibly { get; set; }
 
         public double Base { get; set; } = 10;
+
+        public Func<double, string> FormatterDegreeCelsiusPerWatt { get; set; } = value =>
+        {
+            if (Math.Abs(1 - value) < 0.0001 )
+                return Properties.Resource.UnitMeasurementDegreeCentigrade;
+            var q = new double?[] { 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9 }.FirstOrDefault(m => Math.Abs(m.Value - value) < 0.0001);
+            if (q != null)
+                return value.ToString("F1");
+            return string.Empty;
+        };
 
         public Func<double, string> FormatterDegreesCelsius { get; set; } = value =>
         {
@@ -184,7 +195,7 @@ namespace Zth.VM
                     {-1, "0,1" },
                     {0, "1" },
                 };
-            if (value > 1)
+            if (value >= 1)
                 return "сек";
             else if (axis.ContainsKey(value))
                 return axis[value];
@@ -202,47 +213,7 @@ namespace Zth.VM
             Mapper = Mappers.Xy<ObservablePoint>()
              .X(point => Math.Log(point.X, Base)) //a 10 base log scale in the X axis
              .Y(point => point.Y);
-            SeriesCollection = new SeriesCollection(Mapper)
-            {
-                //new LineSeries()
-                //{
-                //    Values = TemperatureStructureChartValues,
-                //    ScalesYAt = 0,
-                //    Fill = TemperatureStructureBrush
 
-                //},
-                //new LineSeries()
-                //{
-                //    Values = AnodeBodyTemperatureChartValues,
-                //    ScalesYAt = 0
-                //},
-                //new LineSeries()
-                //{
-                //    Values = AnodeCoolerTemperatureChartValues,
-                //    ScalesYAt = 0
-                //},
-                //  new LineSeries()
-                //{
-                //    Values = CathodeBodyTemperatureChartValues,
-                //    ScalesYAt = 0
-                //},
-                //new LineSeries()
-                //{
-                //    Values = CathodeCoolerTemperatureChartValues,
-                //    ScalesYAt = 0
-                //},
-
-                //new LineSeries()
-                //{
-                //    Values = CathodeCoolerTemperatureChartValues,
-                //    ScalesYAt = 0
-                //},
-                //new LineSeries()
-                //{
-                //    Values = CathodeCoolerTemperatureChartValues,
-                //    ScalesYAt = 0
-                //},
-            };
         }
 
         #endregion

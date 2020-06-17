@@ -52,21 +52,42 @@ namespace Zth.Pages
                 case WorkingMode.ZthLongImpulse:
                 case WorkingMode.ZthSequence:
                     BottomPanelVM.RightButtonContent = Properties.Resource.CalculationZth;
+                    BottomPanelVM.RightButtonIsEnabled = true;
+                    BottomPanelVM.RightBottomButtonAction = () => _navigationService.Navigate(new CalculationZth()
+                    {
+                    });
                     break;
                 case WorkingMode.RthSequence:
                     BottomPanelVM.RightButtonContent = Properties.Resource.CalculationRth;
+                    BottomPanelVM.RightButtonIsEnabled = true;
+                    BottomPanelVM.RightBottomButtonAction = () => _navigationService.Navigate(new CalculationRth()
+                    {
+                    });
                     break;
                 case WorkingMode.GraduationOnly:
                     break;
                 default:
                     break;
             }
+
+            //if (MainWindow.SettingsModel.Debug1)
+            //{
+            //    var dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
+            //    dispatcherTimer.Tick += new EventHandler((sender1, e1) =>
+            //    {
+            //        dispatcherTimer.Stop();
+            //        BottomPanelVM.RightBottomButtonAction();
+            //    });
+            //    dispatcherTimer.Interval = new TimeSpan(0, 0, 0, 0, 1);
+            //    dispatcherTimer.Start();
+            //}
         }
 
       
         private void CommonPage_Unloaded(object sender, RoutedEventArgs e)
         {
             BottomPanelVM.RightButtonContent = string.Empty;
+            BottomPanelVM.RightButtonIsEnabled = false; 
 
             TopPanelVm.AnodeBodyTemperatureIsVisible = true;
             TopPanelVm.AnodeCoolerTemperatureIsVisible = true;

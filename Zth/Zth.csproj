@@ -14,7 +14,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Pages\CalculationRth.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Pages\GraduationCalculation.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Pages\CalculationZth.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Pages\GraduationOnly.xaml.cs">
@@ -47,7 +53,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Page Update="Pages\CalculationRth.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Pages\GraduationCalculation.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Pages\CalculationZth.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Pages\GraduationOnly.xaml">
