@@ -46,7 +46,8 @@ namespace Zth.VM
         #endregion
 
 
-
+        public bool LineSeriesCursorLeftVisibility { get; set; } = true;
+        public bool LineSeriesCursorRightVisibility { get; set; }
 
 
         #region Bottom parameters

@@ -4,16 +4,20 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Zth.Components"
+             xmlns:components="clr-namespace:Zth.Components"
              mc:Ignorable="d" Loaded="UserControl_Loaded"
                      xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
-              xmlns:vm="clr-namespace:Zth.VM"
+              xmlns:vm="clr-namespace:Zth.VM" 
              d:DataContext="{d:DesignInstance vm:CommonVM }" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <lvc:CartesianChart Name="MainCartesianChart" x:FieldModifier="public"  >
-        <lvc:CartesianChart.Resources>
+    <Grid>
+        <lvc:CartesianChart Name="MainCartesianChart" x:FieldModifier="public"   MouseDown="MainCartesianChart_MouseDown">
+        <lvc:CartesianChart.Resources >
                 <Style TargetType="lvc:LineSeries">
                     <Setter Property="Fill" Value="Transparent"></Setter>
+                    <Setter Property="PointGeometry" Value="{x:Null}"/>
                 </Style>
+            
             </lvc:CartesianChart.Resources>
         <lvc:CartesianChart.AxisX>
             <lvc:LogarithmicAxis LabelFormatter="{Binding FormatterTimes}" MinValue="-5" MaxValue="1" Base="{Binding Base}" />
@@ -53,12 +57,16 @@
             <lvc:LineSeries Values="{Binding AnodeCoolerTemperatureChartValues}" Stroke="{Binding AnodeCoolerTemperatureBrush}" Visibility="{Binding AnodeCoolerTemperatureIsEnabled, Converter= {StaticResource B2VH}}" ScalesYAt="1"/>
             <lvc:LineSeries Values="{Binding CathodeBodyTemperatureChartValues}" Stroke="{Binding CathodeBodyTemperatureBrush}" Visibility="{Binding CathodeBodyTemperatureIsEnabled, Converter= {StaticResource B2VH}}" ScalesYAt="1"/>
             <lvc:LineSeries Values="{Binding CathodeCoolerTemperatureChartValues}" Stroke="{Binding CathodeCoolerTemperatureBrush}" Visibility="{Binding CathodeCoolerTemperatureIsEnabled, Converter= {StaticResource B2VH}}" ScalesYAt="1"/>
-            <lvc:LineSeries Values="{Binding HeatingCurrentChartValues}" Stroke="{Binding HeatingCurrentBrush}" Visibility="{Binding HeatingCurrentIsEnabled, Converter= {StaticResource B2VH}}" ScalesYAt="1"/>
+            <lvc:LineSeries Values="{Binding HeatingCurrentChartValues}"   Stroke="{Binding HeatingCurrentBrush}" Visibility="{Binding HeatingCurrentIsEnabled, Converter= {StaticResource B2VH}}" ScalesYAt="1"/>
             <lvc:LineSeries Values="{Binding TemperatureSensitiveParameterChartValues}" Stroke="{Binding TemperatureSensitiveParameterBrush}" Visibility="{Binding TemperatureSensitiveParameterIsEnabled, Converter= {StaticResource B2VH}}" ScalesYAt="1"/>
             <lvc:LineSeries Values="{Binding TemperatureStructureChartValues}" Stroke="{Binding TemperatureStructureBrush}" Visibility="{Binding TemperatureStructureIsEnabled, Converter= {StaticResource B2VH}}" ScalesYAt="1"/>
             <lvc:LineSeries Values="{Binding ZthaChartValues}" Stroke="{Binding ZthaBrush}" Visibility="{Binding ZthaIsEnabled, Converter= {StaticResource B2VH}}" ScalesYAt="0"/>
             <lvc:LineSeries Values="{Binding ZthkChartValues}" Stroke="{Binding ZthkBrush}" Visibility="{Binding ZthkIsEnabled, Converter= {StaticResource B2VH}}" ScalesYAt="0"/>
             <lvc:LineSeries Values="{Binding ZthChartValues}" Stroke="{Binding ZthBrush}" Visibility="{Binding ZthIsEnabled, Converter= {StaticResource B2VH}}" ScalesYAt="0"/>
-        </lvc:CartesianChart.Series>
+        </lvc:CartesianChart.Series >
     </lvc:CartesianChart>
+
+        <components:LineSeriesCursor Visibility="{Binding LineSeriesCursorLeftVisibility, Converter={StaticResource B2VH}}" Margin="300,0,0,0" MouseMove="LineSeriesCursorLeft_MouseMove" />
+        <components:LineSeriesCursor Visibility="{Binding LineSeriesCursorRightVisibility, Converter={StaticResource B2VH}}" Margin="600,0,0,0" />
+    </Grid>
 </UserControl>

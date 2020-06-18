@@ -137,40 +137,40 @@
                 </TextBlock>
             </Border>
             <Border Grid.Column="0" Grid.Row="1" >
-                <TextBlock Text="{Binding Time}"/>
+                <TextBlock Text="{Binding Time, StringFormat=F6}" />
             </Border>
             <Border Grid.Column="1" Grid.Row="1" Visibility="{Binding HeatingCurrentIsVisibly, Converter={StaticResource B2VC}}">
-                <TextBlock Text="{Binding HeatingCurrent}" Visibility="{Binding HeatingCurrentIsEnabled, Converter={StaticResource B2VC}}"/>
+                <TextBlock Text="{Binding HeatingCurrent, StringFormat=F1}" Visibility="{Binding HeatingCurrentIsEnabled, Converter={StaticResource B2VC}}"/>
             </Border>
             <Border Grid.Column="2" Grid.Row="1" Visibility="{Binding HeatingPowerIsVisibly, Converter={StaticResource B2VC}}">
-                <TextBlock Text="{Binding HeatingPower}" Visibility="{Binding HeatingPowerIsEnabled, Converter={StaticResource B2VC}}"/>
+                <TextBlock Text="{Binding HeatingPower, StringFormat=F1}" Visibility="{Binding HeatingPowerIsEnabled, Converter={StaticResource B2VC}}"/>
             </Border>
             <Border Grid.Column="3" Grid.Row="1" Visibility="{Binding TemperatureSensitiveParameterIsVisibly, Converter={StaticResource B2VC}}">
-                <TextBlock Text="{Binding TemperatureSensitiveParameter}" Visibility="{Binding TemperatureSensitiveParameterIsEnabled, Converter={StaticResource B2VC}}"/>
+                <TextBlock Text="{Binding TemperatureSensitiveParameter, StringFormat=F1}" Visibility="{Binding TemperatureSensitiveParameterIsEnabled, Converter={StaticResource B2VC}}"/>
             </Border>
             <Border Grid.Column="4" Grid.Row="1" Visibility="{Binding AnodeBodyTemperatureIsVisibly, Converter={StaticResource B2VC}}">
-                <TextBlock Text="{Binding AnodeBodyTemperature}" Visibility="{Binding AnodeBodyTemperatureIsEnabled, Converter={StaticResource B2VC}}"/>
+                <TextBlock Text="{Binding AnodeBodyTemperature, StringFormat=F1}" Visibility="{Binding AnodeBodyTemperatureIsEnabled, Converter={StaticResource B2VC}}"/>
             </Border>
             <Border Grid.Column="5" Grid.Row="1" Visibility="{Binding CathodeBodyTemperatureIsVisibly, Converter={StaticResource B2VC}}">
-                <TextBlock Text="{Binding CathodeBodyTemperature}" Visibility="{Binding CathodeBodyTemperatureIsEnabled, Converter={StaticResource B2VC}}"/>
+                <TextBlock Text="{Binding CathodeBodyTemperature, StringFormat=F1}" Visibility="{Binding CathodeBodyTemperatureIsEnabled, Converter={StaticResource B2VC}}"/>
             </Border>
             <Border Grid.Column="6" Grid.Row="1" Visibility="{Binding AnodeCoolerTemperatureIsVisibly, Converter={StaticResource B2VC}}">
-                <TextBlock Text="{Binding AnodeCoolerTemperature}" Visibility="{Binding AnodeCoolerTemperatureIsEnabled, Converter={StaticResource B2VC}}"/>
+                <TextBlock Text="{Binding AnodeCoolerTemperature, StringFormat=F1}" Visibility="{Binding AnodeCoolerTemperatureIsEnabled, Converter={StaticResource B2VC}}"/>
             </Border>
             <Border Grid.Column="7" Grid.Row="1" Visibility="{Binding CathodeCoolerTemperatureIsVisibly, Converter={StaticResource B2VC}}">
-                <TextBlock Text="{Binding CathodeCoolerTemperature}" Visibility="{Binding CathodeCoolerTemperatureIsEnabled, Converter={StaticResource B2VC}}"/>
+                <TextBlock Text="{Binding CathodeCoolerTemperature, StringFormat=F1}" Visibility="{Binding CathodeCoolerTemperatureIsEnabled, Converter={StaticResource B2VC}}"/>
             </Border>
             <Border Grid.Column="8" Grid.Row="1" Visibility="{Binding TemperatureStructureIsVisibly, Converter={StaticResource B2VC}}">
-                <TextBlock Text="{Binding TemperatureStructure}" Visibility="{Binding TemperatureStructureIsEnabled, Converter={StaticResource B2VC}}"/>
+                <TextBlock Text="{Binding TemperatureStructure, StringFormat=F1}" Visibility="{Binding TemperatureStructureIsEnabled, Converter={StaticResource B2VC}}"/>
             </Border>
             <Border Grid.Column="9" Grid.Row="1" Visibility="{Binding ZthaIsVisibly, Converter={StaticResource B2VC}}">
-                <TextBlock Text="{Binding Ztha}" Visibility="{Binding ZthaIsEnabled, Converter={StaticResource B2VC}}"/>
+                <TextBlock Text="{Binding Ztha, StringFormat=F1}" Visibility="{Binding ZthaIsEnabled, Converter={StaticResource B2VC}}"/>
             </Border>
             <Border Grid.Column="10" Grid.Row="1" Visibility="{Binding ZthkIsVisibly, Converter={StaticResource B2VC}}">
-                <TextBlock Text="{Binding Zthk}" Visibility="{Binding ZthkIsEnabled, Converter={StaticResource B2VC}}"/>
+                <TextBlock Text="{Binding Zthk, StringFormat=F1}" Visibility="{Binding ZthkIsEnabled, Converter={StaticResource B2VC}}"/>
             </Border>
             <Border Grid.Column="11" Grid.Row="1" Visibility="{Binding ZthIsVisibly, Converter={StaticResource B2VC}}">
-                <TextBlock Text="{Binding Zth}" Visibility="{Binding ZthIsEnabled, Converter={StaticResource B2VC}}"/>
+                <TextBlock Text="{Binding Zth, StringFormat=F1}" Visibility="{Binding ZthIsEnabled, Converter={StaticResource B2VC}}"/>
             </Border>
         </Grid>
     </Grid>
