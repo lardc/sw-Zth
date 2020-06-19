@@ -64,6 +64,7 @@ namespace Zth.Pages
         {
             VM.StopMeasurementButtonEnabled = false;
             BottomPanelVM.RightButtonIsEnabled = true;
+            VM.LineSeriesCursorLeftVisibility = true;
         }
 
         private void CommonPage_Unloaded(object sender, RoutedEventArgs e)

@@ -32,6 +32,7 @@ namespace Zth.Components
         public Chart()
         {
             InitializeComponent();
+            MainCartesianChart.DataTooltip = null;
         }
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
@@ -112,32 +113,33 @@ namespace Zth.Components
                 VM.Ztha = GetYPoint(VM.ZthaChartValues, lineSeriesCursor, 1);
             if (VM.ZthkIsEnabled)
                 VM.Zthk = GetYPoint(VM.ZthkChartValues, lineSeriesCursor, 1);
-
-            //if (VM.HeatingCurrentIsEnabled)
-            //    VM.HeatingCurrent = GetYPoint(VM.HeatingCurrentChartValues, lineSeriesCursor, 1);
-            //if (VM.HeatingCurrentIsEnabled)
-            //    VM.HeatingCurrent = GetYPoint(VM.HeatingCurrentChartValues, lineSeriesCursor, 1);
-            //if (VM.HeatingCurrentIsEnabled)
-            //    VM.HeatingCurrent = GetYPoint(VM.HeatingCurrentChartValues, lineSeriesCursor, 1);
-            //if (VM.HeatingCurrentIsEnabled)
-            //    VM.HeatingCurrent = GetYPoint(VM.HeatingCurrentChartValues, lineSeriesCursor, 1);
-            //if (VM.HeatingCurrentIsEnabled)
-            //    VM.HeatingCurrent = GetYPoint(VM.HeatingCurrentChartValues, lineSeriesCursor, 1);
-            //if (VM.HeatingCurrentIsEnabled)
-            //    VM.HeatingCurrent = GetYPoint(VM.HeatingCurrentChartValues, lineSeriesCursor, 1);
         }
 
-        private void LineSeriesCursorLeft_MouseMove(object sender, MouseEventArgs e)
+        private LineSeriesCursor lastLineSeriesCursor;
+
+        private void LineSeriesCursor_MouseMove(object sender, MouseEventArgs e)
         {
             DrawAllValues((LineSeriesCursor)sender);
         }
 
-
+        public (double x1, double x2) GetXRange()
+        {
+            return (
+                Extentions.ConvertToChartValues(MainCartesianChart, new Point(LineSeriesCursorLeft.Margin.Left + LineSeriesCursorLeft.ActualWidth / 2, 0), 0, 0).X,
+                Extentions.ConvertToChartValues(MainCartesianChart, new Point(LineSeriesCursorRight.Margin.Left + LineSeriesCursorRight.ActualWidth / 2, 0), 0, 0).X
+                );
+        }
 
         private void MainCartesianChart_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            var q = e.GetPosition((IInputElement) sender);
-            var r = LiveCharts.Wpf.Extentions.ConvertToChartValues(MainCartesianChart, q, 0, 1);
+            if(lastLineSeriesCursor != null)
+                lastLineSeriesCursor.Margin = new Thickness(e.GetPosition((IInputElement)sender).X - lastLineSeriesCursor.ActualWidth / 2,0,0,0);
+        }
+
+
+        private void LineSeriesCursor_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            lastLineSeriesCursor = sender as LineSeriesCursor;
         }
     }
 }

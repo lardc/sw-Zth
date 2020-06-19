@@ -11,13 +11,21 @@
              d:DataContext="{d:DesignInstance vm:CommonVM }" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <lvc:CartesianChart Name="MainCartesianChart" x:FieldModifier="public"   MouseDown="MainCartesianChart_MouseDown">
-        <lvc:CartesianChart.Resources >
+        <lvc:CartesianChart Name="MainCartesianChart" x:FieldModifier="public"   MouseDown="MainCartesianChart_MouseDown" >
+            
+            <lvc:CartesianChart.Resources >
                 <Style TargetType="lvc:LineSeries">
                     <Setter Property="Fill" Value="Transparent"></Setter>
                     <Setter Property="PointGeometry" Value="{x:Null}"/>
+                    <Setter Property="DataLabelsTemplate">
+                        <Setter.Value>
+                            <DataTemplate>
+                                <TextBlock Text="qweqwe"/>
+                            </DataTemplate>
+                        </Setter.Value>
+                    </Setter>
                 </Style>
-            
+
             </lvc:CartesianChart.Resources>
         <lvc:CartesianChart.AxisX>
             <lvc:LogarithmicAxis LabelFormatter="{Binding FormatterTimes}" MinValue="-5" MaxValue="1" Base="{Binding Base}" />
@@ -53,7 +61,7 @@
         </lvc:CartesianChart.AxisY>
         <lvc:CartesianChart.Series >
             <lvc:LineSeries Values="{Binding HeatingPowerChartValues}" Stroke="{Binding HeatingPowerBrush}" Visibility="{Binding HeatingPowerIsEnabled, Converter= {StaticResource B2VH}}" ScalesYAt="1"/>
-            <lvc:LineSeries Values="{Binding AnodeBodyTemperatureChartValues}" Stroke="{Binding AnodeBodyTemperatureBrush}" Visibility="{Binding AnodeBodyTemperatureIsEnabled, Converter= {StaticResource B2VC}}" ScalesYAt="1" />
+            <lvc:LineSeries Values="{Binding AnodeBodyTemperatureChartValues}" Stroke="{Binding AnodeBodyTemperatureBrush}" Visibility="{Binding AnodeBodyTemperatureIsEnabled, Converter= {StaticResource B2VC}}" ScalesYAt="1"  />
             <lvc:LineSeries Values="{Binding AnodeCoolerTemperatureChartValues}" Stroke="{Binding AnodeCoolerTemperatureBrush}" Visibility="{Binding AnodeCoolerTemperatureIsEnabled, Converter= {StaticResource B2VH}}" ScalesYAt="1"/>
             <lvc:LineSeries Values="{Binding CathodeBodyTemperatureChartValues}" Stroke="{Binding CathodeBodyTemperatureBrush}" Visibility="{Binding CathodeBodyTemperatureIsEnabled, Converter= {StaticResource B2VH}}" ScalesYAt="1"/>
             <lvc:LineSeries Values="{Binding CathodeCoolerTemperatureChartValues}" Stroke="{Binding CathodeCoolerTemperatureBrush}" Visibility="{Binding CathodeCoolerTemperatureIsEnabled, Converter= {StaticResource B2VH}}" ScalesYAt="1"/>
@@ -66,7 +74,7 @@
         </lvc:CartesianChart.Series >
     </lvc:CartesianChart>
 
-        <components:LineSeriesCursor Visibility="{Binding LineSeriesCursorLeftVisibility, Converter={StaticResource B2VH}}" Margin="300,0,0,0" MouseMove="LineSeriesCursorLeft_MouseMove" />
-        <components:LineSeriesCursor Visibility="{Binding LineSeriesCursorRightVisibility, Converter={StaticResource B2VH}}" Margin="600,0,0,0" />
+        <components:LineSeriesCursor x:Name="LineSeriesCursorLeft" Visibility="{Binding LineSeriesCursorLeftVisibility, Converter={StaticResource B2VH}}" Margin="400,0,0,0" MouseMove="LineSeriesCursor_MouseMove" MouseDown="LineSeriesCursor_MouseDown" CartesianChart="{Binding ElementName=MainCartesianChart}" />
+        <components:LineSeriesCursor x:Name="LineSeriesCursorRight" Visibility="{Binding LineSeriesCursorRightVisibility, Converter={StaticResource B2VH}}" Margin="600,0,0,0" MouseMove="LineSeriesCursor_MouseMove" MouseDown="LineSeriesCursor_MouseDown" CartesianChart="{Binding ElementName=MainCartesianChart}"/>
     </Grid>
 </UserControl>

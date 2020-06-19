@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -61,17 +62,17 @@ namespace Zth.Pages
             VM.StopHeatingButtonIsEnabled = VM.StartHeatingPressed;
 
             //////////////////////
-             if (MainWindow.SettingsModel.Debug1)
-            {
-                var dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
-                dispatcherTimer.Tick += new EventHandler((sender1, e1) =>
-                {
-                    dispatcherTimer.Stop();
-                    BottomPanelVM.RightBottomButtonAction();
-                });
-                dispatcherTimer.Interval = new TimeSpan(0, 0, 0, 0, 1);
-                dispatcherTimer.Start();
-            }
+            //if (MainWindow.SettingsModel.Debug1)
+            //{
+            //    var dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
+            //    dispatcherTimer.Tick += new EventHandler((sender1, e1) =>
+            //    {
+            //        dispatcherTimer.Stop();
+            //        BottomPanelVM.RightBottomButtonAction();
+            //    });
+            //    dispatcherTimer.Interval = new TimeSpan(0, 0, 0, 0, 1);
+            //    dispatcherTimer.Start();
+            //}
 
         }
 
@@ -92,12 +93,19 @@ namespace Zth.Pages
         {
             VM.StopGraduationButtonIsEnabled = false;
             VM.CutButtonIsEnabled = true;
+            VM.LineSeriesCursorLeftVisibility = true;
+            VM.LineSeriesCursorRightVisibility = true;
         }
 
         private void Cut_Click(object sender, RoutedEventArgs e)
         {
             VM.CutButtonIsEnabled = false;
             BottomPanelVM.RightButtonIsEnabled = true;
+            VM.LineSeriesCursorRightVisibility = false;
+            var (x1, x2) = MainChart.GetXRange();
+            MainChart.MainCartesianChart.AxisX.First().MinValue = x1;
+            MainChart.MainCartesianChart.AxisX.First().MaxValue = x2;
+            
         }
 
         private void CommonPage_Unloaded(object sender, RoutedEventArgs e)

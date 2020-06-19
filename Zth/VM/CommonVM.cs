@@ -46,7 +46,7 @@ namespace Zth.VM
         #endregion
 
 
-        public bool LineSeriesCursorLeftVisibility { get; set; } = true;
+        public bool LineSeriesCursorLeftVisibility { get; set; } 
         public bool LineSeriesCursorRightVisibility { get; set; }
 
 
@@ -138,6 +138,8 @@ namespace Zth.VM
         public bool AxisYDegreeCelsiusPerWattIsVisibly { get; set; }
 
         public double Base { get; set; } = 10;
+
+        
 
         public Func<double, string> FormatterDegreeCelsiusPerWatt { get; set; } = value =>
         {
