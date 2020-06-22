@@ -17,45 +17,56 @@
                 <Style TargetType="lvc:LineSeries">
                     <Setter Property="Fill" Value="Transparent"></Setter>
                     <Setter Property="PointGeometry" Value="{x:Null}"/>
-                    <Setter Property="DataLabelsTemplate">
-                        <Setter.Value>
-                            <DataTemplate>
-                                <TextBlock Text="qweqwe"/>
-                            </DataTemplate>
-                        </Setter.Value>
-                    </Setter>
                 </Style>
 
             </lvc:CartesianChart.Resources>
         <lvc:CartesianChart.AxisX>
-            <lvc:LogarithmicAxis LabelFormatter="{Binding FormatterTimes}" MinValue="-5" MaxValue="1" Base="{Binding Base}" />
-        </lvc:CartesianChart.AxisX>
+                <lvc:LogarithmicAxis  LabelFormatter="{Binding AxisCustomVMTime.FormatterLogarithmic}" MinValue="{Binding AxisCustomVMTime.MinValue, Mode=TwoWay}" MaxValue="{Binding AxisCustomVMTime.MaxValue, Mode=TwoWay}" Base="{Binding AxisCustomVMTime.Base}" >
+                    <lvc:LogarithmicAxis.Separator>
+                        <lvc:Separator Step="1" Margin="0,0,0,15"/>
+                    </lvc:LogarithmicAxis.Separator>
+                </lvc:LogarithmicAxis>
+            </lvc:CartesianChart.AxisX>
         <lvc:CartesianChart.AxisY>
-            <lvc:Axis MinValue="0.2" MaxValue="1.0001" LabelFormatter="{Binding FormatterDegreeCelsiusPerWatt}" Position="LeftBottom" ShowLabels="{Binding AxisYDegreeCelsiusPerWattIsVisibly}">
+
+
+                <lvc:Axis Name="AxisDegreeCelsiusPerWatt" MinValue="{Binding AxisCustomVMDegreeCelsiusPerWatt.MinValue, Mode=TwoWay}" MaxValue="{Binding AxisCustomVMDegreeCelsiusPerWatt.MaxValue, Mode=TwoWay}" LabelFormatter="{Binding AxisCustomVMDegreeCelsiusPerWatt.Formatter}" Position="LeftBottom" ShowLabels="{Binding AxisYDegreeCelsiusPerWattIsEnabled, Mode=TwoWay}">
                 <lvc:Axis.Separator>
-                    <lvc:Separator Step="0.05" ></lvc:Separator>
+                        <lvc:Separator  Step="{Binding AxisCustomVMDegreeCelsiusPerWatt.Step, Mode=TwoWay}" IsEnabled="{Binding AxisYDegreeCelsiusPerWattIsEnabled, Mode=TwoWay}"></lvc:Separator>
                 </lvc:Axis.Separator>
             </lvc:Axis>
-            <lvc:Axis MinValue="55" MaxValue="95" LabelFormatter="{Binding FormatterDegreesCelsius}" ShowLabels="{Binding AxisYDegreesCelsiusIsVisibly}"  >
+
+                <lvc:Axis Name="AxisDegreesCelsius" MinValue="{Binding AxisCustomVMDegreesCelsius.MinValue, Mode=TwoWay}" MaxValue="{Binding AxisCustomVMDegreesCelsius.MaxValue, Mode=TwoWay}" LabelFormatter="{Binding AxisCustomVMDegreesCelsius.Formatter}" ShowLabels="{Binding AxisYDegreesCelsiusIsEnabled, Mode=TwoWay}"  >
+                    <lvc:Axis.Separator>
+                        <lvc:Separator Step="{Binding AxisCustomVMDegreesCelsius.Step, Mode=TwoWay}" IsEnabled="{Binding AxisYDegreesCelsiusIsEnabled, Mode=TwoWay}"></lvc:Separator>
+                    </lvc:Axis.Separator>
+                </lvc:Axis>
+            
+                <!--<lvc:Axis Name="AxisDegreeCelsiusPerWatt" MinValue="{Binding AxisCustomVMDegreeCelsiusPerWatt.MinValue, Mode=TwoWay}" MaxValue="{Binding AxisCustomVMDegreeCelsiusPerWatt.MaxValue, Mode=TwoWay}" LabelFormatter="{Binding AxisCustomVMDegreeCelsiusPerWatt.Formatter}" Position="LeftBottom" ShowLabels="{Binding AxisYDegreeCelsiusPerWattIsVisibly, Mode=TwoWay}">
                 <lvc:Axis.Separator>
-                    <lvc:Separator Step="2.5" IsEnabled="{Binding AxisYDegreesCelsiusIsEnabled}"></lvc:Separator>
+                        <lvc:Separator Step="{Binding AxisCustomVMDegreeCelsiusPerWatt.Step, Mode=TwoWay}" IsEnabled="{Binding AxisYDegreeCelsiusPerWattIsEnabled, Mode=TwoWay}"></lvc:Separator>
                 </lvc:Axis.Separator>
             </lvc:Axis>
-            <lvc:Axis MinValue="370" MaxValue="450" LabelFormatter="{Binding FormatterMegawatts}" ShowLabels="{Binding AxisYMegawattsIsVisibly}" >
+                <lvc:Axis Name="AxisDegreesCelsius" MinValue="{Binding AxisCustomVMDegreesCelsius.MinValue, Mode=TwoWay}" MaxValue="{Binding AxisCustomVMDegreesCelsius.MaxValue, Mode=TwoWay}" LabelFormatter="{Binding AxisCustomVMDegreesCelsius.Formatter}" ShowLabels="{Binding AxisYDegreesCelsiusIsVisibly, Mode=TwoWay}"  >
+                <lvc:Axis.Separator>
+                        <lvc:Separator Step="{Binding AxisCustomVMDegreesCelsius.Step, Mode=TwoWay}" IsEnabled="{Binding AxisYDegreesCelsiusIsEnabled, Mode=TwoWay}"></lvc:Separator>
+                </lvc:Axis.Separator>
+            </lvc:Axis>
+                <lvc:Axis  MinValue="370" MaxValue="450" LabelFormatter="{Binding FormatterMegawatts}" ShowLabels="{Binding AxisYMegawattsIsVisibly, Mode=TwoWay}" >
                 <lvc:Axis.Separator>
                     <lvc:Separator Step="5" IsEnabled="{Binding AxisYMegawattsIsEnabled}"></lvc:Separator>
                 </lvc:Axis.Separator>
             </lvc:Axis>
-            <lvc:Axis MinValue="1150" MaxValue="1550" LabelFormatter="{Binding FormatterAmperes}" Position="RightTop" ShowLabels="{Binding AxisYKilowattsIsVisibly}">
+                <lvc:Axis MinValue="1150" MaxValue="1550" LabelFormatter="{Binding FormatterAmperes}" Position="RightTop" ShowLabels="{Binding AxisYKilowattsIsVisibly, Mode=TwoWay}">
                 <lvc:Axis.Separator>
                     <lvc:Separator Step="25" IsEnabled="{Binding AxisYKilowattsIsEnabled}"></lvc:Separator>
                 </lvc:Axis.Separator>
             </lvc:Axis>
-            <lvc:Axis MinValue="490" MaxValue="510" LabelFormatter="{Binding FormatterKilowatts}" Position="RightTop" ShowLabels="{Binding AxisYAmperesIsVisibly}">
+                <lvc:Axis MinValue="490" MaxValue="510" LabelFormatter="{Binding FormatterKilowatts}" Position="RightTop" ShowLabels="{Binding AxisYAmperesIsVisibly, Mode=TwoWay}">
                 <lvc:Axis.Separator>
                     <lvc:Separator Step="1.25" IsEnabled="{Binding AxisYAmperesIsEnabled}"></lvc:Separator>
                 </lvc:Axis.Separator>
-            </lvc:Axis>
+            </lvc:Axis>-->
             
 
         </lvc:CartesianChart.AxisY>

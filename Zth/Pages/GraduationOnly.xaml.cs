@@ -52,8 +52,8 @@ namespace Zth.Pages
             VM.AnodeCoolerTemperatureIsVisibly = true;
             VM.CathodeCoolerTemperatureIsVisibly = true;
 
-            VM.AxisYDegreesCelsiusIsVisibly = true;
-            VM.AxisYMegawattsIsVisibly = true;
+            //VM.AxisYDegreesCelsiusIsVisibly = true;
+            //VM.AxisYMegawattsIsVisibly = true;
 
             VM.StartHeatingButtonIsEnabled = true;
             VM.CutButtonIsEnabled = false;
@@ -103,9 +103,11 @@ namespace Zth.Pages
             BottomPanelVM.RightButtonIsEnabled = true;
             VM.LineSeriesCursorRightVisibility = false;
             var (x1, x2) = MainChart.GetXRange();
-            MainChart.MainCartesianChart.AxisX.First().MinValue = x1;
-            MainChart.MainCartesianChart.AxisX.First().MaxValue = x2;
-            
+            VM.AxisCustomVMTime.MinValue = Math.Floor(x1);
+            VM.AxisCustomVMTime.MaxValue = Math.Ceiling(x2);
+            //MainChart.MainCartesianChart.AxisX.First().MinValue = x1 - 1;
+            //MainChart.MainCartesianChart.AxisX.First().MaxValue = x2 + 1;
+
         }
 
         private void CommonPage_Unloaded(object sender, RoutedEventArgs e)

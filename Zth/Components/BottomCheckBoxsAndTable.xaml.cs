@@ -22,5 +22,12 @@ namespace Zth.Components
         {
             InitializeComponent();
         }
+
+        private void CheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            var vm = DataContext as VM.CommonVM;
+            if (vm != null && vm.CheckboxParameterCheck != null)
+                vm.CheckboxParameterCheck();
+        }
     }
 }

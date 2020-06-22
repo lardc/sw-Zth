@@ -9,6 +9,8 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -35,39 +37,121 @@ namespace Zth.Components
             MainCartesianChart.DataTooltip = null;
         }
 
+        private void AdjustChart()
+        {
+            foreach (var i in MainCartesianChart.AxisY)
+            {
+                i.Separator.IsEnabled = false;
+                i.ShowLabels = false;
+            }
+
+            if (VM.ZthaIsEnabled | VM.ZthIsEnabled | VM.ZthkIsEnabled)
+            {
+                VM.AxisYDegreeCelsiusPerWattIsEnabled = true;
+            }
+
+            if (VM.HeatingCurrentIsEnabled | VM.HeatingPowerIsEnabled | VM.TemperatureSensitiveParameterIsEnabled | VM.AnodeBodyTemperatureIsEnabled | VM.CathodeBodyTemperatureIsEnabled
+            | VM.AnodeCoolerTemperatureIsEnabled | VM.CathodeCoolerTemperatureIsEnabled | VM.TemperatureStructureIsEnabled)
+            {
+                VM.AxisYDegreesCelsiusIsEnabled = true;
+            }
+
+
+            foreach (var i in MainCartesianChart.Series)
+            {
+                var axisX = MainCartesianChart.AxisX[i.ScalesXAt];
+                var axisY = MainCartesianChart.AxisY[i.ScalesYAt];
+
+                if (i.Values == null)
+                    continue;
+                if (i.Values.Count == 0)
+                    continue;
+
+                var minX = ((ChartValues<ObservablePoint>)i.Values).Min(m => m.X);
+                var maxX = ((ChartValues<ObservablePoint>)i.Values).Max(m => m.X);
+                var minY = ((ChartValues<ObservablePoint>)i.Values).Min(m => m.Y);
+                var maxY = ((ChartValues<ObservablePoint>)i.Values).Max(m => m.Y);
+
+
+                if (axisX.MinValue > Math.Pow(minX, 10))
+                {
+                    axisX.MinValue = Math.Log10(minX);
+                    axisX.Separator.Step = (axisX.MaxValue - axisX.MinValue + double.Epsilon) / 6;
+                }
+                while (Math.Pow(10, axisX.MaxValue) < maxX)
+                    axisX.MaxValue++;
+                //if (Math.Pow(10, axisX.MaxValue) < maxX)
+                //{
+                //    axisX.MaxValue = Math.Log10(maxX);
+                //    axisX.Separator.Step = (axisX.MaxValue - axisX.MinValue + double.Epsilon) / 6;
+                //}
+
+
+                if (axisY.MinValue > minY)
+                {
+                    axisY.MinValue = minY;
+                    axisY.Separator.Step = (axisY.MaxValue - axisY.MinValue) / 16;
+                }
+                if (axisY.MaxValue < maxY)
+                {
+                    axisY.MaxValue = maxY;
+                    axisY.Separator.Step = (axisY.MaxValue - axisY.MinValue) / 16;
+                }
+            }
+        
+        }
+
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
+            VM.CheckboxParameterCheck = () => AdjustChart();
+
             if (File.Exists(@"Dataset.csv") == false)
                 return;
 
-            var reader = new StreamReader(File.OpenRead(@"Dataset.csv"));
 
             MainCartesianChart.Series.Configuration = VM.Mapper;
 
-            var line = reader.ReadLine();
-            while (!reader.EndOfStream)
+            //var zthValues = 
+
+            Task.Factory.StartNew(() =>
             {
-                line = reader.ReadLine();
-                var values = line.Split(',', StringSplitOptions.RemoveEmptyEntries);
+                var lines = File.ReadAllLines(@"Dataset.csv").ToList();
+                lines.RemoveAt(0);
+                foreach (var line in lines)
+                {
+                    var values = line.Split(',', StringSplitOptions.RemoveEmptyEntries);
+                    Dispatcher.BeginInvoke(new Action(() =>
+                    {
+                        VM.HeatingCurrentChartValues.Add(new ObservablePoint(double.Parse(values[2].Replace(',', '.'), CultureInfo.InvariantCulture) * 1.2, double.Parse(values[3].Replace(',', '.'), CultureInfo.InvariantCulture) * 1.2));
+                        VM.HeatingPowerChartValues.Add(new ObservablePoint(double.Parse(values[2].Replace(',', '.'), CultureInfo.InvariantCulture) * 1.3, double.Parse(values[3].Replace(',', '.'), CultureInfo.InvariantCulture) * 1.3));
 
-                VM.HeatingCurrentChartValues.Add(new ObservablePoint(double.Parse(values[2].Replace(',', '.'), CultureInfo.InvariantCulture) * 1.2, double.Parse(values[3].Replace(',', '.'), CultureInfo.InvariantCulture) * 1.2));
-                VM.HeatingPowerChartValues.Add(new ObservablePoint(double.Parse(values[2].Replace(',', '.'), CultureInfo.InvariantCulture) * 1.3, double.Parse(values[3].Replace(',', '.'), CultureInfo.InvariantCulture) * 1.3));
+                        VM.TemperatureStructureChartValues.Add(new ObservablePoint(double.Parse(values[2].Replace(',', '.'), CultureInfo.InvariantCulture) / 1.5, double.Parse(values[3].Replace(',', '.'), CultureInfo.InvariantCulture) / 1.5));
+                        VM.CathodeCoolerTemperatureChartValues.Add(new ObservablePoint(double.Parse(values[2].Replace(',', '.'), CultureInfo.InvariantCulture) / 1.4, double.Parse(values[3].Replace(',', '.'), CultureInfo.InvariantCulture) / 1.4));
+                        VM.AnodeCoolerTemperatureChartValues.Add(new ObservablePoint(double.Parse(values[2].Replace(',', '.'), CultureInfo.InvariantCulture) / 1.3, double.Parse(values[3].Replace(',', '.'), CultureInfo.InvariantCulture) / 1.3));
+                        VM.CathodeBodyTemperatureChartValues.Add(new ObservablePoint(double.Parse(values[2].Replace(',', '.'), CultureInfo.InvariantCulture) / 1.2, double.Parse(values[3].Replace(',', '.'), CultureInfo.InvariantCulture) / 1.2));
+                        VM.AnodeBodyTemperatureChartValues.Add(new ObservablePoint(double.Parse(values[2].Replace(',', '.'), CultureInfo.InvariantCulture) / 1.1, double.Parse(values[3].Replace(',', '.'), CultureInfo.InvariantCulture) / 1.1));
+                        VM.TemperatureSensitiveParameterChartValues.Add(new ObservablePoint(double.Parse(values[2].Replace(',', '.'), CultureInfo.InvariantCulture) * 1.1, double.Parse(values[3].Replace(',', '.'), CultureInfo.InvariantCulture) * 1.1));
+
+                        AdjustChart();
+                        Thread.Sleep(10);
+                    }));
+                }
+                Dispatcher.BeginInvoke(new Action(() =>
+                {
+
+                    for (double x = 0.00005, y = 0.3; x < 1; x *= 4, y *= 1.1)
+                    {
+                        VM.ZthChartValues.Add(new ObservablePoint(x, y));
+                        VM.ZthaChartValues.Add(new ObservablePoint(x, y * 1.1));
+                        VM.ZthkChartValues.Add(new ObservablePoint(x, y * 1.2));
+                    }
+                    AdjustChart();
+                    Thread.Sleep(10);
+                }));
 
 
-                VM.TemperatureStructureChartValues.Add(new ObservablePoint(double.Parse(values[2].Replace(',', '.'), CultureInfo.InvariantCulture) / 1.5, double.Parse(values[3].Replace(',', '.'), CultureInfo.InvariantCulture) / 1.5));
-                VM.CathodeCoolerTemperatureChartValues.Add(new ObservablePoint(double.Parse(values[2].Replace(',', '.'), CultureInfo.InvariantCulture) / 1.4, double.Parse(values[3].Replace(',', '.'), CultureInfo.InvariantCulture) / 1.4));
-                VM.AnodeCoolerTemperatureChartValues.Add(new ObservablePoint(double.Parse(values[2].Replace(',', '.'), CultureInfo.InvariantCulture) / 1.3, double.Parse(values[3].Replace(',', '.'), CultureInfo.InvariantCulture) / 1.3));
-                VM.CathodeBodyTemperatureChartValues.Add(new ObservablePoint(double.Parse(values[2].Replace(',', '.'), CultureInfo.InvariantCulture) / 1.2, double.Parse(values[3].Replace(',', '.'), CultureInfo.InvariantCulture) / 1.2));
-                VM.AnodeBodyTemperatureChartValues.Add(new ObservablePoint(double.Parse(values[2].Replace(',', '.'), CultureInfo.InvariantCulture) / 1.1, double.Parse(values[3].Replace(',', '.'), CultureInfo.InvariantCulture) / 1.1));
-                VM.TemperatureSensitiveParameterChartValues.Add(new ObservablePoint(double.Parse(values[2].Replace(',', '.'), CultureInfo.InvariantCulture) * 1.1, double.Parse(values[3].Replace(',', '.'), CultureInfo.InvariantCulture) * 1.1));
-            }
+            });
 
-            for (double x = 0.00005, y = 0.3; x < 1; x *= 4, y *= 1.1)
-            {
-                VM.ZthChartValues.Add(new ObservablePoint(x, y));
-                VM.ZthaChartValues.Add(new ObservablePoint(x, y * 1.1));
-                VM.ZthkChartValues.Add(new ObservablePoint(x, y * 1.2));
-            }
         }
 
         private double GetYPoint(ChartValues<ObservablePoint> observablePoints, LineSeriesCursor lineSeriesCursor, int numberAxisY)
@@ -124,10 +208,9 @@ namespace Zth.Components
 
         public (double x1, double x2) GetXRange()
         {
-            return (
-                Extentions.ConvertToChartValues(MainCartesianChart, new Point(LineSeriesCursorLeft.Margin.Left + LineSeriesCursorLeft.ActualWidth / 2, 0), 0, 0).X,
-                Extentions.ConvertToChartValues(MainCartesianChart, new Point(LineSeriesCursorRight.Margin.Left + LineSeriesCursorRight.ActualWidth / 2, 0), 0, 0).X
-                );
+            double x1 = Extentions.ConvertToChartValues(MainCartesianChart, new Point(LineSeriesCursorLeft.Margin.Left + LineSeriesCursorLeft.ActualWidth / 2, 0), 0, 0).X;
+            double x2 = Extentions.ConvertToChartValues(MainCartesianChart, new Point(LineSeriesCursorRight.Margin.Left + LineSeriesCursorRight.ActualWidth / 2, 0), 0, 0).X;
+            return (Math.Min(x1,x2), Math.Max(x1,x2));
         }
 
         private void MainCartesianChart_MouseDown(object sender, MouseButtonEventArgs e)

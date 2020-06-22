@@ -45,10 +45,10 @@ namespace Zth.Pages
             VM.AnodeCoolerTemperatureIsVisibly = true;
             VM.CathodeCoolerTemperatureIsVisibly = true;
 
-            VM.AxisYAmperesIsVisibly = true;
-            VM.AxisYDegreesCelsiusIsVisibly = true;
-            VM.AxisYKilowattsIsVisibly = true;
-            VM.AxisYMegawattsIsVisibly = true;
+            //VM.AxisYAmperesIsVisibly = true;
+            //VM.AxisYDegreesCelsiusIsVisibly = true;
+            //VM.AxisYKilowattsIsVisibly = true;
+            //VM.AxisYMegawattsIsVisibly = true;
 
             VM.RecordingResultsButtonIsEnabled = VM.StopHeatingButtonIsEnabled = VM.StartHeatingPressed;
             VM.StartHeatingButtonIsEnabled = true;

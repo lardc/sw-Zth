@@ -10,6 +10,7 @@ using System.Windows;
 using System.Windows.Media;
 using LiveCharts;
 using LiveCharts.Wpf;
+using Zth.Components;
 
 namespace Zth.VM
 {
@@ -66,7 +67,7 @@ namespace Zth.VM
         public double Zth { get; set; }
 
         public bool HeatingCurrentIsEnabled { get; set; }
-        public bool HeatingPowerIsEnabled { get; set; }
+        public bool HeatingPowerIsEnabled { get; set; } 
         public bool TemperatureSensitiveParameterIsEnabled { get; set; }
         public bool AnodeBodyTemperatureIsEnabled { get; set; }
         public bool CathodeBodyTemperatureIsEnabled { get; set; }
@@ -119,6 +120,8 @@ namespace Zth.VM
         public ChartValues<ObservablePoint> ZthkChartValues { get; set; } = new ChartValues<ObservablePoint>();
         public ChartValues<ObservablePoint> ZthChartValues { get; set; } = new ChartValues<ObservablePoint>();
 
+        public Action CheckboxParameterCheck { get; set; }
+
 
         public SeriesCollection SeriesCollection { get; set; }
         //public bool AxisYDegreesCelsius { get; set; }
@@ -126,22 +129,51 @@ namespace Zth.VM
         //public bool AxisYDegreesAmperes { get; set; }
         //public bool AxisYDegreesKilowatts { get; set; }
 
-        public bool AxisYDegreesCelsiusIsEnabled { get; set; } = true;
-        public bool AxisYMegawattsIsEnabled { get; set; } = true;
-        public bool AxisYKilowattsIsEnabled { get; set; } = true;
-        public bool AxisYAmperesIsEnabled { get; set; } = true;
+        public bool AxisYDegreesCelsiusIsEnabled { get; set; }
+        public bool AxisYMegawattsIsEnabled { get; set; }
+        public bool AxisYKilowattsIsEnabled { get; set; }
+        public bool AxisYAmperesIsEnabled { get; set; }
+        public bool AxisYDegreeCelsiusPerWattIsEnabled { get; set; }
 
-        public bool AxisYDegreesCelsiusIsVisibly { get; set; }
-        public bool AxisYMegawattsIsVisibly { get; set; }
-        public bool AxisYKilowattsIsVisibly { get; set; }
-        public bool AxisYAmperesIsVisibly { get; set; }
-        public bool AxisYDegreeCelsiusPerWattIsVisibly { get; set; }
+        //public bool AxisYDegreesCelsiusIsVisibly { get; set; }
+        //public bool AxisYMegawattsIsVisibly { get; set; }
+        //public bool AxisYKilowattsIsVisibly { get; set; }
+        //public bool AxisYAmperesIsVisibly { get; set; }
+        //public bool AxisYDegreeCelsiusPerWattIsVisibly { get; set; }
 
         public double Base { get; set; } = 10;
 
-        
 
-        public Func<double, string> FormatterDegreeCelsiusPerWatt { get; set; } = value =>
+        public AxisCustomVM AxisCustomVMTime { get; set; } = new AxisCustomVM()
+        {
+            MinValue = -5,
+            MaxValue = 2,
+            Name = "сек",
+            Step = 1,
+            Base = 10
+        };
+
+          public AxisCustomVM AxisCustomVMDegreesCelsius { get; set; } = new AxisCustomVM()
+          {
+              MinValue = 55,
+              MaxValue = 95,
+              Name = Properties.Resource.UnitMeasurementDegreeCentigrade,
+              Step = 2.5,
+              StringFormat = value => Math.Round(value).ToString()
+          };
+
+        public AxisCustomVM AxisCustomVMDegreeCelsiusPerWatt { get; set; } = new AxisCustomVM()
+        {
+            MinValue = 0.2,
+            MaxValue = 1.0001,
+            Name = Properties.Resource.UnitMeasurementDegreesCelsiusInWatts,
+            Step = 0.05,
+            StringFormat = value => Math.Round(value,1).ToString("0.#")
+        };
+
+
+
+        public Func<double, string> Formatter { get; set; } = value =>
         {
             if (Math.Abs(1 - value) < 0.0001 )
                 return Properties.Resource.UnitMeasurementDegreeCentigrade;
@@ -150,6 +182,7 @@ namespace Zth.VM
                 return value.ToString("F1");
             return string.Empty;
         };
+
 
         public Func<double, string> FormatterDegreesCelsius { get; set; } = value =>
         {
@@ -214,7 +247,7 @@ namespace Zth.VM
         public CommonVM()
         {
             Mapper = Mappers.Xy<ObservablePoint>()
-             .X(point => Math.Log(point.X, Base)) //a 10 base log scale in the X axis
+             .X(point => Math.Log(point.X, AxisCustomVMTime.Base)) //a 10 base log scale in the X axis
              .Y(point => point.Y);
 
         }

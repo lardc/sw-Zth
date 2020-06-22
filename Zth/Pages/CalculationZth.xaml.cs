@@ -60,11 +60,11 @@ namespace Zth.Pages
             VM.ZthkIsVisibly = true;
             VM.ZthIsVisibly = true;
 
-            VM.AxisYDegreesCelsiusIsVisibly = true;
-            VM.AxisYMegawattsIsVisibly = true;
-            VM.AxisYAmperesIsVisibly = true;
-            VM.AxisYKilowattsIsVisibly = true;
-            VM.AxisYDegreeCelsiusPerWattIsVisibly = true;
+            //VM.AxisYDegreesCelsiusIsVisibly = true;
+            //VM.AxisYMegawattsIsVisibly = true;
+            //VM.AxisYAmperesIsVisibly = true;
+            //VM.AxisYKilowattsIsVisibly = true;
+            //VM.AxisYDegreeCelsiusPerWattIsVisibly = true;
 
         }
 
