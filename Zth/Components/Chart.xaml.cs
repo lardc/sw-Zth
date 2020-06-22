@@ -46,15 +46,15 @@ namespace Zth.Components
             }
 
             if (VM.ZthaIsEnabled | VM.ZthIsEnabled | VM.ZthkIsEnabled)
-            {
                 VM.AxisYDegreeCelsiusPerWattIsEnabled = true;
-            }
+            else
+                VM.AxisYDegreeCelsiusPerWattIsEnabled = false;
 
             if (VM.HeatingCurrentIsEnabled | VM.HeatingPowerIsEnabled | VM.TemperatureSensitiveParameterIsEnabled | VM.AnodeBodyTemperatureIsEnabled | VM.CathodeBodyTemperatureIsEnabled
             | VM.AnodeCoolerTemperatureIsEnabled | VM.CathodeCoolerTemperatureIsEnabled | VM.TemperatureStructureIsEnabled)
-            {
                 VM.AxisYDegreesCelsiusIsEnabled = true;
-            }
+            else
+                VM.AxisYDegreesCelsiusIsEnabled = false;
 
 
             foreach (var i in MainCartesianChart.Series)
@@ -90,20 +90,26 @@ namespace Zth.Components
                 if (axisY.MinValue > minY)
                 {
                     axisY.MinValue = minY;
-                    axisY.Separator.Step = (axisY.MaxValue - axisY.MinValue) / 16;
+                    axisY.Separator.Step = (axisY.MaxValue - axisY.MinValue ) / 16;
                 }
                 if (axisY.MaxValue < maxY)
                 {
                     axisY.MaxValue = maxY;
                     axisY.Separator.Step = (axisY.MaxValue - axisY.MinValue) / 16;
                 }
+
+                axisY.InvalidateArrange();
+                axisY.InvalidateMeasure();
+                axisY.InvalidateVisual();
             }
-        
+            
+
+
         }
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            if(VM != null)
+            if (VM != null)
                 VM.CheckboxParameterCheck = () => AdjustChart();
 
             if (File.Exists(@"Dataset.csv") == false)
@@ -134,21 +140,24 @@ namespace Zth.Components
                         VM.TemperatureSensitiveParameterChartValues.Add(new ObservablePoint(double.Parse(values[2].Replace(',', '.'), CultureInfo.InvariantCulture) * 1.1, double.Parse(values[3].Replace(',', '.'), CultureInfo.InvariantCulture) * 1.1));
 
                         AdjustChart();
-                        Thread.Sleep(10);
-                    }));
-                }
-                Dispatcher.BeginInvoke(new Action(() =>
-                {
 
-                    for (double x = 0.00005, y = 0.3; x < 1; x *= 4, y *= 1.1)
+                    }));
+                    Thread.Sleep(100);
+                }
+
+                for (double x = 0.00005, y = 0.3; x < 1; x *= 4, y *= 1.1)
+                {
+                    Dispatcher.BeginInvoke(new Action(() =>
                     {
                         VM.ZthChartValues.Add(new ObservablePoint(x, y));
                         VM.ZthaChartValues.Add(new ObservablePoint(x, y * 1.1));
                         VM.ZthkChartValues.Add(new ObservablePoint(x, y * 1.2));
-                    }
-                    AdjustChart();
-                    Thread.Sleep(10);
-                }));
+
+                        AdjustChart();
+                    }));
+                    Thread.Sleep(100);
+                }
+                
 
 
             });

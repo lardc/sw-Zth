@@ -26,12 +26,11 @@ namespace Zth.VM
         public Func<double, string> Formatter => value =>
          {
              int count = (int)Math.Round((MaxValue - MinValue) / Step);
-             //var number = Math.Round((value - MinValue) / Step);
              if (Math.Round(Math.Abs((value - MinValue) / Step)) == count)
                  return Name;
-             if (Math.Round(Math.Abs((value - MinValue) / Step)) % 2 == 0)
+             if (Math.Round((value - MinValue) / Step) % 2 == 0)
                  return StringFormat(value); 
-             if (Math.Round(Math.Abs((value - MinValue) / Step)) % 2 == 1)
+             if (Math.Round((value - MinValue) / Step) % 2 == 1)
                  return string.Empty;
              return StringFormat(value); 
          };

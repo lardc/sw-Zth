@@ -11,7 +11,7 @@
              d:DataContext="{d:DesignInstance vm:CommonVM }" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <lvc:CartesianChart Name="MainCartesianChart" x:FieldModifier="public"   MouseDown="MainCartesianChart_MouseDown" >
+        <lvc:CartesianChart Name="MainCartesianChart" x:FieldModifier="public" DisableAnimations="True" Hoverable ="False"  DataTooltip ="{x:Null}"  MouseDown="MainCartesianChart_MouseDown" >
             
             <lvc:CartesianChart.Resources >
                 <Style TargetType="lvc:LineSeries">
@@ -23,20 +23,20 @@
         <lvc:CartesianChart.AxisX>
                 <lvc:LogarithmicAxis  LabelFormatter="{Binding AxisCustomVMTime.FormatterLogarithmic}" MinValue="{Binding AxisCustomVMTime.MinValue, Mode=TwoWay}" MaxValue="{Binding AxisCustomVMTime.MaxValue, Mode=TwoWay}" Base="{Binding AxisCustomVMTime.Base}" >
                     <lvc:LogarithmicAxis.Separator>
-                        <lvc:Separator Step="1" Margin="0,0,0,15"/>
+                        <lvc:Separator Step="1" />
                     </lvc:LogarithmicAxis.Separator>
                 </lvc:LogarithmicAxis>
             </lvc:CartesianChart.AxisX>
         <lvc:CartesianChart.AxisY>
 
 
-                <lvc:Axis Name="AxisDegreeCelsiusPerWatt" MinValue="{Binding AxisCustomVMDegreeCelsiusPerWatt.MinValue, Mode=TwoWay}" MaxValue="{Binding AxisCustomVMDegreeCelsiusPerWatt.MaxValue, Mode=TwoWay}" LabelFormatter="{Binding AxisCustomVMDegreeCelsiusPerWatt.Formatter}" Position="LeftBottom" ShowLabels="{Binding AxisYDegreeCelsiusPerWattIsEnabled, Mode=TwoWay}">
+                <lvc:Axis Name="AxisDegreeCelsiusPerWatt" MinValue="{Binding AxisCustomVMDegreeCelsiusPerWatt.MinValue, Mode=TwoWay}" MaxValue="{Binding AxisCustomVMDegreeCelsiusPerWatt.MaxValue, Mode=TwoWay}" LabelFormatter="{Binding AxisCustomVMDegreeCelsiusPerWatt.Formatter}" Position="LeftBottom" ShowLabels="{Binding AxisYDegreeCelsiusPerWattIsEnabled, Mode=TwoWay}" Visibility="{Binding AxisYDegreeCelsiusPerWattIsEnabled, Converter={StaticResource B2VC}}">
                 <lvc:Axis.Separator>
                         <lvc:Separator  Step="{Binding AxisCustomVMDegreeCelsiusPerWatt.Step, Mode=TwoWay}" IsEnabled="{Binding AxisYDegreeCelsiusPerWattIsEnabled, Mode=TwoWay}"></lvc:Separator>
                 </lvc:Axis.Separator>
             </lvc:Axis>
 
-                <lvc:Axis Name="AxisDegreesCelsius" MinValue="{Binding AxisCustomVMDegreesCelsius.MinValue, Mode=TwoWay}" MaxValue="{Binding AxisCustomVMDegreesCelsius.MaxValue, Mode=TwoWay}" LabelFormatter="{Binding AxisCustomVMDegreesCelsius.Formatter}" ShowLabels="{Binding AxisYDegreesCelsiusIsEnabled, Mode=TwoWay}"  >
+                <lvc:Axis Name="AxisDegreesCelsius" MinValue="{Binding AxisCustomVMDegreesCelsius.MinValue, Mode=TwoWay}" MaxValue="{Binding AxisCustomVMDegreesCelsius.MaxValue, Mode=TwoWay}" LabelFormatter="{Binding AxisCustomVMDegreesCelsius.Formatter}" ShowLabels="{Binding AxisYDegreesCelsiusIsEnabled, Mode=TwoWay}" >
                     <lvc:Axis.Separator>
                         <lvc:Separator Step="{Binding AxisCustomVMDegreesCelsius.Step, Mode=TwoWay}" IsEnabled="{Binding AxisYDegreesCelsiusIsEnabled, Mode=TwoWay}"></lvc:Separator>
                     </lvc:Axis.Separator>
