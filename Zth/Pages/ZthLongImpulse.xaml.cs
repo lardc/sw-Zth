@@ -66,7 +66,6 @@ namespace Zth.Pages
             VM.CathodeBodyTemperatureIsVisibly = true;
             VM.AnodeCoolerTemperatureIsVisibly = true;
             VM.CathodeCoolerTemperatureIsVisibly = true;
-            VM.HeatingCurrentIsEnabled = true;
 
             //VM.AxisYAmperesIsVisibly = true;
             //VM.AxisYDegreesCelsiusIsVisibly = true;

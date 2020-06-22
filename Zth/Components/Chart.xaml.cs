@@ -103,7 +103,8 @@ namespace Zth.Components
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            VM.CheckboxParameterCheck = () => AdjustChart();
+            if(VM != null)
+                VM.CheckboxParameterCheck = () => AdjustChart();
 
             if (File.Exists(@"Dataset.csv") == false)
                 return;

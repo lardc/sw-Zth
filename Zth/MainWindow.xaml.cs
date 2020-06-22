@@ -35,7 +35,6 @@ namespace Zth
             FrameVM.SetParentFrameVM = (CommonVM commonVm) =>
            {
                commonVm.SetParentFrameVM = FrameVM.SetParentFrameVM;
-               commonVm.StartHeatingPressed = FrameVM.StartHeatingPressed;
                FrameVM = commonVm;
            };
 

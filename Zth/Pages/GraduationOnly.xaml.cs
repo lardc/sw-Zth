@@ -116,6 +116,8 @@ namespace Zth.Pages
                 BottomPanelVM.MiddleButtonContent = string.Empty;
             BottomPanelVM.MiddleButtonIsEnabled = false;
             BottomPanelVM.RightButtonContent = string.Empty;
+
+            TopPanelVm.WorkingModeString_ = null;
         }
     }
 }
