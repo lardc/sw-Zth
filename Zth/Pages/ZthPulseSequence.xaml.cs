@@ -58,6 +58,8 @@ namespace Zth.Pages
         {
             VM.StartMeasurementButtonEnabled = false;
             VM.StopMeasurementButtonEnabled = true;
+            VM.RightPanelTextBoxsIsEnabled = false;
+            Chart.SimulateStart();
         }
 
         private void StopMeasurement_Click(object sender, RoutedEventArgs e)
@@ -65,6 +67,7 @@ namespace Zth.Pages
             VM.StopMeasurementButtonEnabled = false;
             BottomPanelVM.RightButtonIsEnabled = true;
             VM.LineSeriesCursorLeftVisibility = true;
+            Chart.SimulateStop();
         }
 
         private void CommonPage_Unloaded(object sender, RoutedEventArgs e)

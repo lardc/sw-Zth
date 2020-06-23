@@ -13,6 +13,12 @@
         <Setter Property="BorderThickness" Value="3" />
         <Setter Property="HorizontalContentAlignment" Value="Right"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Style.Triggers>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="Padding" Value="43,7,16,7" />
+            </Trigger>
+        </Style.Triggers>
     </Style>
 
 

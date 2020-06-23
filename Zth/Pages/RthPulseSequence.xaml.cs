@@ -73,6 +73,7 @@ namespace Zth.Pages
             VM.StartHeatingButtonIsEnabled = true;
             VM.StartHeatingPressed = true;
             VM.RecordingResultsButtonIsEnabled = true;
+            Chart.SimulateStart();
         }
 
         private void RecordingResults_Click(object sender, RoutedEventArgs e)
@@ -80,7 +81,8 @@ namespace Zth.Pages
             VM.StartHeatingButtonIsEnabled = false;
             VM.RecordingResultsButtonIsEnabled = false;
             BottomPanelVM.RightButtonIsEnabled = true;
-
+            VM.RightPanelTextBoxsIsEnabled = false;
+            Chart.SimulateStop();
         }
 
         private void StopHeating_Click(object sender, RoutedEventArgs e)

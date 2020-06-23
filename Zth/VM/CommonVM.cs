@@ -47,9 +47,16 @@ namespace Zth.VM
         #endregion
 
 
+        //[AlsoNotifyFor(nameof(HideTableValues))]
+        //public bool ShowTableValues { get; set; }
+        //public bool HideTableValues => !ShowTableValues;
+
+
         public bool LineSeriesCursorLeftVisibility { get; set; } 
         public bool LineSeriesCursorRightVisibility { get; set; }
 
+
+        public bool RightPanelTextBoxsIsEnabled { get; set; } = true;
 
         #region Bottom parameters
 

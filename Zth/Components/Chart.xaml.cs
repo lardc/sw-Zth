@@ -102,9 +102,79 @@ namespace Zth.Components
                 axisY.InvalidateMeasure();
                 axisY.InvalidateVisual();
             }
-            
+        }
 
+        private CancellationTokenSource _simulateCancellationTokenSource = new CancellationTokenSource();
+        public void SimulateStop()
+        {
+            _simulateCancellationTokenSource.Cancel();
+        }
 
+        public void SimulateStart()
+        {
+            Task.Factory.StartNew(() =>
+            {
+                var lines = File.ReadAllLines(@"Dataset.csv").ToList();
+                lines.RemoveAt(0);
+                foreach (var line in lines)
+                {
+                    if (_simulateCancellationTokenSource.IsCancellationRequested)
+                        return;
+                    var values = line.Split(',', StringSplitOptions.RemoveEmptyEntries);
+                    Dispatcher.BeginInvoke(new Action(() =>
+                    {
+
+                        VM.HeatingCurrent = double.Parse(values[3].Replace(',', '.'), CultureInfo.InvariantCulture) * 1.2;
+                        VM.HeatingCurrentChartValues.Add(new ObservablePoint(double.Parse(values[2].Replace(',', '.'), CultureInfo.InvariantCulture) * 1.2, double.Parse(values[3].Replace(',', '.'), CultureInfo.InvariantCulture) * 1.2));
+
+                        VM.HeatingPower = double.Parse(values[3].Replace(',', '.'), CultureInfo.InvariantCulture) * 1.3;
+                        VM.HeatingPowerChartValues.Add(new ObservablePoint(double.Parse(values[2].Replace(',', '.'), CultureInfo.InvariantCulture) * 1.3, double.Parse(values[3].Replace(',', '.'), CultureInfo.InvariantCulture) * 1.3));
+
+                        VM.TemperatureStructure = double.Parse(values[3].Replace(',', '.'), CultureInfo.InvariantCulture) / 1.5;
+                        VM.TemperatureStructureChartValues.Add(new ObservablePoint(double.Parse(values[2].Replace(',', '.'), CultureInfo.InvariantCulture) / 1.5, double.Parse(values[3].Replace(',', '.'), CultureInfo.InvariantCulture) / 1.5));
+
+                        VM.CathodeCoolerTemperature = double.Parse(values[3].Replace(',', '.'), CultureInfo.InvariantCulture) / 1.4;
+                        VM.CathodeCoolerTemperatureChartValues.Add(new ObservablePoint(double.Parse(values[2].Replace(',', '.'), CultureInfo.InvariantCulture) / 1.4, double.Parse(values[3].Replace(',', '.'), CultureInfo.InvariantCulture) / 1.4));
+
+                        VM.AnodeCoolerTemperature = double.Parse(values[3].Replace(',', '.'), CultureInfo.InvariantCulture) / 1.3;
+                        VM.AnodeCoolerTemperatureChartValues.Add(new ObservablePoint(double.Parse(values[2].Replace(',', '.'), CultureInfo.InvariantCulture) / 1.3, double.Parse(values[3].Replace(',', '.'), CultureInfo.InvariantCulture) / 1.3));
+
+                        VM.CathodeBodyTemperature = double.Parse(values[3].Replace(',', '.'), CultureInfo.InvariantCulture) / 1.2;
+                        VM.CathodeBodyTemperatureChartValues.Add(new ObservablePoint(double.Parse(values[2].Replace(',', '.'), CultureInfo.InvariantCulture) / 1.2, double.Parse(values[3].Replace(',', '.'), CultureInfo.InvariantCulture) / 1.2));
+
+                        VM.AnodeBodyTemperature = double.Parse(values[3].Replace(',', '.'), CultureInfo.InvariantCulture) / 1.1;
+                        VM.AnodeBodyTemperatureChartValues.Add(new ObservablePoint(double.Parse(values[2].Replace(',', '.'), CultureInfo.InvariantCulture) / 1.1, double.Parse(values[3].Replace(',', '.'), CultureInfo.InvariantCulture) / 1.1));
+
+                        VM.TemperatureSensitiveParameter = double.Parse(values[3].Replace(',', '.'), CultureInfo.InvariantCulture) * 1.1;
+                        VM.TemperatureSensitiveParameterChartValues.Add(new ObservablePoint(double.Parse(values[2].Replace(',', '.'), CultureInfo.InvariantCulture) * 1.1, double.Parse(values[3].Replace(',', '.'), CultureInfo.InvariantCulture) * 1.1));
+
+                        AdjustChart();
+
+                    }));
+                    Thread.Sleep(100);
+                }
+
+                for (double x = 0.00005, y = 0.3; x < 1; x *= 4, y *= 1.1)
+                {
+                    if (_simulateCancellationTokenSource.IsCancellationRequested)
+                        return;
+                    Dispatcher.BeginInvoke(new Action(() =>
+                    {
+                        VM.Zth = y;
+                        VM.ZthChartValues.Add(new ObservablePoint(x, y));
+
+                        VM.Ztha = y * 1.1;
+                        VM.ZthaChartValues.Add(new ObservablePoint(x, y * 1.1));
+
+                        VM.Zthk = y * 1.2;
+                        VM.ZthkChartValues.Add(new ObservablePoint(x, y * 1.2));
+
+                        AdjustChart();
+                    }));
+                    Thread.Sleep(100);
+                }
+
+            }, _simulateCancellationTokenSource.Token);
         }
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
@@ -120,47 +190,7 @@ namespace Zth.Components
 
             //var zthValues = 
 
-            Task.Factory.StartNew(() =>
-            {
-                var lines = File.ReadAllLines(@"Dataset.csv").ToList();
-                lines.RemoveAt(0);
-                foreach (var line in lines)
-                {
-                    var values = line.Split(',', StringSplitOptions.RemoveEmptyEntries);
-                    Dispatcher.BeginInvoke(new Action(() =>
-                    {
-                        VM.HeatingCurrentChartValues.Add(new ObservablePoint(double.Parse(values[2].Replace(',', '.'), CultureInfo.InvariantCulture) * 1.2, double.Parse(values[3].Replace(',', '.'), CultureInfo.InvariantCulture) * 1.2));
-                        VM.HeatingPowerChartValues.Add(new ObservablePoint(double.Parse(values[2].Replace(',', '.'), CultureInfo.InvariantCulture) * 1.3, double.Parse(values[3].Replace(',', '.'), CultureInfo.InvariantCulture) * 1.3));
-
-                        VM.TemperatureStructureChartValues.Add(new ObservablePoint(double.Parse(values[2].Replace(',', '.'), CultureInfo.InvariantCulture) / 1.5, double.Parse(values[3].Replace(',', '.'), CultureInfo.InvariantCulture) / 1.5));
-                        VM.CathodeCoolerTemperatureChartValues.Add(new ObservablePoint(double.Parse(values[2].Replace(',', '.'), CultureInfo.InvariantCulture) / 1.4, double.Parse(values[3].Replace(',', '.'), CultureInfo.InvariantCulture) / 1.4));
-                        VM.AnodeCoolerTemperatureChartValues.Add(new ObservablePoint(double.Parse(values[2].Replace(',', '.'), CultureInfo.InvariantCulture) / 1.3, double.Parse(values[3].Replace(',', '.'), CultureInfo.InvariantCulture) / 1.3));
-                        VM.CathodeBodyTemperatureChartValues.Add(new ObservablePoint(double.Parse(values[2].Replace(',', '.'), CultureInfo.InvariantCulture) / 1.2, double.Parse(values[3].Replace(',', '.'), CultureInfo.InvariantCulture) / 1.2));
-                        VM.AnodeBodyTemperatureChartValues.Add(new ObservablePoint(double.Parse(values[2].Replace(',', '.'), CultureInfo.InvariantCulture) / 1.1, double.Parse(values[3].Replace(',', '.'), CultureInfo.InvariantCulture) / 1.1));
-                        VM.TemperatureSensitiveParameterChartValues.Add(new ObservablePoint(double.Parse(values[2].Replace(',', '.'), CultureInfo.InvariantCulture) * 1.1, double.Parse(values[3].Replace(',', '.'), CultureInfo.InvariantCulture) * 1.1));
-
-                        AdjustChart();
-
-                    }));
-                    Thread.Sleep(100);
-                }
-
-                for (double x = 0.00005, y = 0.3; x < 1; x *= 4, y *= 1.1)
-                {
-                    Dispatcher.BeginInvoke(new Action(() =>
-                    {
-                        VM.ZthChartValues.Add(new ObservablePoint(x, y));
-                        VM.ZthaChartValues.Add(new ObservablePoint(x, y * 1.1));
-                        VM.ZthkChartValues.Add(new ObservablePoint(x, y * 1.2));
-
-                        AdjustChart();
-                    }));
-                    Thread.Sleep(100);
-                }
-                
-
-
-            });
+          
 
         }
 

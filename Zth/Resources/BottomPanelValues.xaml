@@ -9,14 +9,24 @@
     </Style>
 
     <Style TargetType="CheckBox" BasedOn="{StaticResource {x:Type CheckBox}}">
-        <Setter Property="Margin" Value="5,0,5,0"/>
+        <Setter Property="Margin" Value="0,0,5,0"/>
     </Style>
 
 
     <Style TargetType="Border">
+        <Setter Property="SnapsToDevicePixels" Value="True" />
         <Setter Property="Padding" Value="5,0,5,0"/>
-        <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="BorderBrush" Value="#ff707070"/>
+        <Setter Property="BorderThickness" Value="1,1,1,1"/>
+        <Setter Property="Margin" Value="-.5"/>
+        <!--<Style.Triggers>
+            <Trigger Property="Grid.Row" Value="0">
+                <Setter Property="BorderThickness" Value="1,1,1,1"/>
+            </Trigger>
+            <Trigger Property="Grid.Row" Value="1">
+                <Setter Property="BorderThickness" Value="1,1,0,1"/>
+            </Trigger>
+        </Style.Triggers>-->
     </Style>
     
     

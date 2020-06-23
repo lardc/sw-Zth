@@ -80,10 +80,14 @@ namespace Zth.Pages
         {
             VM.StopHeatingButtonIsEnabled = true;
             VM.StartHeatingPressed = true;
+            VM.RightPanelTextBoxsIsEnabled = false;
+            Chart.SimulateStart();
         }
 
         private void StopHeating_Click(object sender, RoutedEventArgs e)
         {
+            VM.AmplitudeControlCurrentTextBoxIsEnabled = false;
+            VM.DurationHeatingCurrentPulseTextBoxIsEnabled = false;
             VM.StopHeatingButtonIsEnabled = false;
             VM.StartHeatingButtonIsEnabled = false;
             VM.StopGraduationButtonIsEnabled = true;
@@ -95,6 +99,8 @@ namespace Zth.Pages
             VM.CutButtonIsEnabled = true;
             VM.LineSeriesCursorLeftVisibility = true;
             VM.LineSeriesCursorRightVisibility = true;
+            VM.RightPanelTextBoxsIsEnabled = false;
+            Chart.SimulateStop();
         }
 
         private void Cut_Click(object sender, RoutedEventArgs e)
@@ -102,7 +108,7 @@ namespace Zth.Pages
             VM.CutButtonIsEnabled = false;
             BottomPanelVM.RightButtonIsEnabled = true;
             VM.LineSeriesCursorRightVisibility = false;
-            var (x1, x2) = MainChart.GetXRange();
+            var (x1, x2) = Chart.GetXRange();
             VM.AxisCustomVMTime.MinValue = Math.Floor(x1);
             VM.AxisCustomVMTime.MaxValue = Math.Ceiling(x2);
             //MainChart.MainCartesianChart.AxisX.First().MinValue = x1 - 1;

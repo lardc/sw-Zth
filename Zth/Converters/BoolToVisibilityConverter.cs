@@ -10,6 +10,7 @@ namespace Zth.Converters
     [ValueConversion(typeof(bool), typeof(Visibility))]
     public sealed class BoolToVisibilityConverter : IValueConverter
     {
+        public bool Inverse { get; set; }
         public Visibility TrueValue { get; set; }
         public Visibility FalseValue { get; set; }
 
@@ -25,7 +26,7 @@ namespace Zth.Converters
         {
             if (!(value is bool))
                 return null;
-            return (bool)value ? TrueValue : FalseValue;
+            return (bool)value ^ Inverse ? TrueValue : FalseValue;
         }
 
         public object ConvertBack(object value, Type targetType,

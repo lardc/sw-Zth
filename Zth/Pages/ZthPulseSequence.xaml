@@ -45,28 +45,28 @@
                     <RowDefinition Height="auto" />
                 </Grid.RowDefinitions>
                 <TextBlock Grid.Row="0" Grid.Column="0" Text="Длительность первого импульса, мс" />
-                <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Path=DurationHeatingCurrentPulse,  ConverterParameter='100.1' }" />
+                <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Path=FirstPulseDuration,  ConverterParameter='100.1' }" IsEnabled="{Binding RightPanelTextBoxsIsEnabled}"/>
 
                 <TextBlock Grid.Row="1" Grid.Column="0" Text="Длительность последнего импульса, с" />
-                <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding PauseDuration}" />
+                <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding LastPulseDuration}" IsEnabled="{Binding RightPanelTextBoxsIsEnabled}"/>
 
                 <TextBlock Grid.Row="2" Grid.Column="0" Text="Длительность паузы между соседними импульсами, %" />
-                <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding AmplitudeHeatingCurrent}" />
+                <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding PauseDurationBetweenAdjacentPulses}" IsEnabled="{Binding RightPanelTextBoxsIsEnabled}"/>
 
                 <TextBlock Grid.Row="3" Grid.Column="0" Text="Амплитуда импульса импульсного греющего тока, А" />
-                <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding AmplitudeControlCurrent}" />
+                <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding AmplitudePulsePulsedHeatingCurrent}" IsEnabled="{Binding RightPanelTextBoxsIsEnabled}"/>
 
                 <TextBlock Grid.Row="4" Grid.Column="0" Text="Амплитуда импульса греющего тока, А" />
-                <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding AmplitudeMeasuringCurrent}" />
+                <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding AmplitudeHeatingCurrentPulse}" IsEnabled="{Binding RightPanelTextBoxsIsEnabled}"/>
 
                 <TextBlock Grid.Row="5" Grid.Column="0" Text="Амплитуда тока управления, А" />
-                <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding DelayTimeTspMeasurements}" />
+                <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding AmplitudeControlCurrent}" IsEnabled="{Binding RightPanelTextBoxsIsEnabled}"/>
 
                 <TextBlock Grid.Row="6" Grid.Column="0" Text="Амплитуда измерительного тока, А" />
-                <TextBox Grid.Row="6" Grid.Column="1" Text="{Binding DelayTimeTspMeasurements}" />
+                <TextBox Grid.Row="6" Grid.Column="1" Text="{Binding AmplitudeMeasuringCurrent}" IsEnabled="{Binding RightPanelTextBoxsIsEnabled}"/>
 
                 <TextBlock Grid.Row="7" Grid.Column="0" Text="Время задержки измерения ТЧП, мкс" />
-                <TextBox Grid.Row="7" Grid.Column="1" Text="{Binding DelayTimeTspMeasurements}" />
+                <TextBox Grid.Row="7" Grid.Column="1" Text="{Binding TSPMeasurementDelayTime}" IsEnabled="{Binding RightPanelTextBoxsIsEnabled}"/>
 
                 <Button Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2" Click="StartMeasurement_Click" IsEnabled="{Binding StartMeasurementButtonEnabled}" Style="{StaticResource ButtonRightPanelGreen}" Content="Старт измерение" />
 
@@ -78,7 +78,7 @@
                     <RowDefinition Height="*" />
                     <RowDefinition Height="auto" />
                 </Grid.RowDefinitions>
-                <components:Chart Grid.Row="0"/>
+                <components:Chart x:Name="Chart" Grid.Row="0"/>
                 <components:BottomCheckBoxsAndTable HorizontalAlignment="Center" Grid.Row="1">
 
                 </components:BottomCheckBoxsAndTable>

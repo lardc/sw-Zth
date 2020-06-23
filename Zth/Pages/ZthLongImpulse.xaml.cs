@@ -30,6 +30,7 @@ namespace Zth.Pages
         {
             VM.StopHeatingButtonIsEnabled = true;
             VM.StartHeatingPressed = true;
+            Chart.SimulateStart();
         }
 
         private void StopHeating_Click(object sender, RoutedEventArgs e)
@@ -37,6 +38,7 @@ namespace Zth.Pages
             VM.StopHeatingButtonIsEnabled = false;
             VM.StartHeatingButtonIsEnabled = false;
             VM.StopMeasurementButtonIsEnabled = true;
+            VM.RightPanelTextBoxsIsEnabled = false;
         }
 
         private void StopMeasurement_Click(object sender, RoutedEventArgs e)
@@ -44,6 +46,7 @@ namespace Zth.Pages
             VM.StopMeasurementButtonIsEnabled = false;
             BottomPanelVM.RightButtonIsEnabled = true;
             VM.LineSeriesCursorLeftVisibility = true;
+            Chart.SimulateStop();
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)

@@ -82,7 +82,7 @@
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="auto"/>
-                            <ColumnDefinition Width="0"/>
+                            <ColumnDefinition Width="5"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <Border x:Name="Border" Width="26" Height="26" CornerRadius="0" BorderThickness="1" Background="{TemplateBinding Background}" VerticalAlignment="Center" HorizontalAlignment="Center" BorderBrush="{TemplateBinding BorderBrush}">

@@ -43,19 +43,19 @@
                     <RowDefinition Height="auto" />
                 </Grid.RowDefinitions>
                 <TextBlock Grid.Row="0" Grid.Column="0" Text="{x:Static res:Resource.DurationPowerPulse }" />
-                <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Path=DurationPowerPulse,  ConverterParameter='100.1' }" />
+                <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Path=DurationPowerPulse,  ConverterParameter='100.1' }" IsEnabled="{Binding RightPanelTextBoxsIsEnabled}" />
 
                 <TextBlock Grid.Row="1" Grid.Column="0" Text="{x:Static res:Resource.AmplitudeHeatingCurrent }" />
-                <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding AmplitudeHeatingCurrent}" />
+                <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding AmplitudeHeatingCurrent}" IsEnabled="{Binding RightPanelTextBoxsIsEnabled}"/>
 
                 <TextBlock Grid.Row="2" Grid.Column="0" Text="{x:Static res:Resource.AmplitudeControlCurrent }" />
-                <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding AmplitudeControlCurrent}" />
+                <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding AmplitudeControlCurrent}" IsEnabled="{Binding RightPanelTextBoxsIsEnabled}"/>
 
                 <TextBlock Grid.Row="3" Grid.Column="0" Text="{x:Static res:Resource.AmplitudeMeasuringCurrent }" />
-                <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding AmplitudeMeasuringCurrent}" />
+                <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding AmplitudeMeasuringCurrent}" IsEnabled="{Binding RightPanelTextBoxsIsEnabled}"/>
 
                 <TextBlock Grid.Row="4" Grid.Column="0" Text="{x:Static res:Resource.DelayTimeTspMeasurements }" />
-                <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding DelayTimeTspMeasurements}" />
+                <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding DelayTimeTspMeasurements}" IsEnabled="{Binding RightPanelTextBoxsIsEnabled}"/>
 
                 <Button Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Click="StartHeating_Click" Style="{StaticResource ButtonRightPanelGreen}" IsEnabled="{Binding StartHeatingButtonIsEnabled}"  Content="{Binding StartHeatingContent}" />
 
@@ -68,7 +68,7 @@
                     <RowDefinition Height="*" />
                     <RowDefinition Height="auto" />
                 </Grid.RowDefinitions>
-                <components:Chart/>
+                <components:Chart x:Name="Chart"/>
                 <components:BottomCheckBoxsAndTable HorizontalAlignment="Center" Grid.Row="1">
                     
                 </components:BottomCheckBoxsAndTable>
