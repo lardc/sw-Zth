@@ -74,7 +74,7 @@ namespace Zth.VM
         public double Zth { get; set; }
 
         public bool HeatingCurrentIsEnabled { get; set; }
-        public bool HeatingPowerIsEnabled { get; set; } 
+        public bool HeatingPowerIsEnabled { get; set; }
         public bool TemperatureSensitiveParameterIsEnabled { get; set; }
         public bool AnodeBodyTemperatureIsEnabled { get; set; }
         public bool CathodeBodyTemperatureIsEnabled { get; set; }
@@ -86,7 +86,7 @@ namespace Zth.VM
         public bool ZthIsEnabled { get; set; }
 
 
-        public bool HeatingCurrentIsVisibly { get; set; } 
+        public bool HeatingCurrentIsVisibly { get; set; }  
         public bool HeatingPowerIsVisibly{ get; set; } 
         public bool TemperatureSensitiveParameterIsVisibly{ get; set; } 
         public bool AnodeBodyTemperatureIsVisibly{ get; set; } 

@@ -66,6 +66,7 @@ namespace Zth.Pages
             //VM.AxisYKilowattsIsVisibly = true;
             //VM.AxisYDegreeCelsiusPerWattIsVisibly = true;
 
+            MainChart.SimulateStart();
         }
 
     

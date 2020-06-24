@@ -86,21 +86,86 @@ namespace Zth.Components
                 //    axisX.Separator.Step = (axisX.MaxValue - axisX.MinValue + double.Epsilon) / 6;
                 //}
 
+                while (axisY.MinValue  > minY || axisY.MaxValue  < maxY)
+                {
+                    if (axisY.MinValue > minY)
+                        axisY.MinValue -= axisY.Separator.Step;
+                    if (axisY.MaxValue  < maxY)
+                        axisY.MaxValue += axisY.Separator.Step;
+                    axisY.Separator.Step += axisY.Separator.Step / 16;
 
-                if (axisY.MinValue > minY)
-                {
-                    axisY.MinValue = minY;
-                    axisY.Separator.Step = (axisY.MaxValue - axisY.MinValue ) / 16;
-                }
-                if (axisY.MaxValue < maxY)
-                {
-                    axisY.MaxValue = maxY;
-                    axisY.Separator.Step = (axisY.MaxValue - axisY.MinValue) / 16;
                 }
 
-                axisY.InvalidateArrange();
-                axisY.InvalidateMeasure();
-                axisY.InvalidateVisual();
+                //while (axisY.MinValue + axisY.Separator.Step  > minY || axisY.MaxValue - axisY.Separator.Step  < maxY)
+                //{
+                //    if (axisY.MinValue + axisY.Separator.Step   > minY)
+                //        axisY.MinValue -= axisY.Separator.Step;
+                //    if(axisY.MaxValue - axisY.Separator.Step < maxY  )
+                //        axisY.MaxValue += axisY.Separator.Step;
+                //    axisY.Separator.Step += axisY.Separator.Step / 16;
+
+                //}
+
+                //while (axisY.MinValue > minY)
+                //{
+                //    //var newAxis = new Axis();
+                //    //newAxis.MinValue = axisY.MinValue - axisY.Separator.Step;
+                //    //newAxis.MaxValue = axisY.MaxValue;
+                //    //newAxis.Separator = axisY.Separator;
+                //    //newAxis.Separator = new LiveCharts.Wpf.Separator()
+                //    //{
+                //    //    Step = axisY.Separator.Step + axisY.Separator.Step / 16
+                //    //};
+
+
+
+                //    axisY.MinValue -= axisY.Separator.Step;
+                //    axisY.Separator.Step += axisY.Separator.Step / 16;
+                //    axisY.MaxValue = axisY.MinValue + axisY.Separator.Step * 16;
+                //}
+
+                //while (axisY.MaxValue < maxY)
+                //{
+                //    axisY.Separator.Step += axisY.Separator.Step / 16;
+                //    axisY.MaxValue = axisY.MinValue + axisY.Separator.Step * 16;
+                //    break;
+                //    //var minValueProperty = BindingOperations.GetBinding(axisY, Axis.MinValueProperty);
+                //    //var maxValueProperty = BindingOperations.GetBinding(axisY, Axis.MaxValueProperty);
+                //    //var labelFormatterProperty = BindingOperations.GetBinding(axisY, Axis.LabelFormatterProperty);
+                //    //var showLabelsProperty = BindingOperations.GetBinding(axisY, Axis.ShowLabelsProperty);
+
+                //    //var isEnabledProperty = BindingOperations.GetBinding(axisY.Separator, IsEnabledProperty);
+                //    //var stepProperty = BindingOperations.GetBinding(axisY.Separator, LiveCharts.Wpf.Separator.StepProperty);
+
+                //    //var newAxisY = new Axis();
+                //    //newAxisY.SetBinding(Axis.MinValueProperty, minValueProperty);
+                //    //newAxisY.SetBinding(Axis.MaxValueProperty, maxValueProperty);
+                //    //newAxisY.SetBinding(Axis.LabelFormatterProperty, labelFormatterProperty);
+                //    //newAxisY.SetBinding(Axis.ShowLabelsProperty, showLabelsProperty);
+
+                //    //newAxisY.Separator = new LiveCharts.Wpf.Separator();
+                //    //newAxisY.Separator.SetBinding(IsEnabledProperty, isEnabledProperty);
+                //    //newAxisY.Separator.SetBinding(LiveCharts.Wpf.Separator.StepProperty, stepProperty);
+
+                //    //newAxisY.MaxValue = maxY;
+                //    //newAxisY.Separator.Step = (newAxisY.MaxValue - newAxisY.MinValue) / 16;
+
+                //    //MainCartesianChart.AxisY.RemoveAt(1);
+                //    //MainCartesianChart.AxisY.Insert(0, newAxisY);
+
+
+                //    //axisY.Separator.Step = (maxY - minY) / 16;
+                //    //axisY.MaxValue = maxY - axisY.Separator.Step / 1000;
+
+                //    axisY.MaxValue += axisY.Separator.Step;
+                //    axisY.Separator.Step += axisY.Separator.Step / 16;
+
+                //    //MainCartesianChart.AxisY.RemoveAt(1);
+                //    //MainCartesianChart.AxisY.Insert(0, axisY);
+
+                //}
+
+
             }
         }
 
@@ -125,10 +190,10 @@ namespace Zth.Components
                     {
 
                         VM.HeatingCurrent = double.Parse(values[3].Replace(',', '.'), CultureInfo.InvariantCulture) * 1.2;
-                        VM.HeatingCurrentChartValues.Add(new ObservablePoint(double.Parse(values[2].Replace(',', '.'), CultureInfo.InvariantCulture) * 1.2, double.Parse(values[3].Replace(',', '.'), CultureInfo.InvariantCulture) * 1.2));
+                        VM.HeatingCurrentChartValues.Add(new ObservablePoint(double.Parse(values[2].Replace(',', '.'), CultureInfo.InvariantCulture) * 1.2, double.Parse(values[3].Replace(',', '.'), CultureInfo.InvariantCulture) * 0.3));
 
                         VM.HeatingPower = double.Parse(values[3].Replace(',', '.'), CultureInfo.InvariantCulture) * 1.3;
-                        VM.HeatingPowerChartValues.Add(new ObservablePoint(double.Parse(values[2].Replace(',', '.'), CultureInfo.InvariantCulture) * 1.3, double.Parse(values[3].Replace(',', '.'), CultureInfo.InvariantCulture) * 1.3));
+                        VM.HeatingPowerChartValues.Add(new ObservablePoint(double.Parse(values[2].Replace(',', '.'), CultureInfo.InvariantCulture) * 1.3, double.Parse(values[3].Replace(',', '.'), CultureInfo.InvariantCulture) / 1.3));
 
                         VM.TemperatureStructure = double.Parse(values[3].Replace(',', '.'), CultureInfo.InvariantCulture) / 1.5;
                         VM.TemperatureStructureChartValues.Add(new ObservablePoint(double.Parse(values[2].Replace(',', '.'), CultureInfo.InvariantCulture) / 1.5, double.Parse(values[3].Replace(',', '.'), CultureInfo.InvariantCulture) / 1.5));
@@ -151,8 +216,11 @@ namespace Zth.Components
                         AdjustChart();
 
                     }));
-                    Thread.Sleep(100);
+                    Thread.Sleep(10);
+                  
                 }
+
+           
 
                 for (double x = 0.00005, y = 0.3; x < 1; x *= 4, y *= 1.1)
                 {
