@@ -33,29 +33,29 @@
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            <CheckBox Width="110" Grid.Column="0" IsChecked="{Binding HeatingCurrentIsEnabled}" Visibility="{Binding HeatingCurrentIsVisibly, Converter={StaticResource B2VC}}"
+            <CheckBox Width="100" Grid.Column="0" IsChecked="{Binding HeatingCurrentIsEnabled}" Visibility="{Binding HeatingCurrentIsVisibly, Converter={StaticResource B2VC}}"
                       Content="{Binding Converter={StaticResource TLB}, ConverterParameter={x:Static res:Resource.HeatingCurrent}}" Foreground="{Binding HeatingCurrentBrush}" Checked="CheckBox_Checked" Unchecked="CheckBox_Checked" />
-            <CheckBox Width="110" Grid.Column="1" IsChecked="{Binding HeatingPowerIsEnabled}" Visibility="{Binding HeatingPowerIsVisibly, Converter={StaticResource B2VC}}"
+            <CheckBox Width="100" Grid.Column="1" IsChecked="{Binding HeatingPowerIsEnabled}" Visibility="{Binding HeatingPowerIsVisibly, Converter={StaticResource B2VC}}"
                       Content="{Binding Converter={StaticResource TLB}, ConverterParameter={x:Static res:Resource.HeatingPower}}" Foreground="{Binding HeatingPowerBrush}" Checked="CheckBox_Checked" Unchecked="CheckBox_Checked" />
-            <CheckBox Width="110" Grid.Column="2" IsChecked="{Binding TemperatureSensitiveParameterIsEnabled}" Visibility="{Binding TemperatureSensitiveParameterIsVisibly, Converter={StaticResource B2VC}}"
+            <CheckBox Width="100" Grid.Column="2" IsChecked="{Binding TemperatureSensitiveParameterIsEnabled}" Visibility="{Binding TemperatureSensitiveParameterIsVisibly, Converter={StaticResource B2VC}}"
                       Content="{x:Static res:Resource.TemperatureSensitiveParameter}" Foreground="{Binding TemperatureSensitiveParameterBrush}" Checked="CheckBox_Checked" Unchecked="CheckBox_Checked" />
-            <CheckBox Width="110" Grid.Column="3" IsChecked="{Binding AnodeBodyTemperatureIsEnabled}" Visibility="{Binding AnodeBodyTemperatureIsVisibly, Converter={StaticResource B2VC}}"
+            <CheckBox Width="100" Grid.Column="3" IsChecked="{Binding AnodeBodyTemperatureIsEnabled}" Visibility="{Binding AnodeBodyTemperatureIsVisibly, Converter={StaticResource B2VC}}"
                       Content="{Binding Converter={StaticResource TLB}, ConverterParameter={x:Static res:Resource.AnodeBodyTemperature}}" Foreground="{Binding AnodeBodyTemperatureBrush}" Checked="CheckBox_Checked" Unchecked="CheckBox_Checked" />
-            <CheckBox Width="110" Grid.Column="4" IsChecked="{Binding CathodeBodyTemperatureIsEnabled}" Visibility="{Binding CathodeBodyTemperatureIsVisibly, Converter={StaticResource B2VC}}"
+            <CheckBox Width="100" Grid.Column="4" IsChecked="{Binding CathodeBodyTemperatureIsEnabled}" Visibility="{Binding CathodeBodyTemperatureIsVisibly, Converter={StaticResource B2VC}}"
                       Content="{Binding Converter={StaticResource TLB}, ConverterParameter={x:Static res:Resource.CathodeBodyTemperature}}" Foreground="{Binding CathodeBodyTemperatureBrush}" Checked="CheckBox_Checked" Unchecked="CheckBox_Checked" />
-            <CheckBox Width="110" Grid.Column="5" IsChecked="{Binding AnodeCoolerTemperatureIsEnabled}" Visibility="{Binding AnodeCoolerTemperatureIsVisibly, Converter={StaticResource B2VC}}"
+            <CheckBox Width="100" Grid.Column="5" IsChecked="{Binding AnodeCoolerTemperatureIsEnabled}" Visibility="{Binding AnodeCoolerTemperatureIsVisibly, Converter={StaticResource B2VC}}"
                       Content="{Binding Converter={StaticResource TLB}, ConverterParameter={x:Static res:Resource.AnodeCoolerTemperature}}" Foreground="{Binding AnodeCoolerTemperatureBrush}" Checked="CheckBox_Checked" Unchecked="CheckBox_Checked" />
-            <CheckBox Width="110" Grid.Column="6" IsChecked="{Binding CathodeCoolerTemperatureIsEnabled}" Visibility="{Binding CathodeCoolerTemperatureIsVisibly, Converter={StaticResource B2VC}}"
+            <CheckBox Width="100" Grid.Column="6" IsChecked="{Binding CathodeCoolerTemperatureIsEnabled}" Visibility="{Binding CathodeCoolerTemperatureIsVisibly, Converter={StaticResource B2VC}}"
                       Content="{Binding Converter={StaticResource TLB}, ConverterParameter={x:Static res:Resource.CathodeCoolerTemperature}}" Foreground="{Binding CathodeCoolerTemperatureBrush}" Checked="CheckBox_Checked"
                       Unchecked="CheckBox_Checked" />
-            <CheckBox Width="110" Grid.Column="7" IsChecked="{Binding TemperatureStructureIsEnabled}" Visibility="{Binding TemperatureStructureIsVisibly, Converter={StaticResource B2VC}}"
+            <CheckBox Width="100" Grid.Column="7" IsChecked="{Binding TemperatureStructureIsEnabled}" Visibility="{Binding TemperatureStructureIsVisibly, Converter={StaticResource B2VC}}"
                       Content="{Binding Converter={StaticResource TLB}, ConverterParameter={x:Static res:Resource.TemperatureStructureAbbreviated}}" Foreground="{Binding TemperatureStructureAbbreviatedBrush}" Checked="CheckBox_Checked"
                       Unchecked="CheckBox_Checked" />
-            <CheckBox Width="110" Grid.Column="8" IsChecked="{Binding ZthaIsEnabled}" Visibility="{Binding ZthaIsVisibly, Converter={StaticResource B2VC}}"
+            <CheckBox Width="100" Grid.Column="8" IsChecked="{Binding ZthaIsEnabled}" Visibility="{Binding ZthaIsVisibly, Converter={StaticResource B2VC}}"
                       Content="{x:Static res:Resource.Ztha}" Foreground="{Binding ZthaBrush}" Checked="CheckBox_Checked" Unchecked="CheckBox_Checked" />
-            <CheckBox Width="110" Grid.Column="9" IsChecked="{Binding ZthkIsEnabled}" Visibility="{Binding ZthkIsVisibly, Converter={StaticResource B2VC}}"
+            <CheckBox Width="100" Grid.Column="9" IsChecked="{Binding ZthkIsEnabled}" Visibility="{Binding ZthkIsVisibly, Converter={StaticResource B2VC}}"
                       Content="{x:Static res:Resource.Zthk}" Foreground="{Binding ZthkBrush}" Checked="CheckBox_Checked" Unchecked="CheckBox_Checked" />
-            <CheckBox Width="110" Grid.Column="10" IsChecked="{Binding ZthIsEnabled}" Visibility="{Binding ZthIsVisibly, Converter={StaticResource B2VC}}"
+            <CheckBox Width="100" Grid.Column="10" IsChecked="{Binding ZthIsEnabled}" Visibility="{Binding ZthIsVisibly, Converter={StaticResource B2VC}}"
                       Content="{x:Static res:Resource.Zth}" Foreground="{Binding ZthBrush}" Checked="CheckBox_Checked" Unchecked="CheckBox_Checked" />
         </Grid>
         <Grid Grid.Row="1" Height="135" HorizontalAlignment="Center">

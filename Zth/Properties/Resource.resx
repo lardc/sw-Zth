@@ -130,10 +130,10 @@
     <value>Амплитуда измерительного тока, А</value>
   </data>
   <data name="AnodeBodyTemperature" xml:space="preserve">
-    <value>Температура корпуса А</value>
+    <value>Темп. корпуса А</value>
   </data>
   <data name="AnodeCoolerTemperature" xml:space="preserve">
-    <value>Температура охл. А</value>
+    <value>Темп. охл. А</value>
   </data>
   <data name="AnodeBodyTemperatureAbbreviated" xml:space="preserve">
     <value>t корп. А:</value>
@@ -148,10 +148,10 @@
     <value>Биполярный</value>
   </data>
   <data name="CathodeBodyTemperature" xml:space="preserve">
-    <value>Температура корпуса К</value>
+    <value>Темп. корпуса К</value>
   </data>
   <data name="CathodeCoolerTemperature" xml:space="preserve">
-    <value>Температура охл. К</value>
+    <value>Темп. охл. К</value>
   </data>
   <data name="CathodeBodyTemperatureAbbreviated" xml:space="preserve">
     <value>t корп. К:</value>

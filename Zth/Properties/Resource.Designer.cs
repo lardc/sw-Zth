@@ -97,7 +97,7 @@ namespace Zth.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Температура корпуса А.
+        ///   Ищет локализованную строку, похожую на Темп. корпуса А.
         /// </summary>
         public static string AnodeBodyTemperature {
             get {
@@ -115,7 +115,7 @@ namespace Zth.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Температура охл. А.
+        ///   Ищет локализованную строку, похожую на Темп. охл. А.
         /// </summary>
         public static string AnodeCoolerTemperature {
             get {
@@ -178,7 +178,7 @@ namespace Zth.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Температура корпуса К.
+        ///   Ищет локализованную строку, похожую на Темп. корпуса К.
         /// </summary>
         public static string CathodeBodyTemperature {
             get {
@@ -196,7 +196,7 @@ namespace Zth.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Температура охл. К.
+        ///   Ищет локализованную строку, похожую на Темп. охл. К.
         /// </summary>
         public static string CathodeCoolerTemperature {
             get {
