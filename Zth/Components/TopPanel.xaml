@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Zth.Components"  xmlns:vm="clr-namespace:Zth.VM"
              mc:Ignorable="d"  d:DataContext="{d:DesignInstance vm:TopPanelVm }" 
-              xmlns:res="clr-namespace:Zth.Properties"
+              xmlns:res="clr-namespace:Zth.Properties" BorderThickness="1" BorderBrush="Gray"
              >
     <Grid Grid.Row="0" >
         <Grid.ColumnDefinitions>

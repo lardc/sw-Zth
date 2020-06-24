@@ -18,7 +18,8 @@
         <Frame Grid.Row="1" x:Name="MainFrame" Margin="{StaticResource MainFrameMargin}" NavigationUIVisibility="Hidden" >
                 
         </Frame>
-        <Grid Grid.Row="2" DataContext="{Binding BottomPanelVM}">
+        <Border BorderThickness="0,1,0,0" BorderBrush="Gray" Grid.Row="2">
+        <Grid  DataContext="{Binding BottomPanelVM}"  >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto"/>
                 <ColumnDefinition />
@@ -30,7 +31,7 @@
             <Button Grid.Column="2" Style="{StaticResource BackButton}" Content="{Binding MiddleButtonContent}" IsEnabled="{Binding MiddleButtonIsEnabled}" Visibility="{Binding MiddleButtonIsVisibly, Converter={StaticResource B2VH}}" />
             <Button Grid.Column="4" Style="{StaticResource NextButton}" Content="{Binding RightButtonContent}" IsEnabled="{Binding RightButtonIsEnabled}" Visibility="{Binding RightButtonIsVisibly, Converter={StaticResource B2VH}}" Click="RightButtonClick" />
         </Grid>
+        </Border>
 
-     
     </Grid>
 </Window>
