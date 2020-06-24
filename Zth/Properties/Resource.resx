@@ -282,4 +282,7 @@
   <data name="CalculationZth" xml:space="preserve">
     <value>Расчёт Zth</value>
   </data>
+  <data name="ZthSequence" xml:space="preserve">
+    <value>Zth Последовательность</value>
+  </data>
 </root>

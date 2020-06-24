@@ -554,5 +554,14 @@ namespace Zth.Properties {
                 return ResourceManager.GetString("ZthLongImpulse", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Zth Последовательность.
+        /// </summary>
+        public static string ZthSequence {
+            get {
+                return ResourceManager.GetString("ZthSequence", resourceCulture);
+            }
+        }
     }
 }
