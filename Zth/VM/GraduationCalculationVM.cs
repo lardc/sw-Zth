@@ -20,18 +20,25 @@ namespace Zth.VM
         public ChartValues<ObservablePoint> GraduationChartValues { get; set; } = new ChartValues<ObservablePoint>();
 
 
-        public new Func<double, string> FormatterMegawatts { get; set; } = value =>
+        public double MinMegawatts { get; set; } = 370;
+        public double MaxMegawatts { get; set; } = 450;
+        public double StepMegawatts { get; set; } = 5;
+
+        public new Func<double, string> FormatterMegawatts=> value =>
         {
-            if (value == 450)
+            int count = (int)Math.Round((MaxMegawatts - MinMegawatts) / StepMegawatts);
+            if (Math.Round(Math.Abs((value - MinMegawatts) / StepMegawatts)) == count)
                 return "ТЧП, мВ";
-            else if (new double[] { 310, 330, 350, 370, 390, 410, 430 }.Contains(value))
-                return value.ToString();
-            return string.Empty;
+            if (Math.Round((value - MinMegawatts) / StepMegawatts) % 2 == 0)
+                return Math.Round(value).ToString();
+            if (Math.Round((value - MinMegawatts) / StepMegawatts) % 2 == 1)
+                return string.Empty;
+            return Math.Round(value).ToString();
         };
 
-        public new Func<double, string> FormatterDegreesCelsius { get; set; } = value =>
+        public new Func<double, string> FormatterDegreesCelsius => value =>
         {
-            if (value == 100)
+            if (value == UpperLineExtrapolation)
                 return Properties.Resource.UnitMeasurementDegreeCentigrade;
             return value.ToString();
             //else if (new double[] { 60, 70, 80, 90 }.Contains(value))

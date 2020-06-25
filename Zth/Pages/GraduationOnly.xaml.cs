@@ -68,17 +68,17 @@ namespace Zth.Pages
             VM.StopHeatingButtonIsEnabled = VM.StartHeatingPressed;
 
             //////////////////////
-            //if (MainWindow.SettingsModel.Debug1)
-            //{
-            //    var dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
-            //    dispatcherTimer.Tick += new EventHandler((sender1, e1) =>
-            //    {
-            //        dispatcherTimer.Stop();
-            //        BottomPanelVM.RightBottomButtonAction();
-            //    });
-            //    dispatcherTimer.Interval = new TimeSpan(0, 0, 0, 0, 1);
-            //    dispatcherTimer.Start();
-            //}
+            if (MainWindow.SettingsModel.Debug1)
+            {
+                var dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
+                dispatcherTimer.Tick += new EventHandler((sender1, e1) =>
+                {
+                    dispatcherTimer.Stop();
+                    BottomPanelVM.RightBottomButtonAction();
+                });
+                dispatcherTimer.Interval = new TimeSpan(0, 0, 0, 0, 1);
+                dispatcherTimer.Start();
+            }
 
         }
 

@@ -63,7 +63,7 @@
                     </lvc:CartesianChart.AxisX>
                 </lvc:CartesianChart>-->
 
-                <lvc:CartesianChart Name="MainCartesianChart" x:FieldModifier="public"  >
+                <lvc:CartesianChart Name="MainCartesianChart" x:FieldModifier="public" DisableAnimations="True" Hoverable ="False"  DataTooltip ="{x:Null}" >
                     <lvc:CartesianChart.Resources>
                         <Style TargetType="lvc:LineSeries">
                             <Setter Property="Fill" Value="Transparent"></Setter>
@@ -77,14 +77,14 @@
                         </lvc:Axis>
                     </lvc:CartesianChart.AxisX>
                     <lvc:CartesianChart.AxisY>
-                        <lvc:Axis MinValue="310" MaxValue="450" LabelFormatter="{Binding FormatterMegawatts}"   >
+                        <lvc:Axis MinValue="{Binding MinMegawatts}" MaxValue="{Binding MaxMegawatts}"   LabelFormatter="{Binding FormatterMegawatts}"   >
                             <lvc:Axis.Separator>
-                                <lvc:Separator Step="10" ></lvc:Separator>
+                                <lvc:Separator Step="{Binding StepMegawatts, Mode=TwoWay}" ></lvc:Separator>
                             </lvc:Axis.Separator>
                         </lvc:Axis>
                     </lvc:CartesianChart.AxisY>
                     <lvc:CartesianChart.Series>
-                        <lvc:LineSeries Values="{Binding GraduationChartValues}" Stroke="Red"  />
+                        <lvc:LineSeries Values="{Binding GraduationChartValues}" Stroke="Red" PointGeometry="{x:Null}" />
                     </lvc:CartesianChart.Series>
                 </lvc:CartesianChart>
                 

@@ -99,8 +99,15 @@ namespace Zth.Pages
 
         private void Extrapolation_Click(object sender, RoutedEventArgs e)
         {
+            VM.GraduationChartValues.Clear();
             VM.UpperLineExtrapolationAxis = VM.UpperLineExtrapolation;
             VM.BottomLineExtrapolationAxis = VM.BottomLineExtrapolation;
+            for (double x = VM.BottomLineExtrapolation; x <= VM.UpperLineExtrapolation; x+=5)
+                VM.GraduationChartValues.Add(new LiveCharts.Defaults.ObservablePoint(x, x * 1.4));
+
+            VM.MinMegawatts = VM.GraduationChartValues.Min(m => m.Y);
+            VM.MaxMegawatts = VM.GraduationChartValues.Max(m => m.Y);
+            VM.StepMegawatts = (VM.MaxMegawatts - VM.MinMegawatts) / 16;
         }
 
         private void SaveInFile_Click(object sender, RoutedEventArgs e)
