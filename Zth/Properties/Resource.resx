@@ -217,7 +217,7 @@
     <value>с</value>
   </data>
   <data name="HeatingPower" xml:space="preserve">
-    <value>Греющая мощность</value>
+    <value>Греющая мощн.</value>
   </data>
   <data name="HeatingCurrentWithUnitMeasurement" xml:space="preserve">
     <value>Греющий ток, А</value>

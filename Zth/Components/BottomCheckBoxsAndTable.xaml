@@ -36,7 +36,7 @@
             <CheckBox Width="100" Grid.Column="0" IsChecked="{Binding HeatingCurrentIsEnabled}" Visibility="{Binding HeatingCurrentIsVisibly, Converter={StaticResource B2VC}}"
                       Content="{Binding Converter={StaticResource TLB}, ConverterParameter={x:Static res:Resource.HeatingCurrent}}" Foreground="{Binding HeatingCurrentBrush}" Checked="CheckBox_Checked" Unchecked="CheckBox_Checked" />
             <CheckBox Width="100" Grid.Column="1" IsChecked="{Binding HeatingPowerIsEnabled}" Visibility="{Binding HeatingPowerIsVisibly, Converter={StaticResource B2VC}}"
-                      Content="{Binding Converter={StaticResource TLB}, ConverterParameter={x:Static res:Resource.HeatingPower}}" Foreground="{Binding HeatingPowerBrush}" Checked="CheckBox_Checked" Unchecked="CheckBox_Checked" />
+                      Content="{Binding Converter={StaticResource TLB}, ConverterParameter=Греющая мощность}" Foreground="{Binding HeatingPowerBrush}" Checked="CheckBox_Checked" Unchecked="CheckBox_Checked" />
             <CheckBox Width="100" Grid.Column="2" IsChecked="{Binding TemperatureSensitiveParameterIsEnabled}" Visibility="{Binding TemperatureSensitiveParameterIsVisibly, Converter={StaticResource B2VC}}"
                       Content="{x:Static res:Resource.TemperatureSensitiveParameter}" Foreground="{Binding TemperatureSensitiveParameterBrush}" Checked="CheckBox_Checked" Unchecked="CheckBox_Checked" />
             <CheckBox Width="100" Grid.Column="3" IsChecked="{Binding AnodeBodyTemperatureIsEnabled}" Visibility="{Binding AnodeBodyTemperatureIsVisibly, Converter={StaticResource B2VC}}"
@@ -99,22 +99,22 @@
             </Border>
             <Border Grid.Column="4" Grid.Row="0" Width="100" Visibility="{Binding AnodeBodyTemperatureIsVisibly, Converter={StaticResource B2VC}}">
                 <TextBlock>
-                    <Run Text="{Binding Mode=OneWay, Converter={StaticResource TLB}, ConverterParameter={x:Static res:Resource.AnodeBodyTemperature}}" /><Run Text=", " /><Run Text="{x:Static res:Resource.UnitMeasurementDegreeCentigrade}" />
+                    <Run Text="{Binding Mode=OneWay, Converter={StaticResource TLB}, ConverterParameter=Температура корпуса А}" /><Run Text=", " /><Run Text="{x:Static res:Resource.UnitMeasurementDegreeCentigrade}" />
                 </TextBlock>
             </Border>
             <Border Grid.Column="5" Grid.Row="0" Width="100" Visibility="{Binding CathodeBodyTemperatureIsVisibly, Converter={StaticResource B2VC}}">
                 <TextBlock>
-                    <Run Text="{Binding Mode=OneWay, Converter={StaticResource TLB}, ConverterParameter={x:Static res:Resource.CathodeBodyTemperature}}" /><Run Text=", " /><Run Text="{x:Static res:Resource.UnitMeasurementDegreeCentigrade}" />
+                    <Run Text="{Binding Mode=OneWay, Converter={StaticResource TLB}, ConverterParameter=Температура корпуса К}" /><Run Text=", " /><Run Text="{x:Static res:Resource.UnitMeasurementDegreeCentigrade}" />
                 </TextBlock>
             </Border>
             <Border Grid.Column="6" Grid.Row="0" Width="100" Visibility="{Binding AnodeCoolerTemperatureIsVisibly, Converter={StaticResource B2VC}}">
                 <TextBlock>
-                    <Run Text="{Binding Mode=OneWay, Converter={StaticResource TLB}, ConverterParameter={x:Static res:Resource.AnodeCoolerTemperature}}" /><Run Text=", " /><Run Text="{x:Static res:Resource.UnitMeasurementDegreeCentigrade}" />
+                    <Run Text="{Binding Mode=OneWay, Converter={StaticResource TLB}, ConverterParameter=Температура охл. А}" /><Run Text=", " /><Run Text="{x:Static res:Resource.UnitMeasurementDegreeCentigrade}" />
                 </TextBlock>
             </Border>
             <Border Grid.Column="7" Grid.Row="0" Width="100" Visibility="{Binding CathodeCoolerTemperatureIsVisibly, Converter={StaticResource B2VC}}">
                 <TextBlock>
-                    <Run Text="{Binding Mode=OneWay, Converter={StaticResource TLB}, ConverterParameter={x:Static res:Resource.CathodeCoolerTemperature}}" /><Run Text=", " /><Run Text="{x:Static res:Resource.UnitMeasurementDegreeCentigrade}" />
+                    <Run Text="{Binding Mode=OneWay, Converter={StaticResource TLB}, ConverterParameter=Температура охл. К}" /><Run Text=", " /><Run Text="{x:Static res:Resource.UnitMeasurementDegreeCentigrade}" />
                 </TextBlock>
             </Border>
             <Border Grid.Column="8" Grid.Row="0" Width="100" Visibility="{Binding TemperatureStructureIsVisibly, Converter={StaticResource B2VC}}">

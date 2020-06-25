@@ -304,7 +304,7 @@ namespace Zth.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Греющая мощность.
+        ///   Ищет локализованную строку, похожую на Греющая мощн..
         /// </summary>
         public static string HeatingPower {
             get {
