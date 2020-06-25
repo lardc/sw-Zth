@@ -34,7 +34,8 @@ namespace Zth.Helpers
                 (FontStretch)textBlock.GetValue(TextBlock.FontStretchProperty),
                 (double)textBlock.GetValue(TextBlock.FontSizeProperty)).Width);
 
-            textBlock.SetValue(FrameworkElement.MinWidthProperty, textSize);
+            //textBlock.SetValue(FrameworkElement.MinWidthProperty, textSize);
+            comboBox.MinWidth = comboBox.Padding.Left + comboBox.Padding.Right + textSize;
         }
 
      
