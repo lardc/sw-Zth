@@ -63,12 +63,20 @@ namespace Zth.Pages
             FrameVM.SetParentFrameVM(VM);
 
             VM.StartHeatingButtonIsEnabled = true;
+
             VM.HeatingCurrentIsVisibly = true;
             VM.HeatingPowerIsVisibly = true;
             VM.AnodeBodyTemperatureIsVisibly = true;
             VM.CathodeBodyTemperatureIsVisibly = true;
             VM.AnodeCoolerTemperatureIsVisibly = true;
             VM.CathodeCoolerTemperatureIsVisibly = true;
+
+            VM.HeatingCurrentIsEnabled = true;
+            VM.HeatingPowerIsEnabled = true;
+            VM.AnodeBodyTemperatureIsEnabled = true;
+            VM.CathodeBodyTemperatureIsEnabled = true;
+            VM.AnodeCoolerTemperatureIsEnabled = true;
+            VM.CathodeCoolerTemperatureIsEnabled = true;
 
             //VM.AxisYAmperesIsVisibly = true;
             //VM.AxisYDegreesCelsiusIsVisibly = true;

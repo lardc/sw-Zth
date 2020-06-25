@@ -42,11 +42,8 @@ namespace Zth.Pages
 
             BottomPanelVM.RightButtonContent = Properties.Resource.SaveInFile;
 
-            
-
             DataContext = new CommonVM();
             FrameVM.SetParentFrameVM(VM);
-
 
             VM.HeatingCurrentIsVisibly = true;
             VM.HeatingPowerIsVisibly = true;
@@ -59,6 +56,18 @@ namespace Zth.Pages
             VM.ZthaIsVisibly = true;
             VM.ZthkIsVisibly = true;
             VM.ZthIsVisibly = true;
+
+            VM.HeatingCurrentIsEnabled = true;
+            VM.HeatingPowerIsEnabled = true;
+            VM.TemperatureSensitiveParameterIsEnabled = true;
+            VM.AnodeBodyTemperatureIsEnabled = true;
+            VM.CathodeBodyTemperatureIsEnabled = true;
+            VM.AnodeCoolerTemperatureIsEnabled = true;
+            VM.CathodeCoolerTemperatureIsEnabled = true;
+            VM.TemperatureStructureIsEnabled = true;
+            VM.ZthaIsEnabled = true;
+            VM.ZthkIsEnabled = true;
+            VM.ZthIsEnabled = true;
 
             //VM.AxisYDegreesCelsiusIsVisibly = true;
             //VM.AxisYMegawattsIsVisibly = true;
