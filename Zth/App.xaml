@@ -16,6 +16,7 @@
             
             
             <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Resources/TextBox.xaml"/>
                 <ResourceDictionary Source="Resources/Chart.xaml"/>
                 <ResourceDictionary Source="Resources/Consts.xaml"/>
                 <ResourceDictionary Source="Resources/TextBlock.xaml"/>

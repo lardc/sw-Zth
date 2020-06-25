@@ -10,7 +10,6 @@
         <EventSetter Event="Loaded" Handler="TextBox_Loaded" />
         <Setter Property="Margin" Value="10,10,0,10" />
         <Setter Property="Padding" Value="40,4,13,4" />
-        <Setter Property="BorderThickness" Value="3" />
         <Setter Property="HorizontalContentAlignment" Value="Right"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Style.Triggers>
