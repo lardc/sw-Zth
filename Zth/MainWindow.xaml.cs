@@ -12,7 +12,7 @@ namespace Zth
     /// </summary>
     public partial class MainWindow
     {
-        private readonly NavigationService _navigationService;
+        public NavigationService NavigationService { get; private set; }
         public TopPanelVm TopPanelVM { get; set; } = new TopPanelVm()
         {
             DataIsVisibly = true,
@@ -30,7 +30,7 @@ namespace Zth
 
             SettingsModel = JsonConvert.DeserializeObject<SettingsModel>(File.ReadAllText("appsetting.json"));
             InitializeComponent();
-            _navigationService = MainFrame.NavigationService;
+            NavigationService = MainFrame.NavigationService;
 
             FrameVM.SetParentFrameVM = (CommonVM commonVm) =>
            {
@@ -63,10 +63,10 @@ namespace Zth
 
         private void LeftButtonClick(object sender, System.Windows.RoutedEventArgs e)
         {
-            if (_navigationService.CanGoBack)
-                _navigationService.GoBack();
+            if (NavigationService.CanGoBack)
+                NavigationService.GoBack();
             else
-                _navigationService.Navigate(new Pages.SelectPage()
+                NavigationService.Navigate(new Pages.SelectPage()
                 {
                     DataContext = TopPanelVM,
                 });
@@ -74,7 +74,7 @@ namespace Zth
 
         private void Window_Loaded(object sender, System.Windows.RoutedEventArgs e)
         {
-            _navigationService.Navigate(new Pages.SelectPage());
+            NavigationService.Navigate(new Pages.SelectPage());
         }
     }
 }

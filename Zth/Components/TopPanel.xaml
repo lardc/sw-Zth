@@ -13,7 +13,7 @@
             <ColumnDefinition/>
             <ColumnDefinition Width="96"/>
         </Grid.ColumnDefinitions>
-        <Button  Background="Transparent" BorderBrush="Transparent" BorderThickness="0" Padding="0" Grid.Column="0">
+        <Button  Background="Transparent" BorderBrush="Transparent" BorderThickness="0" Padding="0" Grid.Column="0" Click="ButtonHome_Click">
             <Path Width="64" Height="64" Stretch="uniform"
                           Data="M 31.60000038146973 65.90000152587891 L 31.60000038146973 43.69999694824219 L 46.39999771118164 43.69999694824219 L 46.39999771118164 65.90000152587891 L 64.90000152587891 65.90000152587891 L 64.90000152587891 36.30000305175781 L 76 36.30000305175781 L 39 3 L 2 36.30000305175781 L 13.10000038146973 36.30000305175781 L 13.10000038146973 65.90000152587891 L 31.60000038146973 65.90000152587891 Z"
                           Fill="#ff0078d7" Stroke="#ff95989a" />

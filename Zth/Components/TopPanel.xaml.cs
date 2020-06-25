@@ -22,5 +22,16 @@ namespace Zth.Components
         {
             InitializeComponent();
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void ButtonHome_Click(object sender, RoutedEventArgs e)
+        {
+            var mainWindow = Window.GetWindow(this) as MainWindow;
+            mainWindow.NavigationService.Navigate(new Pages.SelectPage());
+        }
     }
 }
