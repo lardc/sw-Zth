@@ -104,7 +104,7 @@ namespace Zth.VM
 
         public Brush HeatingPowerBrush { get; set; } = Brushes.Green;
         public Brush AnodeBodyTemperatureBrush { get; set; } = Brushes.Gray;
-        public Brush AnodeCoolerTemperatureBrush { get; set; } = Brushes.Yellow;
+        public Brush AnodeCoolerTemperatureBrush { get; set; } = Brushes.Purple;
         public Brush CathodeBodyTemperatureBrush { get; set; } = Brushes.Red;
         public Brush CathodeCoolerTemperatureBrush { get; set; } = Brushes.Pink;
         public Brush HeatingCurrentBrush { get; set; } = Brushes.HotPink;
