@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Zth" WindowStyle="None" ResizeMode="NoResize"
         xmlns:res="clr-namespace:Zth.Properties" WindowStartupLocation="CenterScreen"
-        xmlns:pages="clr-namespace:Zth.Pages" Width="1280" Height="1024" Loaded="Window_Loaded" 
+        xmlns:pages="clr-namespace:Zth.Pages" Width="1280" Height="1024" Loaded="Window_Loaded" Closed="Window_Closed"
         xmlns:components="clr-namespace:Zth.Components" DataContext="{Binding RelativeSource={RelativeSource Self}}"
         mc:Ignorable="d" SizeToContent="WidthAndHeight"> 
     <Grid Uid="Стартовая страница - Zth Последовательность" Background="#ffffffff" Width="1280" Height="1024" ClipToBounds="True">

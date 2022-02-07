@@ -31,6 +31,8 @@ namespace Zth.Pages
             VM.StopHeatingButtonIsEnabled = true;
             VM.StartHeatingPressed = true;
             Chart.SimulateStart();
+            
+            //App.LogicContainer.ReadResults(TopPanelVm, Chart.VM);
         }
 
         private void StopHeating_Click(object sender, RoutedEventArgs e)

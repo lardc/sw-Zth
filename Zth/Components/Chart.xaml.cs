@@ -37,7 +37,7 @@ namespace Zth.Components
             MainCartesianChart.DataTooltip = null;
         }
 
-        private void AdjustChart()
+        public void AdjustChart()
         {
             foreach (var i in MainCartesianChart.AxisY)
             {

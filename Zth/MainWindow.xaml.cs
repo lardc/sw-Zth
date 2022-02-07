@@ -1,6 +1,4 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Windows.Navigation;
 using Zth.VM;
@@ -25,8 +23,6 @@ namespace Zth
 
         public MainWindow()
         {
-
-
 
             SettingsModel = JsonConvert.DeserializeObject<SettingsModel>(File.ReadAllText("appsetting.json"));
             InitializeComponent();
@@ -75,6 +71,14 @@ namespace Zth
         private void Window_Loaded(object sender, System.Windows.RoutedEventArgs e)
         {
             NavigationService.Navigate(new Pages.SelectPage());
+            //Запуск установки
+            App.LogicContainer.EnablePower();
+        }
+
+        private void Window_Closed(object sender, System.EventArgs e)
+        {
+            //Выключение установки
+            App.LogicContainer.DisablePower();
         }
     }
 }
