@@ -3,8 +3,8 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:Zth.Pages"
       xmlns:vm="clr-namespace:Zth.VM"
+      xmlns:local="clr-namespace:Zth"
       mc:Ignorable="d" d:DataContext="{d:DesignInstance vm:ZthPulseSequenceVM }" 
       Loaded="Page_Loaded" Unloaded="CommonPage_Unloaded"
       xmlns:pages="clr-namespace:Zth.Pages"
@@ -30,7 +30,7 @@
                 </Grid.Resources>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="140" />
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto" />
@@ -43,34 +43,74 @@
                     <RowDefinition Height="auto" />
                     <RowDefinition Height="auto" />
                     <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
                 </Grid.RowDefinitions>
-                <TextBlock Grid.Row="0" Grid.Column="0" Text="Длительность первого импульса, мс" />
-                <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Path=FirstPulseDuration,  ConverterParameter='100.1' }" IsEnabled="{Binding RightPanelTextBoxsIsEnabled}"/>
 
-                <TextBlock Grid.Row="1" Grid.Column="0" Text="Длительность последнего импульса, с" />
-                <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding LastPulseDuration}" IsEnabled="{Binding RightPanelTextBoxsIsEnabled}"/>
+                <Grid Grid.Row="0" Grid.ColumnSpan="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="140"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.Style>
+                        <Style TargetType="Grid">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsGateVoltageVisible}" Value="False">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Grid.Style>
+                    <TextBlock Grid.Column="0" Text="Амплитуда тока управления, А" />
+                    <TextBox Grid.Column="1" Text="{Binding AmplitudeControlCurrent}" IsEnabled="{Binding RightPanelTextBoxsIsEnabled}"/>
+                </Grid>
 
-                <TextBlock Grid.Row="2" Grid.Column="0" Text="Длительность паузы между соседними импульсами, %" />
-                <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding PauseDurationBetweenAdjacentPulses}" IsEnabled="{Binding RightPanelTextBoxsIsEnabled}"/>
+                <Grid Grid.Row="0" Grid.ColumnSpan="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="130"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.Style>
+                        <Style TargetType="Grid">
+                            <Setter Property="Visibility" Value="Visible"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsGateVoltageVisible}" Value="False">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Grid.Style>
+                    <TextBlock Grid.Column="0" Text="Напряжение затвора, В"/>
+                    <ComboBox Grid.Column="1" SelectedIndex="0" ItemsSource="{Binding Source={x:Static local:StringResources.GateVoltageDictionary}}" SelectedValue="{Binding GateVoltage}" SelectedValuePath="Key" DisplayMemberPath="Value" IsEnabled="{Binding RightPanelTextBoxsIsEnabled}"/>
+                </Grid>
 
-                <TextBlock Grid.Row="3" Grid.Column="0" Text="Амплитуда импульса импульсного греющего тока, А" />
-                <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding AmplitudePulsePulsedHeatingCurrent}" IsEnabled="{Binding RightPanelTextBoxsIsEnabled}"/>
+                <TextBlock Grid.Row="1" Grid.Column="0" Text="Амплитуда измерительного тока, А" />
+                <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding AmplitudeMeasuringCurrent}" IsEnabled="{Binding RightPanelTextBoxsIsEnabled}"/>
 
-                <TextBlock Grid.Row="4" Grid.Column="0" Text="Амплитуда импульса греющего тока, А" />
-                <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding AmplitudeHeatingCurrentPulse}" IsEnabled="{Binding RightPanelTextBoxsIsEnabled}"/>
+                <TextBlock Grid.Row="2" Grid.Column="0" Text="Амплитуда греющего тока до 2 мс, А" />
+                <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding AmplitudeHeatingCurrentLess2}" IsEnabled="{Binding RightPanelTextBoxsIsEnabled}"/>
 
-                <TextBlock Grid.Row="5" Grid.Column="0" Text="Амплитуда тока управления, А" />
-                <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding AmplitudeControlCurrent}" IsEnabled="{Binding RightPanelTextBoxsIsEnabled}"/>
+                <TextBlock Grid.Row="3" Grid.Column="0" Text="Амплитуда греющего тока до 10 мс, А" />
+                <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding AmplitudeHeatingCurrentLess10}" IsEnabled="{Binding RightPanelTextBoxsIsEnabled}"/>
+                
+                <TextBlock Grid.Row="4" Grid.Column="0" Text="Амплитуда греющего тока свыше 10 мс, А" />
+                <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding AmplitudeHeatingCurrentAbove10}" IsEnabled="{Binding RightPanelTextBoxsIsEnabled}"/>
 
-                <TextBlock Grid.Row="6" Grid.Column="0" Text="Амплитуда измерительного тока, А" />
-                <TextBox Grid.Row="6" Grid.Column="1" Text="{Binding AmplitudeMeasuringCurrent}" IsEnabled="{Binding RightPanelTextBoxsIsEnabled}"/>
+                <TextBlock Grid.Row="5" Grid.Column="0" Text="Время задержки измерения ТЧП, мкс" />
+                <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding TSPMeasurementDelayTime}" IsEnabled="{Binding RightPanelTextBoxsIsEnabled}"/>
 
-                <TextBlock Grid.Row="7" Grid.Column="0" Text="Время задержки измерения ТЧП, мкс" />
-                <TextBox Grid.Row="7" Grid.Column="1" Text="{Binding TSPMeasurementDelayTime}" IsEnabled="{Binding RightPanelTextBoxsIsEnabled}"/>
+                <TextBlock Grid.Row="6" Grid.Column="0" Text="Длительность первого импульса, мс" />
+                <TextBox Grid.Row="6" Grid.Column="1" Text="{Binding Path=FirstPulseDuration,  ConverterParameter='100.1' }" IsEnabled="{Binding RightPanelTextBoxsIsEnabled}"/>
 
-                <Button Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2" Click="StartMeasurement_Click" IsEnabled="{Binding StartMeasurementButtonEnabled}" Style="{StaticResource ButtonRightPanelGreen}" Content="Старт измерение" />
+                <TextBlock Grid.Row="7" Grid.Column="0" Text="Длительность последнего импульса, с" />
+                <TextBox Grid.Row="7" Grid.Column="1" Text="{Binding LastPulseDuration}" IsEnabled="{Binding RightPanelTextBoxsIsEnabled}"/>
 
-                <Button Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="2" Click="StopMeasurement_Click" IsEnabled="{Binding StopMeasurementButtonEnabled}" Style="{StaticResource ButtonRightPanelRed}"  Content="Стоп измерение" />
+                <TextBlock Grid.Row="8" Grid.Column="0" Text="Длительность паузы между импульсами, %" />
+                <TextBox Grid.Row="8" Grid.Column="1" Text="{Binding PauseDurationBetweenAdjacentPulses}" IsEnabled="{Binding RightPanelTextBoxsIsEnabled}"/>
+
+                <Button Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="2" Click="StartMeasurement_Click" IsEnabled="{Binding StartMeasurementButtonEnabled}" Style="{StaticResource ButtonRightPanelGreen}" Content="Старт измерение" />
+
+                <Button Grid.Row="10" Grid.Column="0" Grid.ColumnSpan="2" Click="StopMeasurement_Click" IsEnabled="{Binding StopMeasurementButtonEnabled}" Style="{StaticResource ButtonRightPanelRed}"  Content="Стоп измерение" />
 
             </Grid>
             <Grid Grid.Column="0">

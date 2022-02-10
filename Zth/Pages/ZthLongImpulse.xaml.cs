@@ -28,15 +28,38 @@ namespace Zth.Pages
 
         private void StartHeating_Click(object sender, RoutedEventArgs e)
         {
-            VM.StopHeatingButtonIsEnabled = true;
-            VM.StartHeatingPressed = true;
-            Chart.SimulateStart();
-            
-            //App.LogicContainer.ReadResults(TopPanelVm, Chart.VM);
+            try
+            {
+                //Параметры измерения
+                ushort GateParameter = TopPanelVm.TypeDevice == TypeDevice.Bipolar ? (ushort)(VM.AmplitudeControlCurrent * 1000) : (ushort)VM.GateVoltage;
+                ushort MeasuringCurrent = (ushort)(VM.AmplitudeMeasuringCurrent * 1000);
+                ushort[] HeatingCurrent = new ushort[]
+                {
+                    0, 0, (ushort)(VM.AmplitudeHeatingCurrent * 1000)
+                };
+                ushort MeasurementDelay = (ushort)VM.DelayTimeTspMeasurements;
+                ushort Duration = (ushort)(VM.DurationPowerPulse * 1000000);
+                switch (VM.StartHeatingContent)
+                {
+                    case "Старт нагрев":
+                        App.LogicContainer.PrepareForMeasure(TopPanelVm.TypeDevice, TopPanelVm.TypeCooling, TopPanelVm.WorkingMode, GateParameter, MeasuringCurrent, HeatingCurrent, MeasurementDelay);
+                        App.LogicContainer.StartZthLongImpulse(Duration);
+                        break;
+                    case "Обновить задание":
+                        App.LogicContainer.UpdateZthLongImpulse(TopPanelVm.TypeDevice, GateParameter, MeasuringCurrent, HeatingCurrent, MeasurementDelay, Duration);
+                        break;
+                }
+                
+                VM.StopHeatingButtonIsEnabled = true;
+                VM.StartHeatingPressed = true;
+            }
+            catch { }
         }
 
         private void StopHeating_Click(object sender, RoutedEventArgs e)
         {
+            App.LogicContainer.StopHeating();
+
             VM.StopHeatingButtonIsEnabled = false;
             VM.StartHeatingButtonIsEnabled = false;
             VM.StopMeasurementButtonIsEnabled = true;
@@ -45,16 +68,16 @@ namespace Zth.Pages
 
         private void StopMeasurement_Click(object sender, RoutedEventArgs e)
         {
+            App.LogicContainer.StopProcess();
+
             VM.StopMeasurementButtonIsEnabled = false;
             BottomPanelVM.RightButtonIsEnabled = true;
             VM.LineSeriesCursorLeftVisibility = true;
-            Chart.SimulateStop();
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             TopPanelVm.TemperatureSensitiveParameterIsVisible = false;
-
             BottomPanelVM.RightButtonContent = Properties.Resource.Graduation;
             BottomPanelVM.RightBottomButtonAction = () => _navigationService.Navigate(new GraduationOnly()
             {
@@ -63,6 +86,10 @@ namespace Zth.Pages
 
             DataContext = new ZthLongImpulseVM();
             FrameVM.SetParentFrameVM(VM);
+
+            TopPanelVm.CathodeBodyTemperatureIsVisible = TopPanelVm.TypeCooling != TypeCooling.OneSided;
+            TopPanelVm.CathodeCoolerTemperatureIsVisible = TopPanelVm.TypeCooling != TypeCooling.OneSided;
+            VM.IsGateVoltageVisible = TopPanelVm.TypeDevice == TypeDevice.Igbt;
 
             VM.StartHeatingButtonIsEnabled = true;
 

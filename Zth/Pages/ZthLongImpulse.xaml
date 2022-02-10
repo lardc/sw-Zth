@@ -7,6 +7,7 @@
                   xmlns:res="clr-namespace:Zth.Properties"
                   xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
                   xmlns:components="clr-namespace:Zth.Components"
+                  xmlns:local="clr-namespace:Zth"
                   mc:Ignorable="d"  Loaded="Page_Loaded"
                   d:DesignHeight="1024" d:DesignWidth="1280"
                   xmlns:vm="clr-namespace:Zth.VM" Unloaded="CommonPage_Unloaded"
@@ -28,7 +29,7 @@
                 </Grid.Resources>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="140" />
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto" />
@@ -42,20 +43,56 @@
                     <RowDefinition Height="auto" />
                     <RowDefinition Height="auto" />
                 </Grid.RowDefinitions>
-                <TextBlock Grid.Row="0" Grid.Column="0" Text="{x:Static res:Resource.DurationPowerPulse }" />
-                <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Path=DurationPowerPulse,  ConverterParameter='100.1' }" IsEnabled="{Binding RightPanelTextBoxsIsEnabled}" />
 
-                <TextBlock Grid.Row="1" Grid.Column="0" Text="{x:Static res:Resource.AmplitudeHeatingCurrent }" />
-                <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding AmplitudeHeatingCurrent}" IsEnabled="{Binding RightPanelTextBoxsIsEnabled}"/>
+                <Grid Grid.Row="0" Grid.ColumnSpan="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="140"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.Style>
+                        <Style TargetType="Grid">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsGateVoltageVisible}" Value="False">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Grid.Style>
+                    <TextBlock Grid.Column="0" Text="{x:Static res:Resource.AmplitudeControlCurrent }" />
+                    <TextBox Grid.Column="1" Text="{Binding AmplitudeControlCurrent}" IsEnabled="{Binding RightPanelTextBoxsIsEnabled}"/>
+                </Grid>
 
-                <TextBlock Grid.Row="2" Grid.Column="0" Text="{x:Static res:Resource.AmplitudeControlCurrent }" />
-                <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding AmplitudeControlCurrent}" IsEnabled="{Binding RightPanelTextBoxsIsEnabled}"/>
+                <Grid Grid.Row="0" Grid.ColumnSpan="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="130"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.Style>
+                        <Style TargetType="Grid">
+                            <Setter Property="Visibility" Value="Visible"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsGateVoltageVisible}" Value="False">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Grid.Style>
+                    <TextBlock Grid.Column="0" Text="Напряжение затвора, В"/>
+                    <ComboBox Grid.Column="1" SelectedIndex="0" ItemsSource="{Binding Source={x:Static local:StringResources.GateVoltageDictionary}}" SelectedValue="{Binding GateVoltage}" SelectedValuePath="Key" DisplayMemberPath="Value" IsEnabled="{Binding RightPanelTextBoxsIsEnabled}"/>
+                </Grid>
 
-                <TextBlock Grid.Row="3" Grid.Column="0" Text="{x:Static res:Resource.AmplitudeMeasuringCurrent }" />
-                <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding AmplitudeMeasuringCurrent}" IsEnabled="{Binding RightPanelTextBoxsIsEnabled}"/>
+                <TextBlock Grid.Row="1" Grid.Column="0" Text="{x:Static res:Resource.AmplitudeMeasuringCurrent }" />
+                <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding AmplitudeMeasuringCurrent}" IsEnabled="{Binding RightPanelTextBoxsIsEnabled}"/>
 
-                <TextBlock Grid.Row="4" Grid.Column="0" Text="{x:Static res:Resource.DelayTimeTspMeasurements }" />
-                <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding DelayTimeTspMeasurements}" IsEnabled="{Binding RightPanelTextBoxsIsEnabled}"/>
+                <TextBlock Grid.Row="2" Grid.Column="0" Text="{x:Static res:Resource.AmplitudeHeatingCurrent }" />
+                <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding AmplitudeHeatingCurrent}" IsEnabled="{Binding RightPanelTextBoxsIsEnabled}"/>
+
+                <TextBlock Grid.Row="3" Grid.Column="0" Text="{x:Static res:Resource.DelayTimeTspMeasurements }" />
+                <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding DelayTimeTspMeasurements}" IsEnabled="{Binding RightPanelTextBoxsIsEnabled}"/>
+
+                <TextBlock Grid.Row="4" Grid.Column="0" Text="Длительность импульса, с" />
+                <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding Path=DurationPowerPulse,  ConverterParameter='100.1' }" IsEnabled="{Binding RightPanelTextBoxsIsEnabled}" />
 
                 <Button Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Click="StartHeating_Click" Style="{StaticResource ButtonRightPanelGreen}" IsEnabled="{Binding StartHeatingButtonIsEnabled}"  Content="{Binding StartHeatingContent}" />
 

@@ -17,6 +17,7 @@ namespace Zth.VM
         public double DelayTimeTspMeasurements { get; set; }
         public double DurationHeatingCurrentPulse { get; set; }
         public double PauseDuration { get; set; }
+        public GateVoltage GateVoltage { get; set; }
 
         public bool StartHeatingButtonIsEnabled { get; set; }
         public bool StopMeasurementButtonIsEnabled { get; set; }

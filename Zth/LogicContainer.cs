@@ -59,35 +59,6 @@ namespace Zth
             });
         }
 
-        public async void StartZthSequence(ushort firstPulseWidth, ushort lastPulseWidth, ushort pause) //Запуск измерения Zth последовательность
-        {
-            await Task.Run(() =>
-            {
-                try
-                {
-                    ClearFaults();
-                    ClearWarnings();
-                    App.Logger.Info("Setting the 1st pulse width");
-                    WriteRegister(REG_PULSE_WIDTH_MIN, firstPulseWidth);
-                    //Старший и младший байты длительности импульса
-                    ushort HighByte = (ushort)(lastPulseWidth >> 8);
-                    ushort LowByte = (ushort)(lastPulseWidth & 0x00FF);
-                    App.Logger.Info("Setting the last pulse width");
-                    WriteRegister(REG_PULSE_WIDTH_MAX_L, LowByte);
-                    WriteRegister(REG_PULSE_WIDTH_MAX_H, HighByte);
-                    App.Logger.Info("Setting pulse pause");
-                    WriteRegister(REG_ZTH_PAUSE, pause);
-                    App.Logger.Info("Starting Zth sequence");
-                    CallAction(ACT_START_PROCESS);
-                    App.Logger.Info("Zth sequence started");
-                }
-                catch (Exception error)
-                {
-                    App.Logger.Error(error, "Could not start Zth sequence");
-                }
-            });
-        }
-
         public async void StartZthLongImpulse(ushort pulseWidth) //Запуск измерения Zth длинный импульс
         {
             await Task.Run(() =>
@@ -134,6 +105,35 @@ namespace Zth
                 catch (Exception error)
                 {
                     App.Logger.Error(error, "Could not update Zth long impulse");
+                }
+            });
+        }
+
+        public async void StartZthSequence(ushort firstPulseWidth, ushort lastPulseWidth, ushort pause) //Запуск измерения Zth последовательность
+        {
+            await Task.Run(() =>
+            {
+                try
+                {
+                    ClearFaults();
+                    ClearWarnings();
+                    App.Logger.Info("Setting the 1st pulse width");
+                    WriteRegister(REG_PULSE_WIDTH_MIN, firstPulseWidth);
+                    //Старший и младший байты длительности импульса
+                    ushort HighByte = (ushort)(lastPulseWidth >> 8);
+                    ushort LowByte = (ushort)(lastPulseWidth & 0x00FF);
+                    App.Logger.Info("Setting the last pulse width");
+                    WriteRegister(REG_PULSE_WIDTH_MAX_L, LowByte);
+                    WriteRegister(REG_PULSE_WIDTH_MAX_H, HighByte);
+                    App.Logger.Info("Setting pulse pause");
+                    WriteRegister(REG_ZTH_PAUSE, pause);
+                    App.Logger.Info("Starting Zth sequence");
+                    CallAction(ACT_START_PROCESS);
+                    App.Logger.Info("Zth sequence started");
+                }
+                catch (Exception error)
+                {
+                    App.Logger.Error(error, "Could not start Zth sequence");
                 }
             });
         }
@@ -244,33 +244,43 @@ namespace Zth
             });
         }
 
-        public void PrepareForMeasure(TypeDevice device, TypeCooling cooling, WorkingMode mode, ushort gateParameter, ushort measuringCurrent, ushort[] heatingCurrent, ushort measurementDelay) //Подготовка к измерению
+        public async void PrepareForMeasure(TypeDevice device, TypeCooling cooling, WorkingMode mode, ushort gateParameter, ushort measuringCurrent, ushort[] heatingCurrent, ushort measurementDelay) //Подготовка к измерению
         {
-            App.Logger.Info("Setting device type");
-            WriteRegister(REG_DUT_TYPE, (ushort)device);
-            App.Logger.Info("Setting cooling type");
-            WriteRegister(REG_COOLING_MODE, (ushort)cooling);
-            App.Logger.Info("Setting working mode");
-            WriteRegister(REG_MODE, (ushort)mode);
-            switch (device)
+            await Task.Run(() =>
             {
-                case TypeDevice.Bipolar:
-                    App.Logger.Info("Setting gate current");
-                    WriteRegister(REG_GATE_CURRENT, gateParameter);
-                    break;
-                case TypeDevice.Igbt:
-                    App.Logger.Info("Setting IGBT gate voltage");
-                    WriteRegister(REG_IGBT_V_GATE, gateParameter);
-                    break;
-            }
-            App.Logger.Info("Setting measuring current");
-            WriteRegister(REG_MEASURING_CURRENT, measuringCurrent);
-            App.Logger.Info("Setting heating current");
-            WriteRegister(REG_I_WIDTH_LESS_2MS, heatingCurrent[0]);
-            WriteRegister(REG_I_WIDTH_LESS_10MS, heatingCurrent[1]);
-            WriteRegister(REG_I_WIDTH_ABOVE_10MS, heatingCurrent[2]);
-            App.Logger.Info("Setting measurment delay");
-            WriteRegister(REG_MEASUREMENT_DELAY, measurementDelay);
+                try
+                {
+                    App.Logger.Info("Setting device type");
+                    WriteRegister(REG_DUT_TYPE, (ushort)device);
+                    App.Logger.Info("Setting cooling type");
+                    WriteRegister(REG_COOLING_MODE, (ushort)cooling);
+                    App.Logger.Info("Setting working mode");
+                    WriteRegister(REG_MODE, (ushort)mode);
+                    switch (device)
+                    {
+                        case TypeDevice.Bipolar:
+                            App.Logger.Info("Setting gate current");
+                            WriteRegister(REG_GATE_CURRENT, gateParameter);
+                            break;
+                        case TypeDevice.Igbt:
+                            App.Logger.Info("Setting IGBT gate voltage");
+                            WriteRegister(REG_IGBT_V_GATE, gateParameter);
+                            break;
+                    }
+                    App.Logger.Info("Setting measuring current");
+                    WriteRegister(REG_MEASURING_CURRENT, measuringCurrent);
+                    App.Logger.Info("Setting heating current");
+                    WriteRegister(REG_I_WIDTH_LESS_2MS, heatingCurrent[0]);
+                    WriteRegister(REG_I_WIDTH_LESS_10MS, heatingCurrent[1]);
+                    WriteRegister(REG_I_WIDTH_ABOVE_10MS, heatingCurrent[2]);
+                    App.Logger.Info("Setting measurment delay");
+                    WriteRegister(REG_MEASUREMENT_DELAY, measurementDelay);
+                }
+                catch (Exception error)
+                {
+                    App.Logger.Error(error, "Could not write measurement parameters");
+                }
+            });
         }
 
         public void UpdateCommonData(TypeDevice device, ushort gateParameter, ushort measuringCurrent, ushort[] heatingCurrent, ushort measurementDelay) //Обновление общих параметров

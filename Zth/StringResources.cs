@@ -28,5 +28,11 @@ namespace Zth
             {WorkingMode.GraduationOnly, Properties.Resource.GraduationOnly}
         };
 
+        // ReSharper disable once CollectionNeverQueried.Global
+        public static readonly Dictionary<GateVoltage, string> GateVoltageDictionary = new Dictionary<GateVoltage, string>
+        {
+            {GateVoltage.V15, "15"},
+            {GateVoltage.V20, "20"}
+        };
     }
 }

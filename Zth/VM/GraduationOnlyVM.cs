@@ -10,7 +10,7 @@ namespace Zth.VM
         public bool StopGraduationButtonIsEnabled { get; set; }
         public bool CutButtonIsEnabled { get; set; }
 
-
+        public GateVoltage GateVoltage { get; set; }
         public double EndValueCaseTemperature { get; set; }
         public double DuratioHeatingCurrentPulse { get; set; }
         public double PauseDuration { get; set; }

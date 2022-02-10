@@ -45,6 +45,9 @@ namespace Zth.Pages
             DataContext = new GraduationOnlyVM();
             FrameVM.SetParentFrameVM(VM);
 
+            TopPanelVm.CathodeBodyTemperatureIsVisible = TopPanelVm.TypeCooling != TypeCooling.OneSided;
+            TopPanelVm.CathodeCoolerTemperatureIsVisible = TopPanelVm.TypeCooling != TypeCooling.OneSided;
+            VM.IsGateVoltageVisible = TopPanelVm.TypeDevice == TypeDevice.Igbt;
 
             VM.TemperatureSensitiveParameterIsVisibly = true;
             VM.AnodeBodyTemperatureIsVisibly = true;
@@ -84,14 +87,41 @@ namespace Zth.Pages
 
         private void StartHeating_Click(object sender, RoutedEventArgs e)
         {
-            VM.StopHeatingButtonIsEnabled = true;
-            VM.StartHeatingPressed = true;
-            VM.RightPanelTextBoxsIsEnabled = false;
-            Chart.SimulateStart();
+            try
+            {
+                //Параметры измерения
+                ushort GateParameter = TopPanelVm.TypeDevice == TypeDevice.Bipolar ? (ushort)(VM.DirectCurrentControlValue * 1000) : (ushort)VM.GateVoltage;
+                ushort MeasuringCurrent = (ushort)(VM.DirectCurrentMeasuringValue * 1000);
+                ushort[] HeatingCurrent = new ushort[]
+                {
+                    0, 0, (ushort)(VM.AmplitudeHeatingCurrent * 1000)
+                };
+                ushort MeasurementDelay = (ushort)VM.TSPMeasurementDelayTime;
+                ushort Duration = (ushort)(VM.DuratioHeatingCurrentPulse * 1000);
+                ushort Pause = (ushort)(VM.PauseDuration * 1000);
+                ushort Temperature = (ushort)(VM.EndValueCaseTemperature * 10);
+                switch (VM.StartHeatingContent)
+                {
+                    case "Старт нагрев":
+                        App.LogicContainer.PrepareForMeasure(TopPanelVm.TypeDevice, TopPanelVm.TypeCooling, TopPanelVm.WorkingMode, GateParameter, MeasuringCurrent, HeatingCurrent, MeasurementDelay);
+                        App.LogicContainer.StartGraduation(Duration, Pause, Temperature);
+                        break;
+                    case "Обновить задание":
+                        App.LogicContainer.UpdateGraduation(HeatingCurrent, Temperature);
+                        break;
+                }
+
+                VM.StopHeatingButtonIsEnabled = true;
+                VM.StartHeatingPressed = true;
+                VM.RightPanelTextBoxsIsEnabled = false;
+            }
+            catch { }
         }
 
         private void StopHeating_Click(object sender, RoutedEventArgs e)
         {
+            App.LogicContainer.StopHeating();
+
             VM.AmplitudeControlCurrentTextBoxIsEnabled = false;
             VM.DurationHeatingCurrentPulseTextBoxIsEnabled = false;
             VM.StopHeatingButtonIsEnabled = false;
@@ -101,12 +131,13 @@ namespace Zth.Pages
 
         private void StopGraduation_Click(object sender, RoutedEventArgs e)
         {
+            App.LogicContainer.StopProcess();
+
             VM.StopGraduationButtonIsEnabled = false;
             VM.CutButtonIsEnabled = true;
             VM.LineSeriesCursorLeftVisibility = true;
             VM.LineSeriesCursorRightVisibility = true;
             VM.RightPanelTextBoxsIsEnabled = false;
-            Chart.SimulateStop();
         }
 
         private void Cut_Click(object sender, RoutedEventArgs e)

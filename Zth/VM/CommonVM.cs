@@ -51,6 +51,8 @@ namespace Zth.VM
         //public bool ShowTableValues { get; set; }
         //public bool HideTableValues => !ShowTableValues;
 
+        public bool IsGateVoltageVisible { get; set; }
+
 
         public bool LineSeriesCursorLeftVisibility { get; set; } 
         public bool LineSeriesCursorRightVisibility { get; set; }

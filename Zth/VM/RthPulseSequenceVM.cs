@@ -10,7 +10,7 @@ namespace Zth.VM
         
         public bool RecordingResultsButtonIsEnabled { get; set; }
 
-
+        public GateVoltage GateVoltage { get; set; }
         public double DurationHeatingCurrentPulse { get; set; }
         public double PauseDuration { get; set; }
         public double AmplitudeHeatingCurrent { get; set; }

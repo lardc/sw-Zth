@@ -14,4 +14,9 @@
     {
         ZthSequence, ZthLongImpulse, RthSequence, GraduationOnly
     }
+
+    public enum GateVoltage
+    {
+        V15, V20
+    }
 }
