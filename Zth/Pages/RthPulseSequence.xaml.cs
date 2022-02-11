@@ -103,6 +103,7 @@ namespace Zth.Pages
                         App.LogicContainer.UpdateRthSequence(TopPanelVm.TypeDevice, GateParameter, MeasuringCurrent, HeatingCurrent, MeasurementDelay, Duration, Pause);
                         break;
                 }
+                App.LogicContainer.CommonVM = VM;
 
                 VM.StopHeatingButtonIsEnabled = true;
                 VM.StartHeatingButtonIsEnabled = true;

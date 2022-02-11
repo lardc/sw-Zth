@@ -25,20 +25,23 @@ namespace Zth.Pages
     public partial class GraduationCalculation : CommonPage
     {
         public Zth.VM.GraduationZthRthVM VM => DataContext as GraduationZthRthVM;
+        private string[] Lines;
 
         public GraduationCalculation() : base()
         {
             InitializeComponent();
         }
 
+        public GraduationCalculation(string[] lines)
+        {
+            InitializeComponent();
+            Lines = lines;
+        }
 
         private void CommonPage_Loaded(object sender, RoutedEventArgs e)
         {
             DataContext = new GraduationZthRthVM();
             FrameVM.SetParentFrameVM(VM);
-
-            for (int i = 0, x = 60, y = 430; i < 10; i++, x += 4, y -= 15)
-                VM.GraduationChartValues.Add(new LiveCharts.Defaults.ObservablePoint(x, y));
 
             TopPanelVm.AnodeBodyTemperatureIsVisible = false;
             TopPanelVm.AnodeCoolerTemperatureIsVisible = false;
@@ -70,6 +73,14 @@ namespace Zth.Pages
                     break;
             }
 
+            if (Lines != null)
+                foreach (string line in Lines)
+                {
+                    double x = double.Parse(line.Split(",")[0]);
+                    double y = double.Parse(line.Split(",")[1]);
+                    VM.GraduationChartValues.Add(new LiveCharts.Defaults.ObservablePoint(x, y));
+                }
+
             //if (MainWindow.SettingsModel.Debug1)
             //{
             //    var dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
@@ -83,7 +94,6 @@ namespace Zth.Pages
             //}
         }
 
-      
         private void CommonPage_Unloaded(object sender, RoutedEventArgs e)
         {
             BottomPanelVM.RightButtonContent = string.Empty;
@@ -99,12 +109,27 @@ namespace Zth.Pages
 
         private void Extrapolation_Click(object sender, RoutedEventArgs e)
         {
-            VM.GraduationChartValues.Clear();
-            VM.UpperLineExtrapolationAxis = VM.UpperLineExtrapolation;
             VM.BottomLineExtrapolationAxis = VM.BottomLineExtrapolation;
-            for (double x = VM.BottomLineExtrapolation; x <= VM.UpperLineExtrapolation; x+=5)
-                VM.GraduationChartValues.Add(new LiveCharts.Defaults.ObservablePoint(x, x * 1.4));
-
+            VM.UpperLineExtrapolationAxis = VM.UpperLineExtrapolation;
+            
+            //Линейная экстраполяция?
+            if (VM.BottomLineExtrapolation < VM.GraduationChartValues.Min(m => m.X))
+            {
+                double x = VM.BottomLineExtrapolation;
+                LiveCharts.Defaults.ObservablePoint lastPoint = VM.GraduationChartValues.OrderBy(m => m.X).ToArray()[0];
+                LiveCharts.Defaults.ObservablePoint prevPoint = VM.GraduationChartValues.OrderBy(m => m.X).ToArray()[1];
+                double y = prevPoint.Y + (lastPoint.Y - prevPoint.Y) / (lastPoint.X - prevPoint.X) * (x - prevPoint.X);
+                VM.GraduationChartValues.Add(new LiveCharts.Defaults.ObservablePoint(x, y));
+            }
+            if (VM.UpperLineExtrapolation > VM.GraduationChartValues.Max(m => m.X))
+            {
+                double x = VM.UpperLineExtrapolation;
+                LiveCharts.Defaults.ObservablePoint lastPoint = VM.GraduationChartValues.OrderByDescending(m => m.X).ToArray()[0];
+                LiveCharts.Defaults.ObservablePoint prevPoint = VM.GraduationChartValues.OrderByDescending(m => m.X).ToArray()[1];
+                double y = prevPoint.Y + (lastPoint.Y - prevPoint.Y) / (lastPoint.X - prevPoint.X) * (x - prevPoint.X);
+                VM.GraduationChartValues.Add(new LiveCharts.Defaults.ObservablePoint(x, y));
+            }
+            
             VM.MinMegawatts = VM.GraduationChartValues.Min(m => m.Y);
             VM.MaxMegawatts = VM.GraduationChartValues.Max(m => m.Y);
             VM.StepMegawatts = (VM.MaxMegawatts - VM.MinMegawatts) / 16;

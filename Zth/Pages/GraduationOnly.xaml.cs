@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows;
@@ -34,6 +36,9 @@ namespace Zth.Pages
             if (CanLoadInFile)
                 BottomPanelVM.MiddleButtonContent = "Загрузка из файла";
             BottomPanelVM.MiddleButtonIsEnabled = true;
+
+            BottomPanelVM.MiddleBottomButtonAction = () => LoadGraduationFromFile();
+            
             BottomPanelVM.RightButtonContent = "Расчёт градуировки";
             BottomPanelVM.RightBottomButtonAction = () => _navigationService.Navigate(new GraduationCalculation()
             {
@@ -85,6 +90,19 @@ namespace Zth.Pages
 
         }
 
+        private void LoadGraduationFromFile()
+        {
+            OpenFileDialog SFD = new OpenFileDialog()
+            {
+                Filter = "Excel Worksheets|*.csv"
+            };
+            if (SFD.ShowDialog() == true)
+                _navigationService.Navigate(new GraduationCalculation(File.ReadAllLines(SFD.FileName))
+                {
+                    
+                });
+        }
+
         private void StartHeating_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -110,6 +128,7 @@ namespace Zth.Pages
                         App.LogicContainer.UpdateGraduation(HeatingCurrent, Temperature);
                         break;
                 }
+                App.LogicContainer.CommonVM = VM;
 
                 VM.StopHeatingButtonIsEnabled = true;
                 VM.StartHeatingPressed = true;

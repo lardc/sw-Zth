@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LiveCharts.Defaults;
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -13,11 +14,19 @@ namespace Zth
         private readonly IOAdapter Adapter;
         //Узел Zth
         private readonly ushort Node;
+        //VM верхней панели
+        private readonly TopPanelVm TopPanelVm;
 
         public LogicContainer(ushort node = 1)
         {
             Adapter = new IOAdapter();
             Node = node;
+            TopPanelVm = ((MainWindow)App.Current.MainWindow).TopPanelVM;
+        }
+
+        public CommonVM CommonVM //VM общих данных
+        {
+            get; set;
         }
 
         public async void EnablePower() //Запуск установки
@@ -34,6 +43,7 @@ namespace Zth
                     while ((HWDeviceState)ReadRegister(REG_DEV_STATE) != HWDeviceState.DS_READY)
                         Thread.Sleep(50);
                     App.Logger.Info("Power enabled");
+                    ResultsCycle();
                 }
                 catch (Exception error)
                 {
@@ -306,7 +316,13 @@ namespace Zth
             WriteRegister(REG_MEASUREMENT_DELAY, measurementDelay);
         }
 
-        public async void ReadResults(CommonVM vm) //Чтение результатов
+        public void ResultsCycle() //Цикл чтения результатов
+        {
+            while (true)
+                ReadResults();
+        }
+
+        public async void ReadResults() //Чтение результатов
         {
             await Task.Run(() =>
             {
@@ -314,23 +330,54 @@ namespace Zth
                 {
                     App.Logger.Info("Reading the results");
                     //Греющий ток
-                    ushort HeatingCurrent = (ushort)(ReadRegister(REG_ACTUAL_I_DUT) / 10);
+                    double HeatingCurrent = ReadRegister(REG_ACTUAL_I_DUT) / 10.0;
+                    TopPanelVm.HeatingCurrent = HeatingCurrent;
                     //Греющая мощность
-                    string HeatingPowerString = string.Format("{0}.{1}", ReadRegister(REG_ACTUAL_P_DUT_WHOLE), ReadRegister(REG_ACTUAL_P_DUT_FRACT) / 10);
-                    ushort HeatingPower = ushort.Parse(HeatingPowerString);
+                    string HeatingPowerString = string.Format("{0}.{1}", ReadRegister(REG_ACTUAL_P_DUT_WHOLE), ReadRegister(REG_ACTUAL_P_DUT_FRACT));
+                    double HeatingPower = double.Parse(HeatingPowerString);
                     //Температура корпуса
-                    ushort TempCase1 = (ushort)(ReadRegister(REG_ACTUAL_T_CASE1) / 10);
-                    ushort TempCase2 = (ushort)(ReadRegister(REG_ACTUAL_T_CASE2) / 10);
+                    double TempCase1 = ReadRegister(REG_ACTUAL_T_CASE1) / 10.0;
+                    double TempCase2 = ReadRegister(REG_ACTUAL_T_CASE2) / 10.0;
+                    TopPanelVm.AnodeBodyTemperature = TempCase1;
+                    TopPanelVm.CathodeBodyTemperature = TempCase2;
                     //Температура охладителя
-                    ushort TempCool1 = (ushort)(ReadRegister(REG_ACTUAL_T_COOL1) / 10);
-                    ushort TempCool2 = (ushort)(ReadRegister(REG_ACTUAL_T_COOL2) / 10);
+                    double TempCool1 = ReadRegister(REG_ACTUAL_T_COOL1) / 10.0;
+                    double TempCool2 = ReadRegister(REG_ACTUAL_T_COOL2) / 10.0;
+                    TopPanelVm.AnodeCoolerTemperature = TempCool1;
+                    TopPanelVm.CathodeCoolerTemperature = TempCool2;
                     //ТЧП
-                    ushort Tsp = (ushort)(ReadRegister(REG_ACTUAL_TSP) / 10);                    
+                    double Tsp = ReadRegister(REG_ACTUAL_TSP) / 10.0;
+                    TopPanelVm.TemperatureSensitiveParameter = Tsp;
+                    
+                    //Измерение запущено, отображение графиков
+                    if (CommonVM != null)
+                    {
+                        //Греющий ток
+                        CommonVM.HeatingCurrent = HeatingCurrent;
+                        //CommonVM.HeatingCurrentChartValues.Add(new ObservablePoint(, HeatingCurrent));
+                        //Греющая мощность
+                        CommonVM.HeatingPower = HeatingPower;
+                        //CommonVM.HeatingPowerChartValues.Add(new ObservablePoint(, HeatingPower));
+                        //ТЧП
+                        CommonVM.TemperatureSensitiveParameter = Tsp;
+                        //CommonVM.TemperatureSensitiveParameterChartValues.Add(new ObservablePoint(, Tsp));
+                        //Температура корпуса
+                        CommonVM.AnodeBodyTemperature = TempCase1;
+                        //CommonVM.AnodeBodyTemperatureChartValues.Add(new ObservablePoint(, TempCase1));
+                        CommonVM.CathodeBodyTemperature = TempCase2;
+                        //CommonVM.CathodeBodyTemperatureChartValues.Add(new ObservablePoint(, TempCase2));
+                        //Температура охладителя
+                        CommonVM.AnodeCoolerTemperature = TempCool1;
+                        //CommonVM.AnodeCoolerTemperatureChartValues.Add(new ObservablePoint(, TempCool1));
+                        CommonVM.CathodeCoolerTemperature = TempCool2;
+                        //CommonVM.CathodeCoolerTemperatureChartValues.Add(new ObservablePoint(, TempCool2));
+                    }
                 }
                 catch (Exception error)
                 {
                     App.Logger.Error(error, "Could not read the results");
                 }
+                Thread.Sleep(500);
             });
         }
 
@@ -358,6 +405,7 @@ namespace Zth
             {
                 try
                 {
+                    CommonVM = null;
                     App.Logger.Info("Stopping the process");
                     CallAction(ACT_STOP_PROCESS);
                     App.Logger.Info("Process stopped");

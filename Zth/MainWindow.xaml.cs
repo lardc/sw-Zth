@@ -57,6 +57,11 @@ namespace Zth
             BottomPanelVM.RightBottomButtonAction();
         }
 
+        private void MiddleButtonClick(object sender, System.Windows.RoutedEventArgs e)
+        {
+            BottomPanelVM.MiddleBottomButtonAction();
+        }
+
         private void LeftButtonClick(object sender, System.Windows.RoutedEventArgs e)
         {
             if (NavigationService.CanGoBack)

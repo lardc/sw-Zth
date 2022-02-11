@@ -85,6 +85,7 @@ namespace Zth.Pages
                 ushort Pause = (ushort)VM.PauseDurationBetweenAdjacentPulses;
                 App.LogicContainer.PrepareForMeasure(TopPanelVm.TypeDevice, TopPanelVm.TypeCooling, TopPanelVm.WorkingMode, GateParameter, MeasuringCurrent, HeatingCurrent, MeasurementDelay);
                 App.LogicContainer.StartZthSequence(Duration1, Duration2, Pause);
+                App.LogicContainer.CommonVM = VM;
 
                 VM.StartMeasurementButtonEnabled = false;
                 VM.StopMeasurementButtonEnabled = true;

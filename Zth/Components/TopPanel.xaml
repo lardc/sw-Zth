@@ -40,13 +40,13 @@
                 <ColumnDefinition />
                 <ColumnDefinition Width="auto" />
                 <ColumnDefinition />
-                <ColumnDefinition Width="auto" />
-                <ColumnDefinition Width="auto" />
-                <ColumnDefinition />
-                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="200" />
                 <ColumnDefinition Width="auto" />
                 <ColumnDefinition />
+                <ColumnDefinition Width="200" />
                 <ColumnDefinition Width="auto" />
+                <ColumnDefinition />
+                <ColumnDefinition Width="200" />
                 <ColumnDefinition Width="auto" />
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
@@ -69,11 +69,11 @@
                  <Run Text="{x:Static res:Resource.CathodeCoolerTemperatureAbbreviated}" />  <Run Text=" " /> <Run Text="{Binding CathodeCoolerTemperature}" FontWeight="Bold" /> <Run Text="{x:Static res:Resource.UnitMeasurementDegreeCentigrade}" />
             </TextBlock>
 
-            <TextBlock Grid.Row="0" Grid.Column="11" Visibility="{Binding TemperatureSensitiveParameterIsVisible, Converter={StaticResource B2VH}}">
-                    <Run Text="{x:Static res:Resource.TemperatureSensitiveParameter}" /> <Run Text=":" />  <Run Text="    " /> <Run Text="{Binding TemperatureSensitiveParameter}" FontWeight="Bold" /> <Run Text="{x:Static res:Resource.MegaVoltUnit}" />
-            </TextBlock>
-            <TextBlock Grid.Row="1" Grid.Column="11" Visibility="{Binding HeatingCurrentIsVisible, Converter={StaticResource B2VH}}">
+            <TextBlock Grid.Row="0" Grid.Column="11" Visibility="{Binding HeatingCurrentIsVisible, Converter={StaticResource B2VH}}">
                 <Run Text="{x:Static res:Resource.HeatingCurrentAbbreviated}" /> <Run Text=" " /> <Run Text="{Binding HeatingCurrent}" FontWeight="Bold" /> <Run Text="{x:Static res:Resource.AmpereUnit}" />
+            </TextBlock>
+            <TextBlock Grid.Row="1" Grid.Column="11" Visibility="{Binding TemperatureSensitiveParameterIsVisible, Converter={StaticResource B2VH}}">
+                    <Run Text="{x:Static res:Resource.TemperatureSensitiveParameter}" /> <Run Text=":" />  <Run Text="    " /> <Run Text="{Binding TemperatureSensitiveParameter}" FontWeight="Bold" /> <Run Text="{x:Static res:Resource.MegaVoltUnit}" />
             </TextBlock>
         </Grid>
     </Grid>

@@ -49,7 +49,8 @@ namespace Zth.Pages
                         App.LogicContainer.UpdateZthLongImpulse(TopPanelVm.TypeDevice, GateParameter, MeasuringCurrent, HeatingCurrent, MeasurementDelay, Duration);
                         break;
                 }
-                
+                App.LogicContainer.CommonVM = VM;
+
                 VM.StopHeatingButtonIsEnabled = true;
                 VM.StartHeatingPressed = true;
             }
