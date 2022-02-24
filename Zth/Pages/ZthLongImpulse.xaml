@@ -105,7 +105,7 @@
                     <RowDefinition Height="*" />
                     <RowDefinition Height="auto" />
                 </Grid.RowDefinitions>
-                <components:Chart x:Name="Chart"/>
+                <components:Chart x:Name="Chart" />
                 <components:BottomCheckBoxsAndTable HorizontalAlignment="Center" Grid.Row="1">
                     
                 </components:BottomCheckBoxsAndTable>

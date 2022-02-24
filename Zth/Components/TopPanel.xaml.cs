@@ -33,5 +33,11 @@ namespace Zth.Components
             var mainWindow = Window.GetWindow(this) as MainWindow;
             mainWindow.NavigationService.Navigate(new Pages.SelectPage());
         }
+
+        private void ButtonClose_Click(object sender, RoutedEventArgs e)
+        {
+            var mainWindow = Window.GetWindow(this) as MainWindow;
+            mainWindow.Close();
+        }
     }
 }

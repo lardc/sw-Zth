@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30011.22
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32210.238
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Zth", "Zth\Zth.csproj", "{F178860E-FFC1-4151-AE1A-5FAA087E6924}"
 EndProject
@@ -9,12 +9,14 @@ Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
+		x86|Any CPU = x86|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{F178860E-FFC1-4151-AE1A-5FAA087E6924}.Debug|Any CPU.ActiveCfg = Debug|x86
 		{F178860E-FFC1-4151-AE1A-5FAA087E6924}.Debug|Any CPU.Build.0 = Debug|x86
 		{F178860E-FFC1-4151-AE1A-5FAA087E6924}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F178860E-FFC1-4151-AE1A-5FAA087E6924}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F178860E-FFC1-4151-AE1A-5FAA087E6924}.x86|Any CPU.ActiveCfg = Debug|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -17,6 +17,7 @@
                 <Style TargetType="lvc:LineSeries">
                     <Setter Property="Fill" Value="Transparent"></Setter>
                     <Setter Property="PointGeometry" Value="{x:Null}"/>
+                    <Setter Property="LineSmoothness" Value="0"/>
                 </Style>
 
             </lvc:CartesianChart.Resources>

@@ -1,25 +1,15 @@
 ﻿using LiveCharts;
-using LiveCharts.Configurations;
 using LiveCharts.Defaults;
 using LiveCharts.Wpf;
 using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using Zth.VM;
 
 namespace Zth.Components
@@ -56,9 +46,9 @@ namespace Zth.Components
             else
                 VM.AxisYDegreesCelsiusIsEnabled = false;
 
-
             foreach (var i in MainCartesianChart.Series)
             {
+                
                 var axisX = MainCartesianChart.AxisX[i.ScalesXAt];
                 var axisY = MainCartesianChart.AxisY[i.ScalesYAt];
 
@@ -72,7 +62,6 @@ namespace Zth.Components
                 var minY = ((ChartValues<ObservablePoint>)i.Values).Min(m => m.Y);
                 var maxY = ((ChartValues<ObservablePoint>)i.Values).Max(m => m.Y);
 
-
                 if (axisX.MinValue > Math.Pow(minX, 10))
                 {
                     axisX.MinValue = Math.Log10(minX);
@@ -80,11 +69,7 @@ namespace Zth.Components
                 }
                 while (Math.Pow(10, axisX.MaxValue) < maxX)
                     axisX.MaxValue++;
-                //if (Math.Pow(10, axisX.MaxValue) < maxX)
-                //{
-                //    axisX.MaxValue = Math.Log10(maxX);
-                //    axisX.Separator.Step = (axisX.MaxValue - axisX.MinValue + double.Epsilon) / 6;
-                //}
+                
 
                 while (axisY.MinValue  > minY || axisY.MaxValue  < maxY)
                 {
@@ -95,81 +80,39 @@ namespace Zth.Components
                     axisY.Separator.Step += axisY.Separator.Step / 16;
 
                 }
-
-                //while (axisY.MinValue + axisY.Separator.Step  > minY || axisY.MaxValue - axisY.Separator.Step  < maxY)
-                //{
-                //    if (axisY.MinValue + axisY.Separator.Step   > minY)
-                //        axisY.MinValue -= axisY.Separator.Step;
-                //    if(axisY.MaxValue - axisY.Separator.Step < maxY  )
-                //        axisY.MaxValue += axisY.Separator.Step;
-                //    axisY.Separator.Step += axisY.Separator.Step / 16;
-
-                //}
-
-                //while (axisY.MinValue > minY)
-                //{
-                //    //var newAxis = new Axis();
-                //    //newAxis.MinValue = axisY.MinValue - axisY.Separator.Step;
-                //    //newAxis.MaxValue = axisY.MaxValue;
-                //    //newAxis.Separator = axisY.Separator;
-                //    //newAxis.Separator = new LiveCharts.Wpf.Separator()
-                //    //{
-                //    //    Step = axisY.Separator.Step + axisY.Separator.Step / 16
-                //    //};
-
-
-
-                //    axisY.MinValue -= axisY.Separator.Step;
-                //    axisY.Separator.Step += axisY.Separator.Step / 16;
-                //    axisY.MaxValue = axisY.MinValue + axisY.Separator.Step * 16;
-                //}
-
-                //while (axisY.MaxValue < maxY)
-                //{
-                //    axisY.Separator.Step += axisY.Separator.Step / 16;
-                //    axisY.MaxValue = axisY.MinValue + axisY.Separator.Step * 16;
-                //    break;
-                //    //var minValueProperty = BindingOperations.GetBinding(axisY, Axis.MinValueProperty);
-                //    //var maxValueProperty = BindingOperations.GetBinding(axisY, Axis.MaxValueProperty);
-                //    //var labelFormatterProperty = BindingOperations.GetBinding(axisY, Axis.LabelFormatterProperty);
-                //    //var showLabelsProperty = BindingOperations.GetBinding(axisY, Axis.ShowLabelsProperty);
-
-                //    //var isEnabledProperty = BindingOperations.GetBinding(axisY.Separator, IsEnabledProperty);
-                //    //var stepProperty = BindingOperations.GetBinding(axisY.Separator, LiveCharts.Wpf.Separator.StepProperty);
-
-                //    //var newAxisY = new Axis();
-                //    //newAxisY.SetBinding(Axis.MinValueProperty, minValueProperty);
-                //    //newAxisY.SetBinding(Axis.MaxValueProperty, maxValueProperty);
-                //    //newAxisY.SetBinding(Axis.LabelFormatterProperty, labelFormatterProperty);
-                //    //newAxisY.SetBinding(Axis.ShowLabelsProperty, showLabelsProperty);
-
-                //    //newAxisY.Separator = new LiveCharts.Wpf.Separator();
-                //    //newAxisY.Separator.SetBinding(IsEnabledProperty, isEnabledProperty);
-                //    //newAxisY.Separator.SetBinding(LiveCharts.Wpf.Separator.StepProperty, stepProperty);
-
-                //    //newAxisY.MaxValue = maxY;
-                //    //newAxisY.Separator.Step = (newAxisY.MaxValue - newAxisY.MinValue) / 16;
-
-                //    //MainCartesianChart.AxisY.RemoveAt(1);
-                //    //MainCartesianChart.AxisY.Insert(0, newAxisY);
-
-
-                //    //axisY.Separator.Step = (maxY - minY) / 16;
-                //    //axisY.MaxValue = maxY - axisY.Separator.Step / 1000;
-
-                //    axisY.MaxValue += axisY.Separator.Step;
-                //    axisY.Separator.Step += axisY.Separator.Step / 16;
-
-                //    //MainCartesianChart.AxisY.RemoveAt(1);
-                //    //MainCartesianChart.AxisY.Insert(0, axisY);
-
-                //}
-
-
             }
         }
 
+        public void ClearChart(bool endpoints = false)
+        {
+            //Греющий ток
+            VM.HeatingCurrentChartValues.Clear();
+            //Греющая мощность
+            VM.HeatingPowerChartValues.Clear();
+            //ТЧП
+            VM.TemperatureSensitiveParameterChartValues.Clear();
+            //Температура корпуса
+            VM.AnodeBodyTemperatureChartValues.Clear();
+            VM.CathodeBodyTemperatureChartValues.Clear();
+            //Температура охладителя
+            VM.AnodeCoolerTemperatureChartValues.Clear();
+            VM.CathodeCoolerTemperatureChartValues.Clear();
+            if (!endpoints)
+            {
+                VM.HeatingCurrentChartValues.Add(new ObservablePoint(0.000001, 0));
+                VM.HeatingPowerChartValues.Add(new ObservablePoint(0.000001, 0));
+                VM.TemperatureSensitiveParameterChartValues.Add(new ObservablePoint(0.000001, 0));
+                VM.AnodeBodyTemperatureChartValues.Add(new ObservablePoint(0.000001, 0));
+                VM.CathodeBodyTemperatureChartValues.Add(new ObservablePoint(0.000001, 0));
+                VM.AnodeCoolerTemperatureChartValues.Add(new ObservablePoint(0.000001, 0));
+                VM.CathodeCoolerTemperatureChartValues.Add(new ObservablePoint(0.000001, 0));
+            }
+            
+            //AdjustChart();
+        }
+
         private CancellationTokenSource _simulateCancellationTokenSource = new CancellationTokenSource();
+        
         public void SimulateStop()
         {
             _simulateCancellationTokenSource.Cancel();
@@ -276,7 +219,6 @@ namespace Zth.Components
             return Math.Pow(10, chartValue.X);
         }
 
-
         private void DrawAllValues(LineSeriesCursor lineSeriesCursor)
         {
             VM.Time = GetXPoint(lineSeriesCursor);
@@ -323,10 +265,12 @@ namespace Zth.Components
 
         private void MainCartesianChart_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            if(lastLineSeriesCursor != null)
-                lastLineSeriesCursor.Margin = new Thickness(e.GetPosition((IInputElement)sender).X - lastLineSeriesCursor.ActualWidth / 2,0,0,0);
+            if (lastLineSeriesCursor != null)
+            {
+                lastLineSeriesCursor.Margin = new Thickness(e.GetPosition((IInputElement)sender).X - lastLineSeriesCursor.ActualWidth / 2, 0, 0, 0);
+                DrawAllValues(lastLineSeriesCursor);
+            }
         }
-
 
         private void LineSeriesCursor_MouseDown(object sender, MouseButtonEventArgs e)
         {

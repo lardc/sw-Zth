@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Threading;
+using Zth.Components;
 using Zth.IO;
 using Zth.VM;
 
@@ -16,15 +18,33 @@ namespace Zth
         private readonly ushort Node;
         //VM верхней панели
         private readonly TopPanelVm TopPanelVm;
+        //VM нижней панели
+        private readonly BottomPanelVM BottomPanelVM;
 
-        public LogicContainer(ushort node = 1)
+        public LogicContainer(ushort node = 10)
         {
             Adapter = new IOAdapter();
             Node = node;
             TopPanelVm = ((MainWindow)App.Current.MainWindow).TopPanelVM;
+            BottomPanelVM = ((MainWindow)App.Current.MainWindow).BottomPanelVM;
+        }
+
+        public bool IsRunning //Флаг старта измерения
+        {
+            get; set;
+        }
+
+        public DateTime StartTime //Начало измерений
+        {
+            get; set;
         }
 
         public CommonVM CommonVM //VM общих данных
+        {
+            get; set;
+        }
+
+        public Chart Chart //График для отображения
         {
             get; set;
         }
@@ -40,7 +60,7 @@ namespace Zth
                     App.Logger.Info("Enabling power");
                     CallAction(ACT_ENABLE_POWER);
                     //Ожидание запуска установки
-                    while ((HWDeviceState)ReadRegister(REG_DEV_STATE) != HWDeviceState.DS_READY)
+                    while ((HWDeviceState)ReadRegister(REG_DEV_STATE, true) != HWDeviceState.DS_READY)
                         Thread.Sleep(50);
                     App.Logger.Info("Power enabled");
                     ResultsCycle();
@@ -48,6 +68,12 @@ namespace Zth
                 catch (Exception error)
                 {
                     App.Logger.Error(error, "Enabling power failed");
+                    MessageBox.Show("Не удалось запустить комплекс.\nПроверьте статус подключения к аппаратной части.", "Ошибка");
+                    //Закрытие приложения
+                    App.Current.Dispatcher.BeginInvoke(() =>
+                    {
+                        App.Current.MainWindow.Close();
+                    });
                 }
             });
         }
@@ -58,6 +84,7 @@ namespace Zth
             {
                 try
                 {
+                    IsRunning = false;
                     App.Logger.Info("Disabling power");
                     CallAction(ACT_DISABLE_POWER);
                     App.Logger.Info("Power disabled");
@@ -69,23 +96,22 @@ namespace Zth
             });
         }
 
-        public async void StartZthLongImpulse(ushort pulseWidth) //Запуск измерения Zth длинный импульс
+        public async void StartZthLongImpulse(uint pulseWidth) //Запуск измерения Zth длинный импульс
         {
             await Task.Run(() =>
             {
                 try
                 {
-                    ClearFaults();
-                    ClearWarnings();
                     //Старший и младший байты длительности импульса
-                    ushort HighByte = (ushort)(pulseWidth >> 8);
-                    ushort LowByte = (ushort)(pulseWidth & 0x00FF);
+                    ushort HighByte = (ushort)(pulseWidth >> 16);
+                    ushort LowByte = (ushort)(pulseWidth & 0xFFFF);
                     App.Logger.Info("Setting pulse width");
                     WriteRegister(REG_PULSE_WIDTH_MAX_L, LowByte);
                     WriteRegister(REG_PULSE_WIDTH_MAX_H, HighByte);
                     App.Logger.Info("Starting Zth long impulse");
                     CallAction(ACT_START_PROCESS);
                     App.Logger.Info("Zth long impulse started");
+                    IsRunning = true;
                 }
                 catch (Exception error)
                 {
@@ -94,7 +120,7 @@ namespace Zth
             });
         }
 
-        public async void UpdateZthLongImpulse(TypeDevice device, ushort gateParameter, ushort measuringCurrent, ushort[] heatingCurrent, ushort measurementDelay, ushort pulseWidth) //Обновление параметров измерения Zth длинный импульс
+        public async void UpdateZthLongImpulse(TypeDevice device, ushort gateParameter, ushort measuringCurrent, ushort[] heatingCurrent, ushort measurementDelay, uint pulseWidth) //Обновление параметров измерения Zth длинный импульс
         {
             await Task.Run(() =>
             {
@@ -103,8 +129,8 @@ namespace Zth
                     //Обновление общих параметров
                     UpdateCommonData(device, gateParameter, measuringCurrent, heatingCurrent, measurementDelay);
                     //Старший и младший байты длительности импульса
-                    ushort HighByte = (ushort)(pulseWidth >> 8);
-                    ushort LowByte = (ushort)(pulseWidth & 0x00FF);
+                    ushort HighByte = (ushort)(pulseWidth >> 16);
+                    ushort LowByte = (ushort)(pulseWidth & 0xFFFF);
                     App.Logger.Info("Setting pulse width");
                     WriteRegister(REG_PULSE_WIDTH_MAX_L, LowByte);
                     WriteRegister(REG_PULSE_WIDTH_MAX_H, HighByte);
@@ -119,19 +145,46 @@ namespace Zth
             });
         }
 
-        public async void StartZthSequence(ushort firstPulseWidth, ushort lastPulseWidth, ushort pause) //Запуск измерения Zth последовательность
+        public async void ReadEndpointsZthLongImpulse() //Чтение эндпоинтов Zth длинный импульс
         {
             await Task.Run(() =>
             {
                 try
                 {
-                    ClearFaults();
-                    ClearWarnings();
+                    App.Logger.Info("Reading endpoints for Zth long impulse");
+                    //Очистка графиков
+                    App.Current.Dispatcher.BeginInvoke(() =>
+                    {
+                        Chart.ClearChart();
+                    });
+                    //Время (мкс)
+                    double Duration = 200;
+                    ReadEndpoints(Duration);
+                    App.Logger.Info("Reading endpoints for Zth long impulse finished");
+                    //Выравнивание графиков
+                    App.Current.Dispatcher.BeginInvoke(() =>
+                    {
+                        Chart.AdjustChart();
+                    });
+                }
+                catch (Exception error)
+                {
+                    App.Logger.Error(error, "Could not read Zth long impulse endpoints");
+                }
+            });
+        }
+
+        public async void StartZthSequence(ushort firstPulseWidth, uint lastPulseWidth, ushort pause) //Запуск измерения Zth последовательность
+        {
+            await Task.Run(() =>
+            {
+                try
+                {
                     App.Logger.Info("Setting the 1st pulse width");
                     WriteRegister(REG_PULSE_WIDTH_MIN, firstPulseWidth);
                     //Старший и младший байты длительности импульса
-                    ushort HighByte = (ushort)(lastPulseWidth >> 8);
-                    ushort LowByte = (ushort)(lastPulseWidth & 0x00FF);
+                    ushort HighByte = (ushort)(lastPulseWidth >> 16);
+                    ushort LowByte = (ushort)(lastPulseWidth & 0xFFFF);
                     App.Logger.Info("Setting the last pulse width");
                     WriteRegister(REG_PULSE_WIDTH_MAX_L, LowByte);
                     WriteRegister(REG_PULSE_WIDTH_MAX_H, HighByte);
@@ -140,6 +193,7 @@ namespace Zth
                     App.Logger.Info("Starting Zth sequence");
                     CallAction(ACT_START_PROCESS);
                     App.Logger.Info("Zth sequence started");
+                    IsRunning = true;
                 }
                 catch (Exception error)
                 {
@@ -148,17 +202,44 @@ namespace Zth
             });
         }
 
-        public async void StartRthSequence(ushort pulseWidth, ushort pause) //Запуск измерения Rth последовательность
+        public async void ReadEndpointsZthSequence() //Чтение эндпоинтов Zth последовательность
         {
             await Task.Run(() =>
             {
                 try
                 {
-                    ClearFaults();
-                    ClearWarnings();
+                    App.Logger.Info("Reading endpoints for Zth sequence");
+                    //Очистка графиков
+                    App.Current.Dispatcher.BeginInvoke(() =>
+                    {
+                        Chart.ClearChart();
+                    });
+                    //Время (мкс)
+                    double Duration = ((ZthPulseSequenceVM)CommonVM).FirstPulseDuration * 1000;
+                    ReadEndpoints(Duration);
+                    App.Logger.Info("Reading endpoints for Zth sequence finished");
+                    //Выравнивание графиков
+                    App.Current.Dispatcher.BeginInvoke(() =>
+                    {
+                        Chart.AdjustChart();
+                    });
+                }
+                catch (Exception error)
+                {
+                    App.Logger.Error(error, "Could not read Zth sequence endpoints");
+                }
+            });
+        }
+
+        public async void StartRthSequence(uint pulseWidth, ushort pause) //Запуск измерения Rth последовательность
+        {
+            await Task.Run(() =>
+            {
+                try
+                {
                     //Старший и младший байты длительности импульса
-                    ushort HighByte = (ushort)(pulseWidth >> 8);
-                    ushort LowByte = (ushort)(pulseWidth & 0x00FF);
+                    ushort HighByte = (ushort)(pulseWidth >> 16);
+                    ushort LowByte = (ushort)(pulseWidth & 0xFFFF);
                     App.Logger.Info("Setting pulse width");
                     WriteRegister(REG_PULSE_WIDTH_MAX_L, LowByte);
                     WriteRegister(REG_PULSE_WIDTH_MAX_H, HighByte);
@@ -167,6 +248,7 @@ namespace Zth
                     App.Logger.Info("Starting Rth sequence");
                     CallAction(ACT_START_PROCESS);
                     App.Logger.Info("Rth sequence started");
+                    IsRunning = true;
                 }
                 catch (Exception error)
                 {
@@ -175,7 +257,7 @@ namespace Zth
             });
         }
 
-        public async void UpdateRthSequence(TypeDevice device, ushort gateParameter, ushort measuringCurrent, ushort[] heatingCurrent, ushort measurementDelay, ushort pulseWidth, ushort pause) //Обновление параметров измерения Rth последовательность
+        public async void UpdateRthSequence(TypeDevice device, ushort gateParameter, ushort measuringCurrent, ushort[] heatingCurrent, ushort measurementDelay, uint pulseWidth, ushort pause) //Обновление параметров измерения Rth последовательность
         {
             await Task.Run(() =>
             {
@@ -184,8 +266,8 @@ namespace Zth
                     //Обновление общих параметров
                     UpdateCommonData(device, gateParameter, measuringCurrent, heatingCurrent, measurementDelay);
                     //Старший и младший байты длительности импульса
-                    ushort HighByte = (ushort)(pulseWidth >> 8);
-                    ushort LowByte = (ushort)(pulseWidth & 0x00FF);
+                    ushort HighByte = (ushort)(pulseWidth >> 16);
+                    ushort LowByte = (ushort)(pulseWidth & 0xFFFF);
                     App.Logger.Info("Setting pulse width");
                     WriteRegister(REG_PULSE_WIDTH_MAX_L, LowByte);
                     WriteRegister(REG_PULSE_WIDTH_MAX_H, HighByte);
@@ -202,17 +284,15 @@ namespace Zth
             });
         }
 
-        public async void StartGraduation(ushort pulseWidth, ushort pause, ushort temperature) //Запуск измерения Градуировка
+        public async void StartGraduation(uint pulseWidth, ushort pause, ushort temperature) //Запуск измерения Градуировкаf
         {
             await Task.Run(() =>
             {
                 try
                 {
-                    ClearFaults();
-                    ClearWarnings();
                     //Старший и младший байты длительности импульса
-                    ushort HighByte = (ushort)(pulseWidth >> 8);
-                    ushort LowByte = (ushort)(pulseWidth & 0x00FF);
+                    ushort HighByte = (ushort)(pulseWidth >> 16);
+                    ushort LowByte = (ushort)(pulseWidth & 0xFFFF);
                     App.Logger.Info("Setting pulse width");
                     WriteRegister(REG_PULSE_WIDTH_MAX_L, LowByte);
                     WriteRegister(REG_PULSE_WIDTH_MAX_H, HighByte);
@@ -223,6 +303,7 @@ namespace Zth
                     App.Logger.Info("Starting graduation");
                     CallAction(ACT_START_PROCESS);
                     App.Logger.Info("Graduation started");
+                    IsRunning = true;
                 }
                 catch (Exception error)
                 {
@@ -254,12 +335,43 @@ namespace Zth
             });
         }
 
-        public async void PrepareForMeasure(TypeDevice device, TypeCooling cooling, WorkingMode mode, ushort gateParameter, ushort measuringCurrent, ushort[] heatingCurrent, ushort measurementDelay) //Подготовка к измерению
+        public async void ReadEndpointsGraduation() //Чтение эндпоинтов Градуировка
         {
             await Task.Run(() =>
             {
                 try
                 {
+                    App.Logger.Info("Reading endpoints for graduation");
+                    //Очистка графиков
+                    App.Current.Dispatcher.BeginInvoke(() =>
+                    {
+                        Chart.ClearChart();
+                    });
+                    //Время (мкс)
+                    double Duration = 200;
+                    ReadEndpoints(Duration);
+                    App.Logger.Info("Reading endpoints for graduation finished");
+                    //Выравнивание графиков
+                    App.Current.Dispatcher.BeginInvoke(() =>
+                    {
+                        Chart.AdjustChart();
+                    });
+                }
+                catch (Exception error)
+                {
+                    App.Logger.Error(error, "Could not read graduation endpoints");
+                }
+            });
+        }
+
+        public async Task PrepareForMeasure(TypeDevice device, TypeCooling cooling, WorkingMode mode, ushort gateParameter, ushort measuringCurrent, ushort[] heatingCurrent, ushort measurementDelay) //Подготовка к измерению
+        {
+            await Task.Run(() =>
+            {
+                try
+                {
+                    ClearFaults();
+                    ClearWarnings();
                     App.Logger.Info("Setting device type");
                     WriteRegister(REG_DUT_TYPE, (ushort)device);
                     App.Logger.Info("Setting cooling type");
@@ -283,7 +395,7 @@ namespace Zth
                     WriteRegister(REG_I_WIDTH_LESS_2MS, heatingCurrent[0]);
                     WriteRegister(REG_I_WIDTH_LESS_10MS, heatingCurrent[1]);
                     WriteRegister(REG_I_WIDTH_ABOVE_10MS, heatingCurrent[2]);
-                    App.Logger.Info("Setting measurment delay");
+                    App.Logger.Info("Setting measurement delay");
                     WriteRegister(REG_MEASUREMENT_DELAY, measurementDelay);
                 }
                 catch (Exception error)
@@ -312,73 +424,215 @@ namespace Zth
             WriteRegister(REG_I_WIDTH_LESS_2MS, heatingCurrent[0]);
             WriteRegister(REG_I_WIDTH_LESS_10MS, heatingCurrent[1]);
             WriteRegister(REG_I_WIDTH_ABOVE_10MS, heatingCurrent[2]);
-            App.Logger.Info("Setting measurment delay");
+            App.Logger.Info("Setting measurement delay");
             WriteRegister(REG_MEASUREMENT_DELAY, measurementDelay);
         }
 
-        public void ResultsCycle() //Цикл чтения результатов
+        public void ReadEndpoints(double duration) //Общий алгоритм чтения эндпоинтов
         {
-            while (true)
-                ReadResults();
+            //Температура корпуса
+            IList<ushort> TempCase1Endpoints = ReadArray(EP_T_CASE1);
+            IList<ushort> TempCase2Endpoints = ReadArray(EP_T_CASE2);
+            //Температура охладителя
+            IList<ushort> TempCool1Endpoints = ReadArray(EP_T_COOL1);
+            IList<ushort> TempCool2Endpoints = ReadArray(EP_T_COOL2);
+            //ТЧП
+            IList<ushort> TempTspEndpoints = ReadArray(EP_TSP);
+            //Отключение лишних графиков
+            CommonVM.HeatingCurrentIsVisibly = false;
+            CommonVM.HeatingPowerIsVisibly = false;
+            //Добавление на графики
+            for (int i = 0; i < TempCase1Endpoints.Count; i++)
+            {
+                //Длительность
+                double Timestamp = duration / 1000000.0;
+                //Температура корпуса
+                double TempCase1 = TempCase1Endpoints[i] / 10.0;
+                CommonVM.AnodeBodyTemperatureChartValues.Add(new ObservablePoint(Timestamp, TempCase1));
+                double TempCase2 = TempCase2Endpoints[i] / 10.0;
+                if (CommonVM.CathodeBodyTemperatureIsVisibly)
+                    CommonVM.CathodeBodyTemperatureChartValues.Add(new ObservablePoint(Timestamp, TempCase2));
+                //Температура охладителя
+                double TempCool1 = TempCool1Endpoints[i] / 10.0;
+                CommonVM.AnodeCoolerTemperatureChartValues.Add(new ObservablePoint(Timestamp, TempCool1));
+                double TempCool2 = TempCool2Endpoints[i] / 10.0;
+                if (CommonVM.CathodeCoolerTemperatureIsVisibly)
+                    CommonVM.CathodeCoolerTemperatureChartValues.Add(new ObservablePoint(Timestamp, TempCool2));
+                //ТЧП
+                double Tsp = TempTspEndpoints[i];
+                if (CommonVM.TemperatureSensitiveParameterIsVisibly == true)
+                    CommonVM.TemperatureSensitiveParameterChartValues.Add(new ObservablePoint(Timestamp, Tsp));
+                //Итерация времени
+                duration += 100 * CountDurationMultiplier(duration);
+            }
         }
 
-        public async void ReadResults() //Чтение результатов
+        public double CountDurationMultiplier(double Duration) //Коэффициент умножения длительности
+        {
+            //Коэффициент умножения
+            double Multiplier;
+            //Мкс
+            if (Duration < 1000)
+                Multiplier = 1;
+            //Мс
+            else if (Duration < 10000)
+                Multiplier = 10;
+            //10 мс
+            else if (Duration < 100000)
+                Multiplier = 100;
+            //100 мс
+            else if (Duration < 1000000)
+                Multiplier = 1000;
+            //Cек
+            else if (Duration < 10000000)
+                Multiplier = 10000;
+            //10 сек
+            else if (Duration < 100000000)
+                Multiplier = 100000;
+            //100 сек
+            else
+                Multiplier = 1000000;
+            return Multiplier;
+        }
+
+        public async void ResultsCycle() //Цикл чтения результатов
+        {
+            while (true)
+                await ReadResults();
+        }
+
+        public async Task ReadResults() //Чтение результатов
         {
             await Task.Run(() =>
             {
                 try
                 {
-                    App.Logger.Info("Reading the results");
+                    //Проверка состояния
+                    CheckDeviceState();
                     //Греющий ток
-                    double HeatingCurrent = ReadRegister(REG_ACTUAL_I_DUT) / 10.0;
+                    double HeatingCurrent = ReadRegister(REG_ACTUAL_I_DUT, true) / 10.0;
                     TopPanelVm.HeatingCurrent = HeatingCurrent;
                     //Греющая мощность
-                    string HeatingPowerString = string.Format("{0}.{1}", ReadRegister(REG_ACTUAL_P_DUT_WHOLE), ReadRegister(REG_ACTUAL_P_DUT_FRACT));
-                    double HeatingPower = double.Parse(HeatingPowerString);
+                    ushort Whole = ReadRegister(REG_ACTUAL_P_DUT_WHOLE, true);
+                    ushort Fractional = ReadRegister(REG_ACTUAL_P_DUT_FRACT, true);
+                    double HeatingPower = Whole + Fractional / 100.0;
+                    //Напряжение на приборе
+                    double Udut = ReadRegister(REG_ACTUAL_U_DUT, true);
+                    TopPanelVm.Udut = Udut;
+                    //Амплитуда измерительного тока
+                    double Im = ReadRegister(REG_ACTUAL_I_MEASUREMENT, true) / 10.0;
+                    TopPanelVm.Im = Im;
                     //Температура корпуса
-                    double TempCase1 = ReadRegister(REG_ACTUAL_T_CASE1) / 10.0;
-                    double TempCase2 = ReadRegister(REG_ACTUAL_T_CASE2) / 10.0;
+                    double TempCase1 = ReadRegister(REG_ACTUAL_T_CASE1, true) / 10.0;
+                    double TempCase2 = ReadRegister(REG_ACTUAL_T_CASE2, true) / 10.0;
                     TopPanelVm.AnodeBodyTemperature = TempCase1;
                     TopPanelVm.CathodeBodyTemperature = TempCase2;
                     //Температура охладителя
-                    double TempCool1 = ReadRegister(REG_ACTUAL_T_COOL1) / 10.0;
-                    double TempCool2 = ReadRegister(REG_ACTUAL_T_COOL2) / 10.0;
+                    double TempCool1 = ReadRegister(REG_ACTUAL_T_COOL1, true) / 10.0;
+                    double TempCool2 = ReadRegister(REG_ACTUAL_T_COOL2, true) / 10.0;
                     TopPanelVm.AnodeCoolerTemperature = TempCool1;
                     TopPanelVm.CathodeCoolerTemperature = TempCool2;
                     //ТЧП
-                    double Tsp = ReadRegister(REG_ACTUAL_TSP) / 10.0;
+                    double Tsp = ReadRegister(REG_ACTUAL_TSP, true);
                     TopPanelVm.TemperatureSensitiveParameter = Tsp;
-                    
-                    //Измерение запущено, отображение графиков
-                    if (CommonVM != null)
-                    {
-                        //Греющий ток
-                        CommonVM.HeatingCurrent = HeatingCurrent;
-                        //CommonVM.HeatingCurrentChartValues.Add(new ObservablePoint(, HeatingCurrent));
-                        //Греющая мощность
-                        CommonVM.HeatingPower = HeatingPower;
-                        //CommonVM.HeatingPowerChartValues.Add(new ObservablePoint(, HeatingPower));
-                        //ТЧП
-                        CommonVM.TemperatureSensitiveParameter = Tsp;
-                        //CommonVM.TemperatureSensitiveParameterChartValues.Add(new ObservablePoint(, Tsp));
-                        //Температура корпуса
-                        CommonVM.AnodeBodyTemperature = TempCase1;
-                        //CommonVM.AnodeBodyTemperatureChartValues.Add(new ObservablePoint(, TempCase1));
-                        CommonVM.CathodeBodyTemperature = TempCase2;
-                        //CommonVM.CathodeBodyTemperatureChartValues.Add(new ObservablePoint(, TempCase2));
-                        //Температура охладителя
-                        CommonVM.AnodeCoolerTemperature = TempCool1;
-                        //CommonVM.AnodeCoolerTemperatureChartValues.Add(new ObservablePoint(, TempCool1));
-                        CommonVM.CathodeCoolerTemperature = TempCool2;
-                        //CommonVM.CathodeCoolerTemperatureChartValues.Add(new ObservablePoint(, TempCool2));
-                    }
+                    //Добавление точек на графики
+                    AddPointsToChart(HeatingCurrent, HeatingPower, Tsp, TempCase1, TempCase2, TempCool1, TempCool2);
                 }
                 catch (Exception error)
                 {
-                    App.Logger.Error(error, "Could not read the results");
+                    App.Logger.Error(error, "Could not read data");
                 }
-                Thread.Sleep(500);
+                Thread.Sleep(200);
             });
+        }
+
+        public void CheckDeviceState() //Проверка состояния
+        {
+            //Состояние
+            HWDeviceState State = (HWDeviceState)ReadRegister(REG_DEV_STATE, true);
+            if (!(State == HWDeviceState.DS_NONE || State == HWDeviceState.DS_INPROCESS || State == HWDeviceState.DS_READY))
+            {
+                IsRunning = false;
+                App.Logger.Error("Device is in fault state");
+                HWFaultReason Reason = (HWFaultReason)ReadRegister(REG_FAULT_REASON);
+                MessageBox.Show(string.Format("Код ошибки: {0}", Reason), "Ошибка на комплексе");
+                //Закрытие приложения
+                App.Current.Dispatcher.BeginInvoke(() =>
+                {
+                    App.Current.MainWindow.Close();
+                });
+            }
+            switch (CommonVM)
+            {
+                //Zth длинный импульс
+                case ZthLongImpulseVM LongImpulseVM:
+                    //Состояние операции
+                    HWOperationState OpState = (HWOperationState)ReadRegister(REG_OP_STATE, true);
+                    //Нагрев завершен
+                    if (OpState == HWOperationState.OPSTATE_MEASURING)
+                    {
+                        LongImpulseVM.StopHeatingButtonIsEnabled = false;
+                        LongImpulseVM.StartHeatingButtonIsEnabled = false;
+                        LongImpulseVM.StopMeasurementButtonIsEnabled = true;
+                        LongImpulseVM.RightPanelTextBoxsIsEnabled = false;
+                    }
+                    break;
+                //Zth последовательность
+                case ZthPulseSequenceVM PulseSequenceVM:
+                    HWResult Result = (HWResult)ReadRegister(REG_OP_RESULT, true);
+                    if (Result == HWResult.OPRESULT_OK)
+                    {
+                        if (IsRunning == true)
+                            ReadEndpointsZthSequence();
+                        IsRunning = false;
+                        BottomPanelVM.LeftButtonIsEnabled = true;
+                        BottomPanelVM.RightButtonIsEnabled = true;
+                        PulseSequenceVM.StopMeasurementButtonEnabled = false;
+                        PulseSequenceVM.LineSeriesCursorLeftVisibility = true;
+                    }
+                    break;
+            }
+        }
+
+        public void AddPointsToChart(double heatingCurrent, double heatingPower, double tsp, double tempCase1, double tempCase2, double tempCool1, double tempCool2) //Добавление точек на графики
+        {
+            //Измерение запущено
+            if (IsRunning)
+            {
+                double Duration = (DateTime.Now - StartTime).TotalSeconds;
+                App.Logger.Info(string.Format("Adding points to charts for timestamp {0}", Duration));
+                //Время
+                CommonVM.Time = Duration;
+                //Греющий ток
+                CommonVM.HeatingCurrent = heatingCurrent;
+                CommonVM.HeatingCurrentChartValues.Add(new ObservablePoint(Duration, heatingCurrent));
+                //Греющая мощность
+                CommonVM.HeatingPower = heatingPower;
+                CommonVM.HeatingPowerChartValues.Add(new ObservablePoint(Duration, heatingPower));
+                //ТЧП
+                CommonVM.TemperatureSensitiveParameter = tsp;
+                if (CommonVM.TemperatureSensitiveParameterIsVisibly)
+                    CommonVM.TemperatureSensitiveParameterChartValues.Add(new ObservablePoint(Duration, tsp));
+                //Температура корпуса
+                CommonVM.AnodeBodyTemperature = tempCase1;
+                CommonVM.AnodeBodyTemperatureChartValues.Add(new ObservablePoint(Duration, tempCase1));
+                CommonVM.CathodeBodyTemperature = tempCase2;
+                if (CommonVM.CathodeBodyTemperatureIsVisibly)
+                    CommonVM.CathodeBodyTemperatureChartValues.Add(new ObservablePoint(Duration, tempCase2));
+                //Температура охладителя
+                CommonVM.AnodeCoolerTemperature = tempCool1;
+                CommonVM.AnodeCoolerTemperatureChartValues.Add(new ObservablePoint(Duration, tempCool1));
+                CommonVM.CathodeCoolerTemperature = tempCool2;
+                if (CommonVM.CathodeCoolerTemperatureIsVisibly)
+                    CommonVM.CathodeCoolerTemperatureChartValues.Add(new ObservablePoint(Duration, tempCool2));
+                //Итерация в 10 сек
+                if ((int)Duration % 10 == 0)
+                    //Выравнивание графиков
+                    App.Current.Dispatcher.BeginInvoke(() =>
+                    {
+                        Chart.AdjustChart();
+                    });
+            }
         }
 
         public async void StopHeating() //Выключение нагрева
@@ -405,7 +659,7 @@ namespace Zth
             {
                 try
                 {
-                    CommonVM = null;
+                    IsRunning = false;
                     App.Logger.Info("Stopping the process");
                     CallAction(ACT_STOP_PROCESS);
                     App.Logger.Info("Process stopped");
@@ -480,7 +734,9 @@ namespace Zth
             FAULT_WATER,
             FAULT_TR1,
             FAULT_TR2,
-            FAULT_REC
+            FAULT_REC,
+            FAULT_NO_POT,
+            FAULT_CUR_FOLLOWING_ERR
         }
 
         internal enum HWDisableReason //Причина выключения
@@ -498,6 +754,13 @@ namespace Zth
             OPRESULT_NONE,
             OPRESULT_OK,
             OPRESULT_FAIL
+        }
+
+        internal enum HWOperationState //Состояние операции
+        {
+            OPSTATE_NONE,
+            OPSTATE_HEATING,
+            OPSTATE_MEASURING
         }
 
         internal const ushort
@@ -533,6 +796,7 @@ namespace Zth
             REG_WARNING = 195,
             REG_PROBLEM = 196,
             REG_OP_RESULT = 197,
+            REG_OP_STATE = 198,
             REG_ACTUAL_U_DUT = 200,
             REG_ACTUAL_I_DUT = 201,
             REG_ACTUAL_P_DUT_WHOLE = 202,

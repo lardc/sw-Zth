@@ -121,13 +121,13 @@
     <value>А</value>
   </data>
   <data name="AmplitudeControlCurrent" xml:space="preserve">
-    <value>Амплитуда тока управления, А</value>
+    <value>Амплитуда тока управления, мА</value>
   </data>
   <data name="AmplitudeHeatingCurrent" xml:space="preserve">
     <value>Амплитуда греющего тока, А</value>
   </data>
   <data name="AmplitudeMeasuringCurrent" xml:space="preserve">
-    <value>Амплитуда измерительного тока, А</value>
+    <value>Амплитуда измерительного тока, мА</value>
   </data>
   <data name="AnodeBodyTemperature" xml:space="preserve">
     <value>Темп. корпуса А</value>

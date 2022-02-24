@@ -2,17 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using Zth.VM;
 
 namespace Zth.Pages
@@ -22,13 +12,108 @@ namespace Zth.Pages
     /// </summary>
     public partial class GraduationOnly : CommonPage
     {
+        public GraduationOnlyVM VM => DataContext as GraduationOnlyVM;
         public bool CanLoadInFile { get; set; }
-        public bool HeatingIsEnabled { get; set; }
-        public Zth.VM.GraduationOnlyVM VM => DataContext as GraduationOnlyVM;
+        public bool HeatingIsEnabled { get; set; }     
+        
+        private string[] lines;
 
-        public GraduationOnly() : base()
+        public GraduationOnly(): base()
         {
             InitializeComponent();
+        }
+
+        private async void StartHeating_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                //Параметры измерения
+                ushort GateParameter = TopPanelVm.TypeDevice == TypeDevice.Bipolar ? (ushort)(VM.DirectCurrentControlValue) : (ushort)VM.GateVoltage;
+                ushort MeasuringCurrent = (ushort)VM.DirectCurrentMeasuringValue;
+                ushort[] HeatingCurrent = new ushort[]
+                {
+                    0, 0, (ushort)VM.AmplitudeHeatingCurrent
+                };
+                ushort MeasurementDelay = (ushort)VM.TSPMeasurementDelayTime;
+                uint Duration = (uint)(VM.DuratioHeatingCurrentPulse * 10);
+                ushort Pause = (ushort)(VM.PauseDuration * 10);
+                ushort Temperature = (ushort)(VM.EndValueCaseTemperature * 10);
+                switch (VM.StartHeatingContent)
+                {
+                    case "Старт нагрев":
+                        //Очистка графиков
+                        Chart.ClearChart();
+                        App.LogicContainer.StartTime = DateTime.Now;
+                        App.LogicContainer.CommonVM = VM;
+                        App.LogicContainer.Chart = Chart;
+                        await App.LogicContainer.PrepareForMeasure(TopPanelVm.TypeDevice, TopPanelVm.TypeCooling, TopPanelVm.WorkingMode, GateParameter, MeasuringCurrent, HeatingCurrent, MeasurementDelay);
+                        App.LogicContainer.StartGraduation(Duration, Pause, Temperature);
+                        break;
+                    case "Обновить задание":
+                        App.LogicContainer.UpdateGraduation(HeatingCurrent, Temperature);
+                        break;
+                }
+                BottomPanelVM.LeftButtonIsEnabled = false;
+
+                VM.StopHeatingButtonIsEnabled = true;
+                VM.StartHeatingPressed = true;
+                VM.RightPanelTextBoxsIsEnabled = false;
+            }
+            catch { }
+        }
+
+        private void GraduationFromFile_Load()
+        {
+            OpenFileDialog SFD = new OpenFileDialog()
+            {
+                Filter = "Excel Worksheets|*.csv"
+            };
+            if (SFD.ShowDialog() == true)
+                _navigationService.Navigate(new GraduationCalculation(File.ReadAllLines(SFD.FileName))
+                {
+
+                });
+        }
+
+        private void StopHeating_Click(object sender, RoutedEventArgs e)
+        {
+            App.LogicContainer.StopHeating();
+
+            VM.AmplitudeControlCurrentTextBoxIsEnabled = false;
+            VM.DurationHeatingCurrentPulseTextBoxIsEnabled = false;
+            VM.StopHeatingButtonIsEnabled = false;
+            VM.StartHeatingButtonIsEnabled = false;
+            VM.StopGraduationButtonIsEnabled = true;
+        }
+
+        private void StopGraduation_Click(object sender, RoutedEventArgs e)
+        {
+            App.LogicContainer.StopProcess();
+            App.LogicContainer.ReadEndpointsGraduation();
+            BottomPanelVM.LeftButtonIsEnabled = true;
+
+            VM.StopGraduationButtonIsEnabled = false;
+            VM.CutButtonIsEnabled = true;
+            VM.LineSeriesCursorLeftVisibility = true;
+            VM.LineSeriesCursorRightVisibility = true;
+            VM.RightPanelTextBoxsIsEnabled = false;
+        }
+
+        private void Cut_Click(object sender, RoutedEventArgs e)
+        {
+            VM.CutButtonIsEnabled = false;
+            BottomPanelVM.RightButtonIsEnabled = true;
+            VM.LineSeriesCursorRightVisibility = false;
+            var (x1, x2) = Chart.GetXRange();
+            VM.AxisCustomVMTime.MinValue = Math.Floor(x1);
+            VM.AxisCustomVMTime.MaxValue = Math.Ceiling(x2);
+            //MainChart.MainCartesianChart.AxisX.First().MinValue = x1 - 1;
+            //MainChart.MainCartesianChart.AxisX.First().MaxValue = x2 + 1;
+
+            List<string> linesList = new List<string>();
+            for (int i = 0; i < VM.AnodeBodyTemperatureChartValues.Count; i++)
+                linesList.Add(string.Format("{0},{1}", VM.AnodeBodyTemperatureChartValues[i], VM.TemperatureSensitiveParameterChartValues[i]));
+            lines = linesList.ToArray();
         }
 
         private void CommonPage_Loaded(object sender, RoutedEventArgs e)
@@ -37,10 +122,11 @@ namespace Zth.Pages
                 BottomPanelVM.MiddleButtonContent = "Загрузка из файла";
             BottomPanelVM.MiddleButtonIsEnabled = true;
 
-            BottomPanelVM.MiddleBottomButtonAction = () => LoadGraduationFromFile();
+            BottomPanelVM.MiddleBottomButtonAction = () => GraduationFromFile_Load();
             
             BottomPanelVM.RightButtonContent = "Расчёт градуировки";
-            BottomPanelVM.RightBottomButtonAction = () => _navigationService.Navigate(new GraduationCalculation()
+
+            BottomPanelVM.RightBottomButtonAction = () => _navigationService.Navigate(new GraduationCalculation(lines)
             {
                 
             });
@@ -56,9 +142,9 @@ namespace Zth.Pages
 
             VM.TemperatureSensitiveParameterIsVisibly = true;
             VM.AnodeBodyTemperatureIsVisibly = true;
-            VM.CathodeBodyTemperatureIsVisibly = true;
+            VM.CathodeBodyTemperatureIsVisibly = TopPanelVm.TypeCooling != TypeCooling.OneSided;
             VM.AnodeCoolerTemperatureIsVisibly = true;
-            VM.CathodeCoolerTemperatureIsVisibly = true;
+            VM.CathodeCoolerTemperatureIsVisibly = TopPanelVm.TypeCooling != TypeCooling.OneSided;
 
             VM.TemperatureSensitiveParameterIsEnabled = true;
             VM.AnodeBodyTemperatureIsEnabled = true;
@@ -87,88 +173,6 @@ namespace Zth.Pages
                 dispatcherTimer.Interval = new TimeSpan(0, 0, 0, 0, 1);
                 dispatcherTimer.Start();
             }
-
-        }
-
-        private void LoadGraduationFromFile()
-        {
-            OpenFileDialog SFD = new OpenFileDialog()
-            {
-                Filter = "Excel Worksheets|*.csv"
-            };
-            if (SFD.ShowDialog() == true)
-                _navigationService.Navigate(new GraduationCalculation(File.ReadAllLines(SFD.FileName))
-                {
-                    
-                });
-        }
-
-        private void StartHeating_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                //Параметры измерения
-                ushort GateParameter = TopPanelVm.TypeDevice == TypeDevice.Bipolar ? (ushort)(VM.DirectCurrentControlValue * 1000) : (ushort)VM.GateVoltage;
-                ushort MeasuringCurrent = (ushort)(VM.DirectCurrentMeasuringValue * 1000);
-                ushort[] HeatingCurrent = new ushort[]
-                {
-                    0, 0, (ushort)(VM.AmplitudeHeatingCurrent * 1000)
-                };
-                ushort MeasurementDelay = (ushort)VM.TSPMeasurementDelayTime;
-                ushort Duration = (ushort)(VM.DuratioHeatingCurrentPulse * 1000);
-                ushort Pause = (ushort)(VM.PauseDuration * 1000);
-                ushort Temperature = (ushort)(VM.EndValueCaseTemperature * 10);
-                switch (VM.StartHeatingContent)
-                {
-                    case "Старт нагрев":
-                        App.LogicContainer.PrepareForMeasure(TopPanelVm.TypeDevice, TopPanelVm.TypeCooling, TopPanelVm.WorkingMode, GateParameter, MeasuringCurrent, HeatingCurrent, MeasurementDelay);
-                        App.LogicContainer.StartGraduation(Duration, Pause, Temperature);
-                        break;
-                    case "Обновить задание":
-                        App.LogicContainer.UpdateGraduation(HeatingCurrent, Temperature);
-                        break;
-                }
-                App.LogicContainer.CommonVM = VM;
-
-                VM.StopHeatingButtonIsEnabled = true;
-                VM.StartHeatingPressed = true;
-                VM.RightPanelTextBoxsIsEnabled = false;
-            }
-            catch { }
-        }
-
-        private void StopHeating_Click(object sender, RoutedEventArgs e)
-        {
-            App.LogicContainer.StopHeating();
-
-            VM.AmplitudeControlCurrentTextBoxIsEnabled = false;
-            VM.DurationHeatingCurrentPulseTextBoxIsEnabled = false;
-            VM.StopHeatingButtonIsEnabled = false;
-            VM.StartHeatingButtonIsEnabled = false;
-            VM.StopGraduationButtonIsEnabled = true;
-        }
-
-        private void StopGraduation_Click(object sender, RoutedEventArgs e)
-        {
-            App.LogicContainer.StopProcess();
-
-            VM.StopGraduationButtonIsEnabled = false;
-            VM.CutButtonIsEnabled = true;
-            VM.LineSeriesCursorLeftVisibility = true;
-            VM.LineSeriesCursorRightVisibility = true;
-            VM.RightPanelTextBoxsIsEnabled = false;
-        }
-
-        private void Cut_Click(object sender, RoutedEventArgs e)
-        {
-            VM.CutButtonIsEnabled = false;
-            BottomPanelVM.RightButtonIsEnabled = true;
-            VM.LineSeriesCursorRightVisibility = false;
-            var (x1, x2) = Chart.GetXRange();
-            VM.AxisCustomVMTime.MinValue = Math.Floor(x1);
-            VM.AxisCustomVMTime.MaxValue = Math.Ceiling(x2);
-            //MainChart.MainCartesianChart.AxisX.First().MinValue = x1 - 1;
-            //MainChart.MainCartesianChart.AxisX.First().MaxValue = x2 + 1;
 
         }
 

@@ -84,7 +84,7 @@
                     <ComboBox Grid.Column="1" SelectedIndex="0" ItemsSource="{Binding Source={x:Static local:StringResources.GateVoltageDictionary}}" SelectedValue="{Binding GateVoltage}" SelectedValuePath="Key" DisplayMemberPath="Value" IsEnabled="{Binding RightPanelTextBoxsIsEnabled}"/>
                 </Grid>
 
-                <TextBlock Grid.Row="1" Grid.Column="0" Text="Амплитуда измерительного тока, А" />
+                <TextBlock Grid.Row="1" Grid.Column="0" Text="Амплитуда измерительного тока, мА" />
                 <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding AmplitudeMeasuringCurrent}" IsEnabled="{Binding RightPanelTextBoxsIsEnabled}"/>
 
                 <TextBlock Grid.Row="2" Grid.Column="0" Text="Амплитуда греющего тока, А" />

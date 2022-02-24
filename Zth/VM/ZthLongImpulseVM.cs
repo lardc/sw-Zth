@@ -1,20 +1,14 @@
-﻿using PropertyChanged;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Text;
-
-namespace Zth.VM
+﻿namespace Zth.VM
 {
     public class ZthLongImpulseVM : CommonVM
     {
-    
 
-        public double DurationPowerPulse { get; set; }
-        public double AmplitudeHeatingCurrent { get; set; }
-        public double AmplitudeControlCurrent { get; set; }
-        public double AmplitudeMeasuringCurrent { get; set; }
-        public double DelayTimeTspMeasurements { get; set; }
+
+        public double DurationPowerPulse { get; set; } = 20;
+        public double AmplitudeHeatingCurrent { get; set; } = 100;
+        public double AmplitudeControlCurrent { get; set; } = 1000;
+        public double AmplitudeMeasuringCurrent { get; set; } = 1000;
+        public double DelayTimeTspMeasurements { get; set; } = 100;
         public double DurationHeatingCurrentPulse { get; set; }
         public double PauseDuration { get; set; }
         public GateVoltage GateVoltage { get; set; }

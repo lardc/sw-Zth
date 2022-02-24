@@ -1,15 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using Zth.VM;
 
 namespace Zth.Pages
@@ -21,9 +11,73 @@ namespace Zth.Pages
     {
         public RthPulseSequenceVM VM => DataContext as RthPulseSequenceVM;
 
-        public RthPulseSequence() : base()
+        public RthPulseSequence(): base()
         {
             InitializeComponent();
+        }
+
+        private async void StartHeating_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                //Параметры измерения
+                ushort GateParameter = TopPanelVm.TypeDevice == TypeDevice.Bipolar ? (ushort)(VM.AmplitudeControlCurrent) : (ushort)VM.GateVoltage;
+                ushort MeasuringCurrent = (ushort)VM.AmplitudeMeasuringCurrent;
+                ushort[] HeatingCurrent = new ushort[]
+                {
+                    0, 0, (ushort)VM.AmplitudeHeatingCurrent
+                };
+                ushort MeasurementDelay = (ushort)VM.DelayTimeTspMeasurements;
+                uint Duration = (uint)(VM.DurationHeatingCurrentPulse * 10);
+                ushort Pause = (ushort)(VM.PauseDuration * 10);
+                switch (VM.StartHeatingContent)
+                {
+                    case "Старт нагрев":
+                        //Очистка графиков
+                        Chart.ClearChart();
+                        App.LogicContainer.StartTime = DateTime.Now;
+                        App.LogicContainer.CommonVM = VM;
+                        App.LogicContainer.Chart = Chart;
+                        await App.LogicContainer.PrepareForMeasure(TopPanelVm.TypeDevice, TopPanelVm.TypeCooling, TopPanelVm.WorkingMode, GateParameter, MeasuringCurrent, HeatingCurrent, MeasurementDelay);
+                        App.LogicContainer.StartRthSequence(Duration, Pause);
+                        break;
+                    case "Обновить задание":
+                        App.LogicContainer.UpdateRthSequence(TopPanelVm.TypeDevice, GateParameter, MeasuringCurrent, HeatingCurrent, MeasurementDelay, Duration, Pause);
+                        break;
+                }
+                BottomPanelVM.LeftButtonIsEnabled = false;
+
+                VM.StopHeatingButtonIsEnabled = true;
+                VM.StartHeatingButtonIsEnabled = true;
+                VM.StartHeatingPressed = true;
+                VM.RecordingResultsButtonIsEnabled = true;
+            }
+            catch { }
+        }
+
+        private void StopHeating_Click(object sender, RoutedEventArgs e)
+        {
+            App.LogicContainer.StopProcess();
+            BottomPanelVM.LeftButtonIsEnabled = true;
+
+            VM.StopHeatingButtonIsEnabled = false;
+            VM.StartHeatingPressed = false;
+
+        }
+
+        private void RecordingResults_Click(object sender, RoutedEventArgs e)
+        {
+            App.LogicContainer.StopProcess();
+            BottomPanelVM.LeftButtonIsEnabled = true;
+            BottomPanelVM.RightButtonIsEnabled = true;
+
+            VM.StartHeatingButtonIsEnabled = false;
+            VM.RecordingResultsButtonIsEnabled = false;
+            VM.RightPanelTextBoxsIsEnabled = false;
+            _navigationService.Navigate(new GraduationOnly()
+            {
+                CanLoadInFile = true,
+            });
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
@@ -45,9 +99,9 @@ namespace Zth.Pages
             VM.HeatingPowerIsVisibly = true;
             VM.TemperatureSensitiveParameterIsVisibly = true;
             VM.AnodeBodyTemperatureIsVisibly = true;
-            VM.CathodeBodyTemperatureIsVisibly = true;
+            VM.CathodeBodyTemperatureIsVisibly = TopPanelVm.TypeCooling != TypeCooling.OneSided;
             VM.AnodeCoolerTemperatureIsVisibly = true;
-            VM.CathodeCoolerTemperatureIsVisibly = true;
+            VM.CathodeCoolerTemperatureIsVisibly = TopPanelVm.TypeCooling != TypeCooling.OneSided;
 
             VM.HeatingCurrentIsEnabled = true;
             VM.HeatingPowerIsEnabled = true;
@@ -77,62 +131,6 @@ namespace Zth.Pages
                 dispatcherTimer.Start();
             }
 
-        }
-
-        private void StartHeating_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                //Параметры измерения
-                ushort GateParameter = TopPanelVm.TypeDevice == TypeDevice.Bipolar ? (ushort)(VM.AmplitudeControlCurrent * 1000) : (ushort)VM.GateVoltage;
-                ushort MeasuringCurrent = (ushort)(VM.AmplitudeMeasuringCurrent * 1000);
-                ushort[] HeatingCurrent = new ushort[]
-                {
-                    0, 0, (ushort)(VM.AmplitudeHeatingCurrent * 1000)
-                };
-                ushort MeasurementDelay = (ushort)VM.DelayTimeTspMeasurements;
-                ushort Duration = (ushort)(VM.DurationHeatingCurrentPulse * 1000);
-                ushort Pause = (ushort)(VM.PauseDuration * 1000);
-                switch (VM.StartHeatingContent)
-                {
-                    case "Старт нагрев":
-                        App.LogicContainer.PrepareForMeasure(TopPanelVm.TypeDevice, TopPanelVm.TypeCooling, TopPanelVm.WorkingMode, GateParameter, MeasuringCurrent, HeatingCurrent, MeasurementDelay);
-                        App.LogicContainer.StartRthSequence(Duration, Pause);
-                        break;
-                    case "Обновить задание":
-                        App.LogicContainer.UpdateRthSequence(TopPanelVm.TypeDevice, GateParameter, MeasuringCurrent, HeatingCurrent, MeasurementDelay, Duration, Pause);
-                        break;
-                }
-                App.LogicContainer.CommonVM = VM;
-
-                VM.StopHeatingButtonIsEnabled = true;
-                VM.StartHeatingButtonIsEnabled = true;
-                VM.StartHeatingPressed = true;
-                VM.RecordingResultsButtonIsEnabled = true;
-            }
-            catch { }
-        }
-
-        private void RecordingResults_Click(object sender, RoutedEventArgs e)
-        {
-            App.LogicContainer.StopProcess();
-
-            VM.StartHeatingButtonIsEnabled = false;
-            VM.RecordingResultsButtonIsEnabled = false;
-            BottomPanelVM.RightButtonIsEnabled = true;
-            VM.RightPanelTextBoxsIsEnabled = false;
-        }
-
-        private void StopHeating_Click(object sender, RoutedEventArgs e)
-        {
-            App.LogicContainer.StopHeating();
-
-            VM.StopHeatingButtonIsEnabled = false;
-            VM.StartHeatingPressed = false;
-            _navigationService.Navigate(new GraduationOnly()
-            {
-                CanLoadInFile = true,
-            });
         }
 
         private void CommonPage_Unloaded(object sender, RoutedEventArgs e)

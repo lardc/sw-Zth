@@ -33,6 +33,8 @@ namespace Zth.VM
         public double CathodeCoolerTemperature { get; set; }
         public double HeatingCurrent { get; set; }
         public double TemperatureSensitiveParameter { get; set; }
+        public double Udut { get; set; }
+        public double Im { get; set; }
 
         public bool AnodeBodyTemperatureIsVisible { get; set; } = true;
         public bool AnodeCoolerTemperatureIsVisible { get; set; } = true;

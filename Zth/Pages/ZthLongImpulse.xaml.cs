@@ -1,15 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using Zth.VM;
 
 namespace Zth.Pages
@@ -26,30 +16,35 @@ namespace Zth.Pages
             InitializeComponent();
         }
 
-        private void StartHeating_Click(object sender, RoutedEventArgs e)
+        private async void StartHeating_Click(object sender, RoutedEventArgs e)
         {
             try
             {
                 //Параметры измерения
-                ushort GateParameter = TopPanelVm.TypeDevice == TypeDevice.Bipolar ? (ushort)(VM.AmplitudeControlCurrent * 1000) : (ushort)VM.GateVoltage;
-                ushort MeasuringCurrent = (ushort)(VM.AmplitudeMeasuringCurrent * 1000);
+                ushort GateParameter = TopPanelVm.TypeDevice == TypeDevice.Bipolar ? (ushort)VM.AmplitudeControlCurrent : (ushort)VM.GateVoltage;
+                ushort MeasuringCurrent = (ushort)VM.AmplitudeMeasuringCurrent;
                 ushort[] HeatingCurrent = new ushort[]
                 {
-                    0, 0, (ushort)(VM.AmplitudeHeatingCurrent * 1000)
+                    0, 0, (ushort)VM.AmplitudeHeatingCurrent
                 };
                 ushort MeasurementDelay = (ushort)VM.DelayTimeTspMeasurements;
-                ushort Duration = (ushort)(VM.DurationPowerPulse * 1000000);
+                uint Duration = (uint)(VM.DurationPowerPulse * 10000);
                 switch (VM.StartHeatingContent)
                 {
                     case "Старт нагрев":
-                        App.LogicContainer.PrepareForMeasure(TopPanelVm.TypeDevice, TopPanelVm.TypeCooling, TopPanelVm.WorkingMode, GateParameter, MeasuringCurrent, HeatingCurrent, MeasurementDelay);
+                        //Очистка графиков
+                        Chart.ClearChart();
+                        App.LogicContainer.StartTime = DateTime.Now;                        
+                        App.LogicContainer.CommonVM = VM;
+                        App.LogicContainer.Chart = Chart;
+                        await App.LogicContainer.PrepareForMeasure(TopPanelVm.TypeDevice, TopPanelVm.TypeCooling, TopPanelVm.WorkingMode, GateParameter, MeasuringCurrent, HeatingCurrent, MeasurementDelay);
                         App.LogicContainer.StartZthLongImpulse(Duration);
                         break;
                     case "Обновить задание":
                         App.LogicContainer.UpdateZthLongImpulse(TopPanelVm.TypeDevice, GateParameter, MeasuringCurrent, HeatingCurrent, MeasurementDelay, Duration);
                         break;
                 }
-                App.LogicContainer.CommonVM = VM;
+                BottomPanelVM.LeftButtonIsEnabled = false;
 
                 VM.StopHeatingButtonIsEnabled = true;
                 VM.StartHeatingPressed = true;
@@ -70,9 +65,12 @@ namespace Zth.Pages
         private void StopMeasurement_Click(object sender, RoutedEventArgs e)
         {
             App.LogicContainer.StopProcess();
+            App.LogicContainer.ReadEndpointsZthLongImpulse();
+            BottomPanelVM.LeftButtonIsEnabled = true;
+            BottomPanelVM.RightButtonIsEnabled = true;
 
             VM.StopMeasurementButtonIsEnabled = false;
-            BottomPanelVM.RightButtonIsEnabled = true;
+            
             VM.LineSeriesCursorLeftVisibility = true;
         }
 
@@ -97,9 +95,9 @@ namespace Zth.Pages
             VM.HeatingCurrentIsVisibly = true;
             VM.HeatingPowerIsVisibly = true;
             VM.AnodeBodyTemperatureIsVisibly = true;
-            VM.CathodeBodyTemperatureIsVisibly = true;
+            VM.CathodeBodyTemperatureIsVisibly = TopPanelVm.TypeCooling != TypeCooling.OneSided;
             VM.AnodeCoolerTemperatureIsVisibly = true;
-            VM.CathodeCoolerTemperatureIsVisibly = true;
+            VM.CathodeCoolerTemperatureIsVisibly = TopPanelVm.TypeCooling != TypeCooling.OneSided;
 
             VM.HeatingCurrentIsEnabled = true;
             VM.HeatingPowerIsEnabled = true;

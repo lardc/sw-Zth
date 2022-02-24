@@ -84,7 +84,7 @@
                         </lvc:Axis>
                     </lvc:CartesianChart.AxisY>
                     <lvc:CartesianChart.Series>
-                        <lvc:LineSeries Values="{Binding GraduationChartValues}" Stroke="Red" PointGeometry="{x:Null}" />
+                        <lvc:LineSeries Values="{Binding GraduationChartValues}" Stroke="Red" PointGeometry="{x:Null}" LineSmoothness="0"/>
                     </lvc:CartesianChart.Series>
                 </lvc:CartesianChart>
                 

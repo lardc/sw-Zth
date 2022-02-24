@@ -1,15 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using Zth.VM;
 
 namespace Zth.Pages
@@ -24,6 +14,50 @@ namespace Zth.Pages
         public ZthPulseSequence()
         {
             InitializeComponent();
+        }
+
+        private async void StartMeasurement_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                //Параметры измерения
+                ushort GateParameter = TopPanelVm.TypeDevice == TypeDevice.Bipolar ? (ushort)(VM.AmplitudeControlCurrent) : (ushort)VM.GateVoltage;
+                ushort MeasuringCurrent = (ushort)VM.AmplitudeMeasuringCurrent;
+                ushort[] HeatingCurrent = new ushort[]
+                {
+                    (ushort)VM.AmplitudeHeatingCurrentLess2,
+                    (ushort)VM.AmplitudeHeatingCurrentLess10,
+                    (ushort)VM.AmplitudeHeatingCurrentAbove10,
+                };
+                ushort MeasurementDelay = (ushort)VM.TSPMeasurementDelayTime;
+                ushort Duration1 = (ushort)(VM.FirstPulseDuration * 10);
+                uint Duration2 = (uint)(VM.LastPulseDuration * 10000);
+                ushort Pause = (ushort)VM.PauseDurationBetweenAdjacentPulses;
+                //Очистка графиков
+                Chart.ClearChart();
+                App.LogicContainer.StartTime = DateTime.Now;
+                App.LogicContainer.CommonVM = VM;
+                App.LogicContainer.Chart = Chart;
+                await App.LogicContainer.PrepareForMeasure(TopPanelVm.TypeDevice, TopPanelVm.TypeCooling, TopPanelVm.WorkingMode, GateParameter, MeasuringCurrent, HeatingCurrent, MeasurementDelay);
+                App.LogicContainer.StartZthSequence(Duration1, Duration2, Pause);
+                BottomPanelVM.LeftButtonIsEnabled = false;
+
+                VM.StartMeasurementButtonEnabled = false;
+                VM.StopMeasurementButtonEnabled = true;
+                VM.RightPanelTextBoxsIsEnabled = false;
+            }
+            catch { }
+        }
+
+        private void StopMeasurement_Click(object sender, RoutedEventArgs e)
+        {
+            App.LogicContainer.StopProcess();
+            App.LogicContainer.ReadEndpointsZthSequence();
+            BottomPanelVM.LeftButtonIsEnabled = true;
+            BottomPanelVM.RightButtonIsEnabled = true;
+
+            VM.StopMeasurementButtonEnabled = false;
+            VM.LineSeriesCursorLeftVisibility = true;
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
@@ -45,9 +79,9 @@ namespace Zth.Pages
             VM.HeatingPowerIsVisibly = true;
             VM.TemperatureSensitiveParameterIsVisibly = true;
             VM.AnodeBodyTemperatureIsVisibly = true;
-            VM.CathodeBodyTemperatureIsVisibly = true;
+            VM.CathodeBodyTemperatureIsVisibly = TopPanelVm.TypeCooling != TypeCooling.OneSided;
             VM.AnodeCoolerTemperatureIsVisibly = true;
-            VM.CathodeCoolerTemperatureIsVisibly = true;
+            VM.CathodeCoolerTemperatureIsVisibly = TopPanelVm.TypeCooling != TypeCooling.OneSided;
 
             VM.HeatingCurrentIsEnabled = true;
             VM.HeatingPowerIsEnabled = true;
@@ -64,43 +98,6 @@ namespace Zth.Pages
 
             VM.StartMeasurementButtonEnabled = true;
             VM.StopMeasurementButtonEnabled = false;
-        }
-
-        private void StartMeasurement_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                //Параметры измерения
-                ushort GateParameter = TopPanelVm.TypeDevice == TypeDevice.Bipolar ? (ushort)(VM.AmplitudeControlCurrent * 1000) : (ushort)VM.GateVoltage;
-                ushort MeasuringCurrent = (ushort)(VM.AmplitudeMeasuringCurrent * 1000);
-                ushort[] HeatingCurrent = new ushort[]
-                {
-                    (ushort)(VM.AmplitudeHeatingCurrentLess2 * 1000),
-                    (ushort)(VM.AmplitudeHeatingCurrentLess10 * 1000),
-                    (ushort)(VM.AmplitudeHeatingCurrentAbove10 * 1000),
-                };
-                ushort MeasurementDelay = (ushort)VM.TSPMeasurementDelayTime;
-                ushort Duration1 = (ushort)(VM.FirstPulseDuration * 1000);
-                ushort Duration2 = (ushort)(VM.LastPulseDuration * 1000000);
-                ushort Pause = (ushort)VM.PauseDurationBetweenAdjacentPulses;
-                App.LogicContainer.PrepareForMeasure(TopPanelVm.TypeDevice, TopPanelVm.TypeCooling, TopPanelVm.WorkingMode, GateParameter, MeasuringCurrent, HeatingCurrent, MeasurementDelay);
-                App.LogicContainer.StartZthSequence(Duration1, Duration2, Pause);
-                App.LogicContainer.CommonVM = VM;
-
-                VM.StartMeasurementButtonEnabled = false;
-                VM.StopMeasurementButtonEnabled = true;
-                VM.RightPanelTextBoxsIsEnabled = false;
-            }
-            catch { }
-        }
-
-        private void StopMeasurement_Click(object sender, RoutedEventArgs e)
-        {
-            App.LogicContainer.StopProcess();
-
-            VM.StopMeasurementButtonEnabled = false;
-            BottomPanelVM.RightButtonIsEnabled = true;
-            VM.LineSeriesCursorLeftVisibility = true;
         }
 
         private void CommonPage_Unloaded(object sender, RoutedEventArgs e)
