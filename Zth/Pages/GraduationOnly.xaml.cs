@@ -28,7 +28,7 @@ namespace Zth.Pages
             try
             {
                 //Параметры измерения
-                ushort GateParameter = TopPanelVm.TypeDevice == TypeDevice.Bipolar ? (ushort)(VM.DirectCurrentControlValue) : (ushort)VM.GateVoltage;
+                ushort GateParameter = TopPanelVm.TypeDevice == TypeDevice.Bipolar ? (ushort)VM.DirectCurrentControlValue : (ushort)VM.GateVoltage;
                 ushort MeasuringCurrent = (ushort)VM.DirectCurrentMeasuringValue;
                 ushort[] HeatingCurrent = new ushort[]
                 {
@@ -62,28 +62,17 @@ namespace Zth.Pages
             catch { }
         }
 
-        private void GraduationFromFile_Load()
-        {
-            OpenFileDialog SFD = new OpenFileDialog()
-            {
-                Filter = "Excel Worksheets|*.csv"
-            };
-            if (SFD.ShowDialog() == true)
-                _navigationService.Navigate(new GraduationCalculation(File.ReadAllLines(SFD.FileName))
-                {
-
-                });
-        }
-
         private void StopHeating_Click(object sender, RoutedEventArgs e)
         {
             App.LogicContainer.StopHeating();
 
-            VM.AmplitudeControlCurrentTextBoxIsEnabled = false;
-            VM.DurationHeatingCurrentPulseTextBoxIsEnabled = false;
             VM.StopHeatingButtonIsEnabled = false;
             VM.StartHeatingButtonIsEnabled = false;
             VM.StopGraduationButtonIsEnabled = true;
+
+            VM.AmplitudeControlCurrentTextBoxIsEnabled = false;
+            VM.DurationHeatingCurrentPulseTextBoxIsEnabled = false;
+            
         }
 
         private void StopGraduation_Click(object sender, RoutedEventArgs e)
@@ -99,6 +88,19 @@ namespace Zth.Pages
             VM.RightPanelTextBoxsIsEnabled = false;
         }
 
+        private void GraduationFromFile_Load()
+        {
+            OpenFileDialog SFD = new OpenFileDialog()
+            {
+                Filter = "Excel Worksheets|*.csv"
+            };
+            if (SFD.ShowDialog() == true)
+                _navigationService.Navigate(new GraduationCalculation(File.ReadAllLines(SFD.FileName))
+                {
+
+                });
+        }
+
         private void Cut_Click(object sender, RoutedEventArgs e)
         {
             VM.CutButtonIsEnabled = false;
@@ -107,13 +109,15 @@ namespace Zth.Pages
             var (x1, x2) = Chart.GetXRange();
             VM.AxisCustomVMTime.MinValue = Math.Floor(x1);
             VM.AxisCustomVMTime.MaxValue = Math.Ceiling(x2);
-            //MainChart.MainCartesianChart.AxisX.First().MinValue = x1 - 1;
-            //MainChart.MainCartesianChart.AxisX.First().MaxValue = x2 + 1;
 
+            var (graduationX1, graduationX2) = Chart.GetGraduationRange();
+            App.Logger.Info(string.Format("Cutting points of interest out of graduation chart for range {0} to {1}", graduationX1, graduationX2));
             List<string> linesList = new List<string>();
             for (int i = 0; i < VM.AnodeBodyTemperatureChartValues.Count; i++)
-                linesList.Add(string.Format("{0},{1}", VM.AnodeBodyTemperatureChartValues[i], VM.TemperatureSensitiveParameterChartValues[i]));
+                if (VM.AnodeBodyTemperatureChartValues[i].X >= graduationX1 && VM.AnodeBodyTemperatureChartValues[i].X <= graduationX2)
+                    linesList.Add(string.Format("{0},{1}", VM.AnodeBodyTemperatureChartValues[i].Y, VM.TemperatureSensitiveParameterChartValues[i].Y));
             lines = linesList.ToArray();
+            App.Logger.Info(string.Format("{0} points of interest cut out of graduation chart", lines.Length));
         }
 
         private void CommonPage_Loaded(object sender, RoutedEventArgs e)
@@ -141,11 +145,15 @@ namespace Zth.Pages
             VM.IsGateVoltageVisible = TopPanelVm.TypeDevice == TypeDevice.Igbt;
 
             VM.TemperatureSensitiveParameterIsVisibly = true;
+            VM.HeatingCurrentIsVisibly = true;
+            VM.HeatingPowerIsVisibly = true;
             VM.AnodeBodyTemperatureIsVisibly = true;
             VM.CathodeBodyTemperatureIsVisibly = TopPanelVm.TypeCooling != TypeCooling.OneSided;
             VM.AnodeCoolerTemperatureIsVisibly = true;
             VM.CathodeCoolerTemperatureIsVisibly = TopPanelVm.TypeCooling != TypeCooling.OneSided;
 
+            VM.HeatingCurrentIsEnabled = true;
+            VM.HeatingPowerIsEnabled = true;
             VM.TemperatureSensitiveParameterIsEnabled = true;
             VM.AnodeBodyTemperatureIsEnabled = true;
             VM.CathodeBodyTemperatureIsEnabled = true;

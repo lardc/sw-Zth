@@ -32,7 +32,7 @@ namespace Zth.Pages
             InitializeComponent();
         }
 
-        public GraduationCalculation(string[] lines)
+        public GraduationCalculation(string[] lines) : base()
         {
             InitializeComponent();
             Lines = lines;

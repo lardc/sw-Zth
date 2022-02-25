@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System;
 using System.IO;
 using System.Windows.Navigation;
 using Zth.VM;
@@ -25,6 +26,9 @@ namespace Zth
         {
 
             SettingsModel = JsonConvert.DeserializeObject<SettingsModel>(File.ReadAllText("appsetting.json"));
+
+            AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+
             InitializeComponent();
             NavigationService = MainFrame.NavigationService;
 
@@ -41,8 +45,10 @@ namespace Zth
             };
         }
 
-
-
+        private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            App.Logger.Fatal(e.ExceptionObject.ToString(), "Enabling power failed"); ;
+        }
 
         private void SelectFirstPage()
         {

@@ -591,6 +591,21 @@ namespace Zth
                         PulseSequenceVM.LineSeriesCursorLeftVisibility = true;
                     }
                     break;
+                //Градуировка
+                case GraduationOnlyVM GraduationOnlyVM:
+                    //Состояние операции
+                    HWOperationState OpStateG = (HWOperationState)ReadRegister(REG_OP_STATE, true);
+                    //Нагрев завершен
+                    if (OpStateG == HWOperationState.OPSTATE_MEASURING)
+                    {
+                        GraduationOnlyVM.StopHeatingButtonIsEnabled = false;
+                        GraduationOnlyVM.StartHeatingButtonIsEnabled = false;
+                        GraduationOnlyVM.StopGraduationButtonIsEnabled = true;
+                        GraduationOnlyVM.RightPanelTextBoxsIsEnabled = false;
+                        GraduationOnlyVM.AmplitudeControlCurrentTextBoxIsEnabled = false;
+                        GraduationOnlyVM.DurationHeatingCurrentPulseTextBoxIsEnabled = false;
+                    }
+                    break;
             }
         }
 

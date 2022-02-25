@@ -263,6 +263,13 @@ namespace Zth.Components
             return (Math.Min(x1,x2), Math.Max(x1,x2));
         }
 
+        public (double x1, double x2) GetGraduationRange()
+        {
+            double x1 = GetXPoint(LineSeriesCursorLeft);
+            double x2 = GetXPoint(LineSeriesCursorRight);
+            return (Math.Min(x1, x2), Math.Max(x1, x2));
+        }
+
         private void MainCartesianChart_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (lastLineSeriesCursor != null)
