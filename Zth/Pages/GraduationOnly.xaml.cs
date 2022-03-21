@@ -75,9 +75,9 @@ namespace Zth.Pages
             
         }
 
-        private void StopGraduation_Click(object sender, RoutedEventArgs e)
+        private async void StopGraduation_Click(object sender, RoutedEventArgs e)
         {
-            App.LogicContainer.StopProcess();
+            await App.LogicContainer.StopProcess();
             App.LogicContainer.ReadEndpointsGraduation();
             BottomPanelVM.LeftButtonIsEnabled = true;
 

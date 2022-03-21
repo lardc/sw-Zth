@@ -55,9 +55,9 @@ namespace Zth.Pages
             catch { }
         }
 
-        private void StopHeating_Click(object sender, RoutedEventArgs e)
+        private async void StopHeating_Click(object sender, RoutedEventArgs e)
         {
-            App.LogicContainer.StopProcess();
+            await App.LogicContainer.StopProcess();
             BottomPanelVM.LeftButtonIsEnabled = true;
 
             VM.StopHeatingButtonIsEnabled = false;
@@ -65,9 +65,9 @@ namespace Zth.Pages
 
         }
 
-        private void RecordingResults_Click(object sender, RoutedEventArgs e)
+        private async void RecordingResults_Click(object sender, RoutedEventArgs e)
         {
-            App.LogicContainer.StopProcess();
+            await App.LogicContainer.StopProcess();
             BottomPanelVM.LeftButtonIsEnabled = true;
             BottomPanelVM.RightButtonIsEnabled = true;
 

@@ -49,9 +49,9 @@ namespace Zth.Pages
             catch { }
         }
 
-        private void StopMeasurement_Click(object sender, RoutedEventArgs e)
+        private async void StopMeasurement_Click(object sender, RoutedEventArgs e)
         {
-            App.LogicContainer.StopProcess();
+            await App.LogicContainer.StopProcess();
             App.LogicContainer.ReadEndpointsZthSequence();
             BottomPanelVM.LeftButtonIsEnabled = true;
             BottomPanelVM.RightButtonIsEnabled = true;

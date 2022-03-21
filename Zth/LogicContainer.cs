@@ -668,7 +668,7 @@ namespace Zth
             
         }
 
-        public async void StopProcess() //Выключение измерения
+        public async Task StopProcess() //Выключение измерения
         {
             await Task.Run(() =>
             {
