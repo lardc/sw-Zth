@@ -475,7 +475,7 @@ namespace Zth.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на кВт.
+        ///   Ищет локализованную строку, похожую на Вт.
         /// </summary>
         public static string UnitMeasurementkW {
             get {

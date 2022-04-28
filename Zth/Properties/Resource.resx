@@ -229,7 +229,7 @@
     <value>А</value>
   </data>
   <data name="UnitMeasurementkW" xml:space="preserve">
-    <value>кВт</value>
+    <value>Вт</value>
   </data>
   <data name="ZthLongImpulse" xml:space="preserve">
     <value>Zth Длинный импульс</value>

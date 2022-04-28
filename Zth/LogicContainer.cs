@@ -20,6 +20,8 @@ namespace Zth
         private readonly TopPanelVm TopPanelVm;
         //VM нижней панели
         private readonly BottomPanelVM BottomPanelVM;
+        //Итерация опроса
+        private int PollIteration;
 
         public LogicContainer(ushort node = 10)
         {
@@ -155,7 +157,7 @@ namespace Zth
                     //Очистка графиков
                     App.Current.Dispatcher.BeginInvoke(() =>
                     {
-                        Chart.ClearChart();
+                        Chart.ClearChart(true);
                     });
                     //Время (мкс)
                     double Duration = 200;
@@ -212,7 +214,7 @@ namespace Zth
                     //Очистка графиков
                     App.Current.Dispatcher.BeginInvoke(() =>
                     {
-                        Chart.ClearChart();
+                        Chart.ClearChart(true);
                     });
                     //Время (мкс)
                     double Duration = ((ZthPulseSequenceVM)CommonVM).FirstPulseDuration * 1000;
@@ -284,7 +286,7 @@ namespace Zth
             });
         }
 
-        public async void StartGraduation(uint pulseWidth, ushort pause, ushort temperature) //Запуск измерения Градуировкаf
+        public async void StartGraduation(uint pulseWidth, ushort pause, ushort temperature) //Запуск измерения Градуировка
         {
             await Task.Run(() =>
             {
@@ -345,7 +347,7 @@ namespace Zth
                     //Очистка графиков
                     App.Current.Dispatcher.BeginInvoke(() =>
                     {
-                        Chart.ClearChart();
+                        Chart.ClearChart(true);
                     });
                     //Время (мкс)
                     double Duration = 200;
@@ -505,6 +507,8 @@ namespace Zth
         {
             await Task.Run(() =>
             {
+                //Длительность измерения в секундах
+                double Duration = 0;
                 try
                 {
                     //Проверка состояния
@@ -536,13 +540,30 @@ namespace Zth
                     double Tsp = ReadRegister(REG_ACTUAL_TSP, true);
                     TopPanelVm.TemperatureSensitiveParameter = Tsp;
                     //Добавление точек на графики
-                    AddPointsToChart(HeatingCurrent, HeatingPower, Tsp, TempCase1, TempCase2, TempCool1, TempCool2);
+                    Duration = AddPointsToChart(HeatingCurrent, HeatingPower, Tsp, TempCase1, TempCase2, TempCool1, TempCool2);
                 }
                 catch (Exception error)
                 {
                     App.Logger.Error(error, "Could not read data");
                 }
-                Thread.Sleep(200);
+                //Таймаут перед следующим запросом в миллисекундах
+                int PollTimeout = 200;
+                switch (Duration)
+                {
+                    //Менее 10 секунд
+                    case double duration when duration >= 1 && duration < 10:
+                        PollTimeout = 500;
+                        break;
+                    //Менее 100 секунд
+                    case double duration when duration >= 10 && duration < 100:
+                        PollTimeout = 1000;
+                        break;
+                    //Более 100 секунд
+                    case double duration when duration >= 100:
+                        PollTimeout = 3000;
+                        break;
+                }
+                Thread.Sleep(PollTimeout);
             });
         }
 
@@ -609,45 +630,43 @@ namespace Zth
             }
         }
 
-        public void AddPointsToChart(double heatingCurrent, double heatingPower, double tsp, double tempCase1, double tempCase2, double tempCool1, double tempCool2) //Добавление точек на графики
+        public double AddPointsToChart(double heatingCurrent, double heatingPower, double tsp, double tempCase1, double tempCase2, double tempCool1, double tempCool2) //Добавление точек на графики
         {
-            //Измерение запущено
-            if (IsRunning)
-            {
-                double Duration = (DateTime.Now - StartTime).TotalSeconds;
-                App.Logger.Info(string.Format("Adding points to charts for timestamp {0}", Duration));
-                //Время
-                CommonVM.Time = Duration;
-                //Греющий ток
-                CommonVM.HeatingCurrent = heatingCurrent;
-                CommonVM.HeatingCurrentChartValues.Add(new ObservablePoint(Duration, heatingCurrent));
-                //Греющая мощность
-                CommonVM.HeatingPower = heatingPower;
-                CommonVM.HeatingPowerChartValues.Add(new ObservablePoint(Duration, heatingPower));
-                //ТЧП
-                CommonVM.TemperatureSensitiveParameter = tsp;
-                if (CommonVM.TemperatureSensitiveParameterIsVisibly)
-                    CommonVM.TemperatureSensitiveParameterChartValues.Add(new ObservablePoint(Duration, tsp));
-                //Температура корпуса
-                CommonVM.AnodeBodyTemperature = tempCase1;
-                CommonVM.AnodeBodyTemperatureChartValues.Add(new ObservablePoint(Duration, tempCase1));
-                CommonVM.CathodeBodyTemperature = tempCase2;
-                if (CommonVM.CathodeBodyTemperatureIsVisibly)
-                    CommonVM.CathodeBodyTemperatureChartValues.Add(new ObservablePoint(Duration, tempCase2));
-                //Температура охладителя
-                CommonVM.AnodeCoolerTemperature = tempCool1;
-                CommonVM.AnodeCoolerTemperatureChartValues.Add(new ObservablePoint(Duration, tempCool1));
-                CommonVM.CathodeCoolerTemperature = tempCool2;
-                if (CommonVM.CathodeCoolerTemperatureIsVisibly)
-                    CommonVM.CathodeCoolerTemperatureChartValues.Add(new ObservablePoint(Duration, tempCool2));
-                //Итерация в 10 сек
-                if ((int)Duration % 10 == 0)
-                    //Выравнивание графиков
-                    App.Current.Dispatcher.BeginInvoke(() =>
-                    {
-                        Chart.AdjustChart();
-                    });
-            }
+            //Измерение не запущено
+            if (!IsRunning)
+                return 0;
+            double Duration = (DateTime.Now - StartTime).TotalSeconds;
+            //Время
+            CommonVM.Time = Duration;
+            //Греющий ток
+            CommonVM.HeatingCurrent = heatingCurrent;
+            CommonVM.HeatingCurrentChartValues.Add(new ObservablePoint(Duration, heatingCurrent));
+            //Греющая мощность
+            CommonVM.HeatingPower = heatingPower;
+            CommonVM.HeatingPowerChartValues.Add(new ObservablePoint(Duration, heatingPower));
+            //ТЧП
+            CommonVM.TemperatureSensitiveParameter = tsp;
+            if (CommonVM.TemperatureSensitiveParameterIsVisibly)
+                CommonVM.TemperatureSensitiveParameterChartValues.Add(new ObservablePoint(Duration, tsp));
+            //Температура корпуса
+            CommonVM.AnodeBodyTemperature = tempCase1;
+            CommonVM.AnodeBodyTemperatureChartValues.Add(new ObservablePoint(Duration, tempCase1));
+            CommonVM.CathodeBodyTemperature = tempCase2;
+            if (CommonVM.CathodeBodyTemperatureIsVisibly)
+                CommonVM.CathodeBodyTemperatureChartValues.Add(new ObservablePoint(Duration, tempCase2));
+            //Температура охладителя
+            CommonVM.AnodeCoolerTemperature = tempCool1;
+            CommonVM.AnodeCoolerTemperatureChartValues.Add(new ObservablePoint(Duration, tempCool1));
+            CommonVM.CathodeCoolerTemperature = tempCool2;
+            if (CommonVM.CathodeCoolerTemperatureIsVisibly)
+                CommonVM.CathodeCoolerTemperatureChartValues.Add(new ObservablePoint(Duration, tempCool2));
+            if ((int)Duration % 3 == 0)
+                //Выравнивание графиков
+                App.Current.Dispatcher.BeginInvoke(() =>
+                {
+                    Chart.AdjustChart();
+                });
+            return Duration;
         }
 
         public async void StopHeating() //Выключение нагрева

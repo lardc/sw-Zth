@@ -222,30 +222,30 @@ namespace Zth.Components
         private void DrawAllValues(LineSeriesCursor lineSeriesCursor)
         {
             VM.Time = GetXPoint(lineSeriesCursor);
-            if (VM.HeatingCurrentIsEnabled)
+            if (VM.HeatingCurrentIsEnabled && VM.HeatingCurrentIsVisibly)
                 VM.HeatingCurrent = GetYPoint(VM.HeatingCurrentChartValues, lineSeriesCursor, 1);
-            if (VM.HeatingPowerIsEnabled)
+            if (VM.HeatingPowerIsEnabled && VM.HeatingPowerIsVisibly)
                 VM.HeatingPower = GetYPoint(VM.HeatingPowerChartValues, lineSeriesCursor, 1);
 
-            if (VM.AnodeBodyTemperatureIsEnabled)
+            if (VM.AnodeBodyTemperatureIsEnabled && VM.AnodeBodyTemperatureIsVisibly)
                 VM.AnodeBodyTemperature = GetYPoint(VM.AnodeBodyTemperatureChartValues, lineSeriesCursor, 1);
-            if (VM.AnodeCoolerTemperatureIsEnabled)
+            if (VM.AnodeCoolerTemperatureIsEnabled && VM.AnodeCoolerTemperatureIsVisibly)
                 VM.AnodeCoolerTemperature = GetYPoint(VM.AnodeCoolerTemperatureChartValues, lineSeriesCursor, 1);
-            if (VM.CathodeBodyTemperatureIsEnabled)
+            if (VM.CathodeBodyTemperatureIsEnabled && VM.CathodeBodyTemperatureIsVisibly)
                 VM.CathodeBodyTemperature = GetYPoint(VM.CathodeBodyTemperatureChartValues, lineSeriesCursor, 1);
-            if (VM.CathodeCoolerTemperatureIsEnabled)
+            if (VM.CathodeCoolerTemperatureIsEnabled && VM.CathodeCoolerTemperatureIsVisibly)
                 VM.CathodeCoolerTemperature = GetYPoint(VM.CathodeCoolerTemperatureChartValues, lineSeriesCursor, 1);
 
-            if (VM.TemperatureStructureIsEnabled)
+            if (VM.TemperatureStructureIsEnabled && VM.TemperatureStructureIsVisibly)
                 VM.TemperatureStructure = GetYPoint(VM.TemperatureStructureChartValues, lineSeriesCursor, 1);
-            if (VM.TemperatureSensitiveParameterIsEnabled)
+            if (VM.TemperatureSensitiveParameterIsEnabled && VM.TemperatureSensitiveParameterIsVisibly)
                 VM.TemperatureSensitiveParameter = GetYPoint(VM.TemperatureSensitiveParameterChartValues, lineSeriesCursor, 1);
 
-            if (VM.ZthIsEnabled)
+            if (VM.ZthIsEnabled && VM.ZthIsVisibly)
                 VM.Zth = GetYPoint(VM.ZthChartValues, lineSeriesCursor, 1);
-            if (VM.ZthaIsEnabled)
+            if (VM.ZthaIsEnabled && VM.ZthaIsVisibly)
                 VM.Ztha = GetYPoint(VM.ZthaChartValues, lineSeriesCursor, 1);
-            if (VM.ZthkIsEnabled)
+            if (VM.ZthkIsEnabled && VM.ZthkIsVisibly)
                 VM.Zthk = GetYPoint(VM.ZthkChartValues, lineSeriesCursor, 1);
         }
 
