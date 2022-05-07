@@ -62,6 +62,7 @@ namespace Zth.Pages
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
+            BottomPanelVM.LeftButtonIsEnabled = true;
             BottomPanelVM.RightButtonContent = Properties.Resource.Graduation;
             BottomPanelVM.RightBottomButtonAction = () => _navigationService.Navigate(new GraduationOnly()
             {

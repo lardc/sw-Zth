@@ -107,8 +107,6 @@ namespace Zth.Components
                 VM.AnodeCoolerTemperatureChartValues.Add(new ObservablePoint(0.000001, 0));
                 VM.CathodeCoolerTemperatureChartValues.Add(new ObservablePoint(0.000001, 0));
             }
-            
-            //AdjustChart();
         }
 
         private CancellationTokenSource _simulateCancellationTokenSource = new CancellationTokenSource();

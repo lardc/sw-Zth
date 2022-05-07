@@ -166,7 +166,7 @@ namespace Zth.VM
           {
               MinValue = 55,
               MaxValue = 95,
-              Name = Properties.Resource.UnitMeasurementDegreeCentigrade,
+              //Name = Properties.Resource.UnitMeasurementDegreeCentigrade,
               Step = 2.5,
               StringFormat = value => Math.Round(value).ToString()
           };

@@ -65,7 +65,7 @@ namespace Zth.Pages
         private async void StopMeasurement_Click(object sender, RoutedEventArgs e)
         {
             await App.LogicContainer.StopProcess();
-            App.LogicContainer.ReadEndpointsZthLongImpulse();
+            App.LogicContainer.ReadEndpointsZthLongImpulse();            
             BottomPanelVM.LeftButtonIsEnabled = true;
             BottomPanelVM.RightButtonIsEnabled = true;
 
@@ -77,6 +77,7 @@ namespace Zth.Pages
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             TopPanelVm.TemperatureSensitiveParameterIsVisible = false;
+            BottomPanelVM.LeftButtonIsEnabled = true;
             BottomPanelVM.RightButtonContent = Properties.Resource.Graduation;
             BottomPanelVM.RightBottomButtonAction = () => _navigationService.Navigate(new GraduationOnly()
             {
@@ -94,6 +95,7 @@ namespace Zth.Pages
 
             VM.HeatingCurrentIsVisibly = true;
             VM.HeatingPowerIsVisibly = true;
+            VM.TemperatureSensitiveParameterIsVisibly = true;
             VM.AnodeBodyTemperatureIsVisibly = true;
             VM.CathodeBodyTemperatureIsVisibly = TopPanelVm.TypeCooling != TypeCooling.OneSided;
             VM.AnodeCoolerTemperatureIsVisibly = true;
@@ -101,6 +103,7 @@ namespace Zth.Pages
 
             VM.HeatingCurrentIsEnabled = true;
             VM.HeatingPowerIsEnabled = true;
+            VM.TemperatureSensitiveParameterIsEnabled = true;
             VM.AnodeBodyTemperatureIsEnabled = true;
             VM.CathodeBodyTemperatureIsEnabled = true;
             VM.AnodeCoolerTemperatureIsEnabled = true;

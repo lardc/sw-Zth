@@ -20,8 +20,6 @@ namespace Zth
         private readonly TopPanelVm TopPanelVm;
         //VM нижней панели
         private readonly BottomPanelVM BottomPanelVM;
-        //Итерация опроса
-        private int PollIteration;
 
         public LogicContainer(ushort node = 10)
         {
@@ -461,7 +459,7 @@ namespace Zth
                 if (CommonVM.CathodeCoolerTemperatureIsVisibly)
                     CommonVM.CathodeCoolerTemperatureChartValues.Add(new ObservablePoint(Timestamp, TempCool2));
                 //ТЧП
-                double Tsp = TempTspEndpoints[i];
+                double Tsp = TempTspEndpoints[i] / 10.0;
                 if (CommonVM.TemperatureSensitiveParameterIsVisibly == true)
                     CommonVM.TemperatureSensitiveParameterChartValues.Add(new ObservablePoint(Timestamp, Tsp));
                 //Итерация времени
@@ -517,11 +515,9 @@ namespace Zth
                     double HeatingCurrent = ReadRegister(REG_ACTUAL_I_DUT, true) / 10.0;
                     TopPanelVm.HeatingCurrent = HeatingCurrent;
                     //Греющая мощность
-                    ushort Whole = ReadRegister(REG_ACTUAL_P_DUT_WHOLE, true);
-                    ushort Fractional = ReadRegister(REG_ACTUAL_P_DUT_FRACT, true);
-                    double HeatingPower = Whole + Fractional / 100.0;
+                    double HeatingPower = ReadRegister(REG_ACTUAL_P_DUT_WHOLE, true) / 10.0;
                     //Напряжение на приборе
-                    double Udut = ReadRegister(REG_ACTUAL_U_DUT, true);
+                    double Udut = ReadRegister(REG_ACTUAL_U_DUT, true) / 10.0;
                     TopPanelVm.Udut = Udut;
                     //Амплитуда измерительного тока
                     double Im = ReadRegister(REG_ACTUAL_I_MEASUREMENT, true) / 10.0;
@@ -537,7 +533,7 @@ namespace Zth
                     TopPanelVm.AnodeCoolerTemperature = TempCool1;
                     TopPanelVm.CathodeCoolerTemperature = TempCool2;
                     //ТЧП
-                    double Tsp = ReadRegister(REG_ACTUAL_TSP, true);
+                    double Tsp = ReadRegister(REG_ACTUAL_TSP, true) / 10.0;
                     TopPanelVm.TemperatureSensitiveParameter = Tsp;
                     //Добавление точек на графики
                     Duration = AddPointsToChart(HeatingCurrent, HeatingPower, Tsp, TempCase1, TempCase2, TempCool1, TempCool2);
@@ -660,12 +656,11 @@ namespace Zth
             CommonVM.CathodeCoolerTemperature = tempCool2;
             if (CommonVM.CathodeCoolerTemperatureIsVisibly)
                 CommonVM.CathodeCoolerTemperatureChartValues.Add(new ObservablePoint(Duration, tempCool2));
-            if ((int)Duration % 3 == 0)
-                //Выравнивание графиков
-                App.Current.Dispatcher.BeginInvoke(() =>
-                {
-                    Chart.AdjustChart();
-                });
+            //Выравнивание графиков
+            App.Current.Dispatcher.BeginInvoke(() =>
+            {
+                Chart.AdjustChart();
+            });
             return Duration;
         }
 

@@ -1,20 +1,9 @@
-﻿using LiveCharts;
-using LiveCharts.Wpf;
+﻿using LiveCharts.Defaults;
 using Microsoft.Win32;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using Zth.VM;
 
 namespace Zth.Pages
@@ -74,12 +63,25 @@ namespace Zth.Pages
             }
 
             if (Lines != null)
+            {
+                //Установка крайних границ для экстраполяции
+                if (Lines.Length > 0)
+                {
+                    //Температура
+                    VM.BottomLineExtrapolation = VM.BottomLineExtrapolationAxis = Math.Round(double.Parse(Lines[^1].Split(',')[0]) - 5);
+                    VM.UpperLineExtrapolation = VM.UpperLineExtrapolationAxis = Math.Round(double.Parse(Lines[0].Split(',')[0]) + 5);
+                    //ТЧП
+                    VM.MinMegawatts = double.Parse(Lines[0].Split(',')[1]) - 5;
+                    VM.MaxMegawatts = double.Parse(Lines[^1].Split(',')[1]) + 5;
+                }
+                //Добавление градуировочной кривой на график
                 foreach (string line in Lines)
                 {
                     double x = double.Parse(line.Split(",")[0]);
                     double y = double.Parse(line.Split(",")[1]);
-                    VM.GraduationChartValues.Add(new LiveCharts.Defaults.ObservablePoint(x, y));
+                    VM.GraduationChartValues.Add(new ObservablePoint(x, y));
                 }
+            }
 
             //if (MainWindow.SettingsModel.Debug1)
             //{
@@ -112,26 +114,41 @@ namespace Zth.Pages
             VM.BottomLineExtrapolationAxis = VM.BottomLineExtrapolation;
             VM.UpperLineExtrapolationAxis = VM.UpperLineExtrapolation;
             
-            //Линейная экстраполяция?
+            //Линейная экстраполяция
             if (VM.BottomLineExtrapolation < VM.GraduationChartValues.Min(m => m.X))
             {
                 double x = VM.BottomLineExtrapolation;
-                LiveCharts.Defaults.ObservablePoint lastPoint = VM.GraduationChartValues.OrderBy(m => m.X).ToArray()[0];
-                LiveCharts.Defaults.ObservablePoint prevPoint = VM.GraduationChartValues.OrderBy(m => m.X).ToArray()[1];
-                double y = prevPoint.Y + (lastPoint.Y - prevPoint.Y) / (lastPoint.X - prevPoint.X) * (x - prevPoint.X);
-                VM.GraduationChartValues.Add(new LiveCharts.Defaults.ObservablePoint(x, y));
+                ObservablePoint[] Collection = VM.GraduationChartValues.OrderBy(m => m.X).ToArray();
+                ObservablePoint lastPoint = Collection[0];
+                ObservablePoint prevPoint = Collection[1];
+                foreach (ObservablePoint point in Collection)
+                    if (point.X != lastPoint.X)
+                    {
+                        prevPoint = point;
+                        break;
+                    }
+                double y = Math.Round(prevPoint.Y + (lastPoint.Y - prevPoint.Y) / (lastPoint.X - prevPoint.X) * (x - prevPoint.X));
+                VM.GraduationChartValues.Add(new ObservablePoint(x, y));
             }
             if (VM.UpperLineExtrapolation > VM.GraduationChartValues.Max(m => m.X))
             {
                 double x = VM.UpperLineExtrapolation;
-                LiveCharts.Defaults.ObservablePoint lastPoint = VM.GraduationChartValues.OrderByDescending(m => m.X).ToArray()[0];
-                LiveCharts.Defaults.ObservablePoint prevPoint = VM.GraduationChartValues.OrderByDescending(m => m.X).ToArray()[1];
-                double y = prevPoint.Y + (lastPoint.Y - prevPoint.Y) / (lastPoint.X - prevPoint.X) * (x - prevPoint.X);
-                VM.GraduationChartValues.Add(new LiveCharts.Defaults.ObservablePoint(x, y));
+                ObservablePoint[] Collection = VM.GraduationChartValues.OrderByDescending(m => m.X).ToArray();
+                ObservablePoint lastPoint = Collection.ToArray()[0];
+                ObservablePoint prevPoint = Collection.ToArray()[1];
+                foreach (ObservablePoint point in Collection)
+                    if (point.X != lastPoint.X)
+                    {
+                        prevPoint = point;
+                        break;
+                    }
+                double y = Math.Round(prevPoint.Y + (lastPoint.Y - prevPoint.Y) / (lastPoint.X - prevPoint.X) * (x - prevPoint.X));
+                VM.GraduationChartValues.Insert(0, new ObservablePoint(x, y));
             }
             
             VM.MinMegawatts = VM.GraduationChartValues.Min(m => m.Y);
             VM.MaxMegawatts = VM.GraduationChartValues.Max(m => m.Y);
+
             VM.StepMegawatts = (VM.MaxMegawatts - VM.MinMegawatts) / 16;
         }
 

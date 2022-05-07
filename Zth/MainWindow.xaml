@@ -27,7 +27,7 @@
                 <ColumnDefinition/>
                 <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
-            <Button Grid.Column="0" Style="{StaticResource BackButton}" Content="{x:Static res:Resource.Back}"  Click="LeftButtonClick"/>
+            <Button Grid.Column="0" Style="{StaticResource BackButton}" Content="{x:Static res:Resource.Back}" IsEnabled="{Binding LeftButtonIsEnabled}" Click="LeftButtonClick"/>
             <Button Grid.Column="2" Style="{StaticResource BackButton}" Content="{Binding MiddleButtonContent}" IsEnabled="{Binding MiddleButtonIsEnabled}" Visibility="{Binding MiddleButtonIsVisibly, Converter={StaticResource B2VH}}" Click="MiddleButtonClick"/>
             <Button Grid.Column="4" Style="{StaticResource NextButton}" Content="{Binding RightButtonContent}" IsEnabled="{Binding RightButtonIsEnabled}" Visibility="{Binding RightButtonIsVisibly, Converter={StaticResource B2VH}}" Click="RightButtonClick" />
         </Grid>

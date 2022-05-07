@@ -122,6 +122,7 @@ namespace Zth.Pages
 
         private void CommonPage_Loaded(object sender, RoutedEventArgs e)
         {
+            BottomPanelVM.LeftButtonIsEnabled = true;
             if (CanLoadInFile)
                 BottomPanelVM.MiddleButtonContent = "Загрузка из файла";
             BottomPanelVM.MiddleButtonIsEnabled = true;

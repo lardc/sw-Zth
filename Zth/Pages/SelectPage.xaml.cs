@@ -47,14 +47,20 @@ namespace Zth.Pages
             }
         }
 
-        
-
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             DataContext = TopPanelVm;
+            BottomPanelVM.LeftButtonIsEnabled = false;
             BottomPanelVM.RightBottomButtonAction = SelectMeasument;
             BottomPanelVM.RightButtonIsEnabled = true;
             BottomPanelVM.RightButtonContent = Properties.Resource.Next;
+
+            BottomPanelVM.MiddleButtonContent = "Консоль";
+            BottomPanelVM.MiddleButtonIsEnabled = true;
+            BottomPanelVM.MiddleBottomButtonAction = () => _navigationService.Navigate(new ConsolePage()
+            {
+
+            });
 
             TopPanelVm.WorkingModeIsVisible = false;
             TopPanelVm.TypeDeviceIsVisible = false;
@@ -98,6 +104,8 @@ namespace Zth.Pages
 
             BottomPanelVM.RightButtonIsEnabled = false;
             BottomPanelVM.RightButtonContent = string.Empty;
+            BottomPanelVM.MiddleButtonIsEnabled = false;
+            BottomPanelVM.MiddleButtonContent = string.Empty;
         }
     }
 }

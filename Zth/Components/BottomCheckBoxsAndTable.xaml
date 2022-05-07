@@ -94,7 +94,7 @@
             </Border>
             <Border Grid.Column="3" Grid.Row="0" Width="100" Visibility="{Binding TemperatureSensitiveParameterIsVisibly, Converter={StaticResource B2VC}}">
                 <TextBlock>
-                    <Run Text="{x:Static res:Resource.TemperatureSensitiveParameter}" />
+                    <Run Text="ТЧП, мВ" />
                 </TextBlock>
             </Border>
             <Border Grid.Column="4" Grid.Row="0" Width="100" Visibility="{Binding AnodeBodyTemperatureIsVisibly, Converter={StaticResource B2VC}}">

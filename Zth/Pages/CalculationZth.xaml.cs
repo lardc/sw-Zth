@@ -1,15 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Microsoft.Win32;
+using System;
+using System.IO;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using Zth.VM;
 
 namespace Zth.Pages
@@ -40,18 +32,19 @@ namespace Zth.Pages
             TopPanelVm.HeatingCurrentIsVisible = false;
             TopPanelVm.TemperatureSensitiveParameterIsVisible = false;
 
-            BottomPanelVM.RightButtonContent = Properties.Resource.SaveInFile;
-
             DataContext = new CommonVM();
             FrameVM.SetParentFrameVM(VM);
+
+            BottomPanelVM.RightButtonContent = Properties.Resource.SaveInFile;
+            BottomPanelVM.RightBottomButtonAction = () => ZthToFile_Save();
 
             VM.HeatingCurrentIsVisibly = true;
             VM.HeatingPowerIsVisibly = true;
             VM.TemperatureSensitiveParameterIsVisibly = true;
             VM.AnodeBodyTemperatureIsVisibly = true;
-            VM.CathodeBodyTemperatureIsVisibly = true;
+            VM.CathodeBodyTemperatureIsVisibly = TopPanelVm.TypeCooling != TypeCooling.OneSided;
             VM.AnodeCoolerTemperatureIsVisibly = true;
-            VM.CathodeCoolerTemperatureIsVisibly = true;
+            VM.CathodeCoolerTemperatureIsVisibly = TopPanelVm.TypeCooling != TypeCooling.OneSided;
             VM.TemperatureStructureIsVisibly = true;
             VM.ZthaIsVisibly = true;
             VM.ZthkIsVisibly = true;
@@ -78,7 +71,19 @@ namespace Zth.Pages
             MainChart.SimulateStart();
         }
 
-    
+        private void ZthToFile_Save()
+        {
+            SaveFileDialog SFD = new SaveFileDialog()
+            {
+                Filter = "Excel Worksheets|*.csv"
+            };
+            if (SFD.ShowDialog() == true)
+            {
+                File.AppendAllText(SFD.FileName, string.Format("Греющий ток,Греющая мощность,ТЧП,Температура структуры,Zth\n"));
+                for (int i = 0; i < VM.TemperatureStructureChartValues.Count; i++)
+                    File.AppendAllText(SFD.FileName, string.Join(Environment.NewLine, string.Format("{0},{1},{2},{3},{4}", VM.HeatingCurrentChartValues[i].Y, VM.HeatingPowerChartValues[i].Y, VM.TemperatureSensitiveParameterChartValues[i].Y, VM.TemperatureStructureChartValues[i].Y, VM.ZthChartValues[i].Y)));
+            }
+        }
 
         private void CommonPage_Unloaded(object sender, RoutedEventArgs e)
         {
